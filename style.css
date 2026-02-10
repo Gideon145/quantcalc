@@ -7,8 +7,8 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #0f172a;
-    color: #e2e8f0;
+    background-color: #0b0f19;
+    color: #e5e7eb;
     line-height: 1.6;
     min-height: 100vh;
     display: flex;
@@ -27,24 +27,22 @@ body {
 .hero {
     padding: 80px 0 60px;
     text-align: center;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border-bottom: 1px solid #334155;
+    background: #0b0f19;
+    border-bottom: 1px solid #1f2937;
 }
 
 .hero-title {
     font-size: 3.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #3b82f6;
     margin-bottom: 16px;
     letter-spacing: -0.02em;
+    text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: #94a3b8;
+    color: #9ca3af;
     font-weight: 400;
 }
 
@@ -65,18 +63,19 @@ body {
 
 /* Tool Card */
 .tool-card {
-    background: #1e293b;
-    border: 1px solid #334155;
+    background: #121826;
+    border: 1px solid #1f2937;
     border-radius: 16px;
     padding: 40px 32px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 }
 
 .tool-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    border-color: #475569;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+    border-color: #374151;
+    background: #151d2e;
 }
 
 .tool-icon {
@@ -88,12 +87,12 @@ body {
 .tool-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #f1f5f9;
+    color: #f3f4f6;
     margin-bottom: 16px;
 }
 
 .tool-description {
-    color: #94a3b8;
+    color: #9ca3af;
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 28px;
@@ -102,15 +101,15 @@ body {
 .tool-button {
     width: 100%;
     padding: 14px 24px;
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    color: white;
+    background: #1e3a8a;
+    color: #e5e7eb;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
 }
 
 .tool-button-link {
@@ -123,8 +122,8 @@ body {
     display: block;
     width: 100%;
     padding: 14px 24px;
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    color: white;
+    background: #1e3a8a;
+    color: #e5e7eb;
     text-decoration: none;
     text-align: center;
     border-radius: 8px;
@@ -132,14 +131,14 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
 }
 
 .tool-button:hover,
 .tool-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
-    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    background: #2563eb;
+    box-shadow: 0 0 20px 2px rgba(59, 130, 246, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .tool-button:active,
@@ -148,20 +147,20 @@ body {
 }
 
 .tool-button:disabled {
-    background: #334155;
+    background: #1f2937;
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .tool-button:disabled:hover {
     transform: none;
-    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
 }
 
 .tool-btn-disabled {
-    background: #334155;
+    background: #1f2937;
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
     pointer-events: none;
 }
 
@@ -169,9 +168,9 @@ body {
 .footer {
     padding: 40px 0;
     text-align: center;
-    border-top: 1px solid #334155;
-    background: #1e293b;
-    color: #64748b;
+    border-top: 1px solid #1f2937;
+    background: #121826;
+    color: #6b7280;
     font-size: 0.9rem;
 }
 
