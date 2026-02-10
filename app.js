@@ -7,30 +7,18 @@ console.log('QuantCalc Loaded');
 // Application State
 const QuantCalc = {
     version: '1.0.0',
-    currentCalculator: null,
     
-    // Initialize application
-    init() {
-        console.log(`QuantCalc v${this.version} initialized`);
-        // Event listeners removed - using native link navigation
-    },
-    
-    // Position Size Calculator (placeholder)
+    // Position Size Calculator
     calculatePositionSize(accountBalance, riskPercentage, entryPrice, stopLoss) {
-        // TODO: Implement position size calculation
-        return 0;
+        const riskAmount = accountBalance * (riskPercentage / 100);
+        const positionSize = riskAmount / Math.abs(entryPrice - stopLoss);
+        return { riskAmount, positionSize, unitsToBuy: Math.floor(positionSize) };
     },
     
-    // Crypto Profit Calculator (placeholder)
+    // Crypto Profit Calculator
     calculateCryptoProfit(entryPrice, exitPrice, positionSize) {
-        // TODO: Implement crypto profit calculation
-        return 0;
+        const profit = (exitPrice - entryPrice) * positionSize;
+        const profitPercentage = ((exitPrice - entryPrice) / entryPrice) * 100;
+        return { profit, profitPercentage };
     }
 };
-
-// Initialize app when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => QuantCalc.init());
-} else {
-    QuantCalc.init();
-}
