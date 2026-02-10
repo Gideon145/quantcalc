@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate true net profit for Solana meme coin trades after slippage, bot fees, and priority fees.">
+    <title>Solana Meme Coin Profit Calculator | QuantCalc</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        /* Calculator Card */
+        .calculator-card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+        }
+
+        /* Input Section */
+        .input-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+
+        .checkbox-label {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Calculate Button */
+        .tool-btn {
+            margin-bottom: 32px;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            border-top: 1px solid #1f2937;
+            padding-top: 32px;
+        }
+
+        .results-section.visible {
+            display: block;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-item {
+            background: #0b0f19;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #1f2937;
+        }
+
+        .result-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .result-value.positive {
+            color: #10b981;
+        }
+
+        .result-value.negative {
+            color: #ef4444;
+        }
+
+        .result-value.highlight {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            background: #7f1d1d;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .calculator-card {
+                padding: 28px 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .result-value {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="/" class="back-link">Back to Home</a>
+            <h1 class="page-title">🚀 Solana Meme Coin Profit Calculator</h1>
+            <p class="page-description">Calculate true net profit after slippage, bot fees, and priority fees.</p>
+        </div>
+
+        <!-- Calculator Card -->
+        <div class="calculator-card">
+            <div class="error-message" id="errorMessage"></div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2 class="section-title">Enter Trade Parameters</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="entryAmount">Entry Amount (SOL)</label>
+                    <input 
+                        type="number" 
+                        id="entryAmount" 
+                        class="input-field" 
+                        placeholder="e.g., 10"
+                        step="0.0001"
+                        min="0"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="entryPrice">Entry Price (USD per token)</label>
+                    <input 
+                        type="number" 
+                        id="entryPrice" 
+                        class="input-field" 
+                        placeholder="e.g., 0.0001"
+                        step="0.00000001"
+                        min="0"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="exitPrice">Exit Price (USD per token)</label>
+                    <input 
+                        type="number" 
+                        id="exitPrice" 
+                        class="input-field" 
+                        placeholder="e.g., 0.0002"
+                        step="0.00000001"
+                        min="0"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="buySlippage">Buy Slippage (%)</label>
+                    <input 
+                        type="number" 
+                        id="buySlippage" 
+                        class="input-field" 
+                        placeholder="e.g., 5"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="sellSlippage">Sell Slippage (%)</label>
+                    <input 
+                        type="number" 
+                        id="sellSlippage" 
+                        class="input-field" 
+                        placeholder="e.g., 5"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="priorityFees">Priority Fees / Bribes (SOL)</label>
+                    <input 
+                        type="number" 
+                        id="priorityFees" 
+                        class="input-field" 
+                        placeholder="e.g., 0.01"
+                        step="0.0001"
+                        min="0"
+                    >
+                </div>
+
+                <div class="checkbox-group">
+                    <input 
+                        type="checkbox" 
+                        id="botFee" 
+                        class="checkbox-input"
+                        checked
+                    >
+                    <label for="botFee" class="checkbox-label">Include 1% Bot Fee</label>
+                </div>
+            </div>
+
+            <!-- Calculate Button -->
+            <button class="tool-btn" id="calculateBtn">Calculate Profit</button>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <h2 class="section-title">Results</h2>
+
+                <div class="result-item">
+                    <div class="result-label">Net Profit (SOL)</div>
+                    <div class="result-value" id="netProfitSOL">0.0000 SOL</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">Net Profit (USD)</div>
+                    <div class="result-value highlight" id="netProfitUSD">$0.00</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">ROI (%)</div>
+                    <div class="result-value" id="roi">0.00%</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">Break-Even Move Required (%)</div>
+                    <div class="result-value" id="breakEven">0.00%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="meme-profit.js"></script>
+</body>
+</html>
