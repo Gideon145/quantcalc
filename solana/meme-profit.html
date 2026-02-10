@@ -265,63 +265,124 @@
             top: -9999px;
             width: 1200px;
             height: 675px;
-            background: linear-gradient(135deg, #0b0f19 0%, #1e293b 100%);
-            border: 2px solid #3b82f6;
-            border-radius: 20px;
-            padding: 60px;
-            box-shadow: 0 0 60px rgba(59, 130, 246, 0.5);
+            background: #000000;
+            border: 3px solid #3b82f6;
+            border-radius: 0;
+            padding: 50px 60px;
+            box-shadow: 0 0 80px rgba(59, 130, 246, 0.6);
+            position: relative;
+            overflow: hidden;
         }
 
         #pnlCard.rendering {
             display: block;
         }
 
+        .card-stripes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.02),
+                rgba(255, 255, 255, 0.02) 10px,
+                rgba(0, 0, 0, 0.02) 10px,
+                rgba(0, 0, 0, 0.02) 20px
+            );
+            pointer-events: none;
+        }
+
         .card-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
+            position: relative;
+            z-index: 1;
         }
 
         .card-logo {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
             color: #3b82f6;
-            text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-            margin-bottom: 10px;
+            text-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
-        .card-title {
-            font-size: 1.5rem;
-            color: #94a3b8;
+        .card-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
             font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         .card-content {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 30px;
+        }
+
+        .card-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            margin: 25px 0;
         }
 
         .card-stat {
-            background: rgba(59, 130, 246, 0.1);
-            padding: 25px;
-            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.05);
+            padding: 20px;
+            border-radius: 8px;
             border: 1px solid rgba(59, 130, 246, 0.2);
+            text-align: center;
         }
 
         .card-stat-label {
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: #9ca3af;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .card-stat-value {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #f1f5f9;
         }
 
+        .card-stat-value.profit {
+            color: #10b981;
+        }
+
         .card-stat-value.highlight {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-roi {
+            background: rgba(59, 130, 246, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            text-align: center;
+            margin: 25px auto;
+            max-width: 500px;
+        }
+
+        .card-stat-value-large {
+            font-size: 3.5rem;
+            font-weight: 700;
             background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -330,12 +391,35 @@
 
         .card-quote {
             text-align: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-style: italic;
             color: #60a5fa;
-            padding: 30px;
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
-            margin-top: 20px;
+            padding: 25px;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-footer-text {
+            font-size: 1.1rem;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .card-footer-timestamp {
+            font-size: 0.9rem;
+            color: #64748b;
         }
 
         /* Responsive Design */
@@ -475,8 +559,13 @@
                 </div>
 
                 <div class="result-item">
-                    <div class="result-label">Projected Net SOL</div>
-                    <div class="result-value highlight" id="netSOL">0.0000 SOL</div>
+                    <div class="result-label">Projected Profit (USD)</div>
+                    <div class="result-value highlight" id="profitUSD">$0.00</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">Projected Net Value (USD)</div>
+                    <div class="result-value" id="netUSD">$0.00</div>
                 </div>
 
                 <div class="result-item">
@@ -497,33 +586,51 @@
 
     <!-- Hidden PnL Card for Export -->
     <div id="pnlCard">
+        <div class="card-stripes"></div>
         <div class="card-header">
             <div class="card-logo">QuantCalc</div>
-            <div class="card-title">Solana Token Market Cap PnL Analyzer</div>
+            <div class="card-subtitle">Solana Token Market Cap PnL Analyzer</div>
         </div>
         <div class="card-content">
-            <div class="card-stat">
-                <div class="card-stat-label">Entry Market Cap</div>
-                <div class="card-stat-value" id="cardEntryMC">$0</div>
+            <div class="card-row">
+                <div class="card-stat">
+                    <div class="card-stat-label">Entry Market Cap</div>
+                    <div class="card-stat-value" id="cardEntryMC">$0</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-label">Target Market Cap</div>
+                    <div class="card-stat-value" id="cardTargetMC">$0</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-label">Multiplier</div>
+                    <div class="card-stat-value highlight" id="cardMultiplier">0x</div>
+                </div>
             </div>
-            <div class="card-stat">
-                <div class="card-stat-label">Target Market Cap</div>
-                <div class="card-stat-value" id="cardTargetMC">$0</div>
+            <div class="card-divider"></div>
+            <div class="card-row">
+                <div class="card-stat">
+                    <div class="card-stat-label">Entry Amount</div>
+                    <div class="card-stat-value" id="cardEntrySOL">0 SOL</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-label">Projected Profit (SOL)</div>
+                    <div class="card-stat-value profit" id="cardProfitSOL">0 SOL</div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-label">Projected Profit (USD)</div>
+                    <div class="card-stat-value profit" id="cardProfitUSD">$0</div>
+                </div>
             </div>
-            <div class="card-stat">
-                <div class="card-stat-label">Entry Amount</div>
-                <div class="card-stat-value" id="cardEntrySOL">0 SOL</div>
+            <div class="card-roi">
+                <div class="card-stat-label">ROI</div>
+                <div class="card-stat-value-large highlight" id="cardROI">0%</div>
             </div>
-            <div class="card-stat">
-                <div class="card-stat-label">Projected Profit</div>
-                <div class="card-stat-value highlight" id="cardProfitSOL">0 SOL</div>
-            </div>
-        </div>
-        <div class="card-stat" style="margin: 0 auto; max-width: 500px;">
-            <div class="card-stat-label">ROI</div>
-            <div class="card-stat-value highlight" id="cardROI">0%</div>
         </div>
         <div class="card-quote" id="cardQuote">"Trust the thesis."</div>
+        <div class="card-footer">
+            <div class="card-footer-text">www.quantcalc.trade</div>
+            <div class="card-footer-timestamp" id="cardTimestamp"></div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

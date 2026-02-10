@@ -2,23 +2,71 @@
 const MemeProfitCalculator = {
     // Quote array for shareable cards
     quotes: [
-        "Grandma… is it today?",
-        "Mama are we leaving the hood today?",
-        "One more leg.",
+        "Grandma, is it today?",
+        "Mama, are we leaving the hood today?",
         "Trust the thesis.",
-        "If this hits I'm retired.",
-        "Dev don't rug.",
-        "God willing.",
-        "Is this what they call financial freedom?",
-        "Diamond hands activated."
+        "Diamond hands only.",
+        "Wen Lambo?",
+        "Chat, are we up?",
+        "WAGMI.",
+        "Not selling until 1000x.",
+        "This is financial advice. (It's not)"
     ],
 
     // Store calculated values for card generation
     calculatedData: null,
+    
+    // Live SOL price from CoinGecko
+    solUsdPrice: 0,
 
     // Initialize calculator
     init() {
         this.setupEventListeners();
+        this.fetchSolPrice(); // Fetch SOL price on load
+    },
+    
+    // Fetch live SOL price from CoinGecko
+    async fetchSolPrice() {
+        try {
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+            const data = await response.json();
+            this.solUsdPrice = data.solana.usd;
+        } catch (error) {
+            console.error('Failed to fetch SOL price:', error);
+            this.solUsdPrice = 0;
+        }
+    },
+    
+    // Parse market cap input with k, m, b support
+    parseMarketCap(value) {
+        if (!value) return 0;
+        
+        // Convert to string and trim
+        let str = String(value).trim().toLowerCase();
+        
+        // Remove commas
+        str = str.replace(/,/g, '');
+        
+        // Check for suffix
+        let multiplier = 1;
+        
+        if (str.endsWith('k')) {
+            multiplier = 1000;
+            str = str.slice(0, -1);
+        } else if (str.endsWith('m')) {
+            multiplier = 1000000;
+            str = str.slice(0, -1);
+        } else if (str.endsWith('b')) {
+            multiplier = 1000000000;
+            str = str.slice(0, -1);
+        }
+        
+        // Parse number
+        const num = parseFloat(str);
+        
+        if (isNaN(num)) return 0;
+        
+        return num * multiplier;
     },
 
     // Setup event listeners
@@ -43,8 +91,12 @@ const MemeProfitCalculator = {
     // Get input values
     getInputValues() {
         const entryAmount = parseFloat(document.getElementById('entryAmount').value);
-        const entryMarketCap = parseFloat(document.getElementById('entryMarketCap').value);
-        const targetMarketCap = parseFloat(document.getElementById('targetMarketCap').value);
+        const entryMarketCapRaw = document.getElementById('entryMarketCap').value;
+        const targetMarketCapRaw = document.getElementById('targetMarketCap').value;
+        
+        // Parse market cap values with k, m, b support
+        const entryMarketCap = this.parseMarketCap(entryMarketCapRaw);
+        const targetMarketCap = this.parseMarketCap(targetMarketCapRaw);
         
         // Optional fields - default to 0 if empty
         const buySlippageVal = document.getElementById('buySlippage').value;
@@ -112,7 +164,7 @@ const MemeProfitCalculator = {
     },
 
     // Calculate profit
-    calculate() {
+    async calculate() {
         const values = this.getInputValues();
         
         // Validate inputs
@@ -123,6 +175,9 @@ const MemeProfitCalculator = {
         }
 
         this.hideError();
+
+        // Fetch latest SOL price
+        await this.fetchSolPrice();
 
         const { entryAmount, entryMarketCap, targetMarketCap, buySlippage, sellSlippage, priorityFees, includeBotFee } = values;
 
@@ -149,8 +204,12 @@ const MemeProfitCalculator = {
 
         // Step 7: Calculate profit
         const profitSOL = netSOL - entryAmount;
+        
+        // Step 8: Calculate USD values
+        const profitUSD = profitSOL * this.solUsdPrice;
+        const netUSD = netSOL * this.solUsdPrice;
 
-        // Step 8: Calculate ROI
+        // Step 9: Calculate ROI
         const roiPercent = (profitSOL / entryAmount) * 100;
 
         // Store calculated data for card generation
@@ -159,31 +218,43 @@ const MemeProfitCalculator = {
             entryMarketCap,
             targetMarketCap,
             profitSOL,
+            profitUSD,
             netSOL,
+            netUSD,
             roiPercent,
             multiplier
         };
 
         // Display results
-        this.displayResults(profitSOL, netSOL, roiPercent, multiplier);
+        this.displayResults(profitSOL, profitUSD, netUSD, roiPercent, multiplier);
     },
 
     // Display results
-    displayResults(profitSOL, netSOL, roiPercent, multiplier) {
+    displayResults(profitSOL, profitUSD, netUSD, roiPercent, multiplier) {
         // Format and display Projected Profit (SOL)
-        const profitElement = document.getElementById('profitSOL');
-        profitElement.textContent = `${this.formatDecimal(profitSOL, 4)} SOL`;
-        profitElement.className = 'result-value';
+        const profitSOLElement = document.getElementById('profitSOL');
+        profitSOLElement.textContent = `${this.formatDecimal(profitSOL, 4)} SOL`;
+        profitSOLElement.className = 'result-value';
         if (profitSOL > 0) {
-            profitElement.classList.add('positive');
+            profitSOLElement.classList.add('positive');
         } else if (profitSOL < 0) {
-            profitElement.classList.add('negative');
+            profitSOLElement.classList.add('negative');
         }
 
-        // Format and display Projected Net SOL
-        const netElement = document.getElementById('netSOL');
-        netElement.textContent = `${this.formatDecimal(netSOL, 4)} SOL`;
-        netElement.className = 'result-value highlight';
+        // Format and display Projected Profit (USD)
+        const profitUSDElement = document.getElementById('profitUSD');
+        profitUSDElement.textContent = `$${this.formatNumber(Math.round(profitUSD))}`;
+        profitUSDElement.className = 'result-value highlight';
+        if (profitUSD > 0) {
+            profitUSDElement.classList.add('positive');
+        } else if (profitUSD < 0) {
+            profitUSDElement.classList.add('negative');
+        }
+        
+        // Format and display Projected Net Value (USD)
+        const netUSDElement = document.getElementById('netUSD');
+        netUSDElement.textContent = `$${this.formatNumber(Math.round(netUSD))}`;
+        netUSDElement.className = 'result-value';
 
         // Format and display ROI
         const roiElement = document.getElementById('roi');
@@ -195,8 +266,11 @@ const MemeProfitCalculator = {
             roiElement.classList.add('negative');
         }
 
-        // Format and display Multiplier
-        document.getElementById('multiplier').textContent = `${this.formatDecimal(multiplier, 2)}x`;
+        // Format and display Multiplier with commas for large numbers
+        const multiplierDisplay = multiplier >= 1000 
+            ? this.formatNumber(Math.round(multiplier)) + 'x'
+            : this.formatDecimal(multiplier, 2) + 'x';
+        document.getElementById('multiplier').textContent = multiplierDisplay;
 
         // Show results section
         document.getElementById('resultsSection').classList.add('visible');
@@ -212,14 +286,33 @@ const MemeProfitCalculator = {
             return;
         }
 
-        const { entryAmount, entryMarketCap, targetMarketCap, profitSOL, roiPercent } = this.calculatedData;
+        const { entryAmount, entryMarketCap, targetMarketCap, profitSOL, profitUSD, roiPercent, multiplier } = this.calculatedData;
 
         // Populate card with data
         document.getElementById('cardEntryMC').textContent = `$${this.formatNumber(Math.round(entryMarketCap))}`;
         document.getElementById('cardTargetMC').textContent = `$${this.formatNumber(Math.round(targetMarketCap))}`;
+        
+        // Format multiplier with commas for card
+        const multiplierDisplay = multiplier >= 1000 
+            ? this.formatNumber(Math.round(multiplier)) + 'x'
+            : this.formatDecimal(multiplier, 2) + 'x';
+        document.getElementById('cardMultiplier').textContent = multiplierDisplay;
+        
         document.getElementById('cardEntrySOL').textContent = `${this.formatDecimal(entryAmount, 4)} SOL`;
         document.getElementById('cardProfitSOL').textContent = `${this.formatDecimal(profitSOL, 4)} SOL`;
+        document.getElementById('cardProfitUSD').textContent = `$${this.formatNumber(Math.round(profitUSD))}`;
         document.getElementById('cardROI').textContent = `${this.formatDecimal(roiPercent, 2)}%`;
+
+        // Add timestamp
+        const now = new Date();
+        const timestamp = now.toLocaleString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        document.getElementById('cardTimestamp').textContent = timestamp;
 
         // Select random quote
         const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
@@ -234,7 +327,7 @@ const MemeProfitCalculator = {
             width: 1200,
             height: 675,
             scale: 2,
-            backgroundColor: '#0b0f19'
+            backgroundColor: '#000000'
         }).then(canvas => {
             // Convert canvas to blob and download
             canvas.toBlob(blob => {
