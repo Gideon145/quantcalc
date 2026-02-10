@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculate true net profit for Solana meme coin trades after slippage, bot fees, and priority fees.">
-    <title>Solana Meme Coin Profit Calculator | QuantCalc</title>
+    <meta name="description" content="Project unrealized profit based on market cap targets, execution costs, and on-chain fees for Solana tokens.">
+    <title>Solana Token Market Cap PnL Analyzer | QuantCalc</title>
     <link rel="stylesheet" href="../style.css">
     <style>
         /* Reset and Base Styles */
@@ -133,6 +133,13 @@
             color: #64748b;
         }
 
+        .helper-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
         /* Checkbox */
         .checkbox-group {
             display: flex;
@@ -158,6 +165,33 @@
         /* Calculate Button */
         .tool-btn {
             margin-bottom: 32px;
+        }
+
+        /* Secondary Button */
+        .secondary-btn {
+            display: none;
+            width: 100%;
+            padding: 14px 24px;
+            background: #1e3a8a;
+            color: #e5e7eb;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            margin-top: 20px;
+        }
+
+        .secondary-btn.visible {
+            display: block;
+        }
+
+        .secondary-btn:hover {
+            transform: translateY(-2px);
+            background: #2563eb;
+            box-shadow: 0 0 20px 2px rgba(59, 130, 246, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         /* Results Section */
@@ -223,6 +257,87 @@
             display: block;
         }
 
+        /* PnL Card Styles */
+        #pnlCard {
+            display: none;
+            position: fixed;
+            left: -9999px;
+            top: -9999px;
+            width: 1200px;
+            height: 675px;
+            background: linear-gradient(135deg, #0b0f19 0%, #1e293b 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 0 60px rgba(59, 130, 246, 0.5);
+        }
+
+        #pnlCard.rendering {
+            display: block;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .card-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #3b82f6;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .card-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card-stat {
+            background: rgba(59, 130, 246, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .card-stat-label {
+            font-size: 1rem;
+            color: #9ca3af;
+            margin-bottom: 10px;
+        }
+
+        .card-stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .card-stat-value.highlight {
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-quote {
+            text-align: center;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: #60a5fa;
+            padding: 30px;
+            border-top: 1px solid rgba(59, 130, 246, 0.3);
+            margin-top: 20px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .calculator-card {
@@ -244,8 +359,8 @@
         <!-- Header -->
         <div class="header">
             <a href="/" class="back-link">Back to Home</a>
-            <h1 class="page-title">🚀 Solana Meme Coin Profit Calculator</h1>
-            <p class="page-description">Calculate true net profit after slippage, bot fees, and priority fees.</p>
+            <h1 class="page-title">🚀 Solana Token Market Cap PnL Analyzer</h1>
+            <p class="page-description">Project unrealized profit based on market cap targets, execution costs, and on-chain fees.</p>
         </div>
 
         <!-- Calculator Card -->
@@ -257,7 +372,7 @@
                 <h2 class="section-title">Enter Trade Parameters</h2>
 
                 <div class="input-group">
-                    <label class="input-label" for="entryAmount">Entry Amount (SOL)</label>
+                    <label class="input-label" for="entryAmount">Entry Amount (SOL) *</label>
                     <input 
                         type="number" 
                         id="entryAmount" 
@@ -265,30 +380,33 @@
                         placeholder="e.g., 10"
                         step="0.0001"
                         min="0"
+                        required
                     >
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="entryPrice">Entry Price (USD per token)</label>
+                    <label class="input-label" for="entryMarketCap">Entry Market Cap (USD) *</label>
                     <input 
                         type="number" 
-                        id="entryPrice" 
+                        id="entryMarketCap" 
                         class="input-field" 
-                        placeholder="e.g., 0.0001"
-                        step="0.00000001"
+                        placeholder="e.g., 1000000"
+                        step="1"
                         min="0"
+                        required
                     >
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="exitPrice">Exit Price (USD per token)</label>
+                    <label class="input-label" for="targetMarketCap">Target Market Cap (USD) *</label>
                     <input 
                         type="number" 
-                        id="exitPrice" 
+                        id="targetMarketCap" 
                         class="input-field" 
-                        placeholder="e.g., 0.0002"
-                        step="0.00000001"
+                        placeholder="e.g., 10000000"
+                        step="1"
                         min="0"
+                        required
                     >
                 </div>
 
@@ -303,6 +421,7 @@
                         min="0"
                         max="100"
                     >
+                    <p class="helper-text">Leave empty if unknown.</p>
                 </div>
 
                 <div class="input-group">
@@ -316,6 +435,7 @@
                         min="0"
                         max="100"
                     >
+                    <p class="helper-text">Leave empty if unknown.</p>
                 </div>
 
                 <div class="input-group">
@@ -328,6 +448,7 @@
                         step="0.0001"
                         min="0"
                     >
+                    <p class="helper-text">Leave empty if unknown.</p>
                 </div>
 
                 <div class="checkbox-group">
@@ -342,20 +463,20 @@
             </div>
 
             <!-- Calculate Button -->
-            <button class="tool-btn" id="calculateBtn">Calculate Profit</button>
+            <button class="tool-btn" id="calculateBtn">Calculate Unrealized PnL</button>
 
             <!-- Results Section -->
             <div class="results-section" id="resultsSection">
-                <h2 class="section-title">Results</h2>
+                <h2 class="section-title">Unrealized PnL Results</h2>
 
                 <div class="result-item">
-                    <div class="result-label">Net Profit (SOL)</div>
-                    <div class="result-value" id="netProfitSOL">0.0000 SOL</div>
+                    <div class="result-label">Projected Profit (SOL)</div>
+                    <div class="result-value" id="profitSOL">0.0000 SOL</div>
                 </div>
 
                 <div class="result-item">
-                    <div class="result-label">Net Profit (USD)</div>
-                    <div class="result-value highlight" id="netProfitUSD">$0.00</div>
+                    <div class="result-label">Projected Net SOL</div>
+                    <div class="result-value highlight" id="netSOL">0.0000 SOL</div>
                 </div>
 
                 <div class="result-item">
@@ -364,13 +485,48 @@
                 </div>
 
                 <div class="result-item">
-                    <div class="result-label">Break-Even Move Required (%)</div>
-                    <div class="result-value" id="breakEven">0.00%</div>
+                    <div class="result-label">Market Cap Multiplier</div>
+                    <div class="result-value" id="multiplier">0.00x</div>
                 </div>
             </div>
+
+            <!-- Generate Card Button -->
+            <button class="secondary-btn" id="generateCardBtn">Generate Shareable PnL Card</button>
         </div>
     </div>
 
+    <!-- Hidden PnL Card for Export -->
+    <div id="pnlCard">
+        <div class="card-header">
+            <div class="card-logo">QuantCalc</div>
+            <div class="card-title">Solana Token Market Cap PnL Analyzer</div>
+        </div>
+        <div class="card-content">
+            <div class="card-stat">
+                <div class="card-stat-label">Entry Market Cap</div>
+                <div class="card-stat-value" id="cardEntryMC">$0</div>
+            </div>
+            <div class="card-stat">
+                <div class="card-stat-label">Target Market Cap</div>
+                <div class="card-stat-value" id="cardTargetMC">$0</div>
+            </div>
+            <div class="card-stat">
+                <div class="card-stat-label">Entry Amount</div>
+                <div class="card-stat-value" id="cardEntrySOL">0 SOL</div>
+            </div>
+            <div class="card-stat">
+                <div class="card-stat-label">Projected Profit</div>
+                <div class="card-stat-value highlight" id="cardProfitSOL">0 SOL</div>
+            </div>
+        </div>
+        <div class="card-stat" style="margin: 0 auto; max-width: 500px;">
+            <div class="card-stat-label">ROI</div>
+            <div class="card-stat-value highlight" id="cardROI">0%</div>
+        </div>
+        <div class="card-quote" id="cardQuote">"Trust the thesis."</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="meme-profit.js"></script>
 </body>
 </html>

@@ -1,7 +1,20 @@
-// Solana Meme Coin Profit Calculator Logic
+// Solana Token Market Cap PnL Analyzer Logic
 const MemeProfitCalculator = {
-    // Solana price in USD (you can make this dynamic later)
-    solanaPrice: 100, // Default assumption
+    // Quote array for shareable cards
+    quotes: [
+        "Grandma… is it today?",
+        "Mama are we leaving the hood today?",
+        "One more leg.",
+        "Trust the thesis.",
+        "If this hits I'm retired.",
+        "Dev don't rug.",
+        "God willing.",
+        "Is this what they call financial freedom?",
+        "Diamond hands activated."
+    ],
+
+    // Store calculated values for card generation
+    calculatedData: null,
 
     // Initialize calculator
     init() {
@@ -12,6 +25,9 @@ const MemeProfitCalculator = {
     setupEventListeners() {
         const calculateBtn = document.getElementById('calculateBtn');
         calculateBtn.addEventListener('click', () => this.calculate());
+
+        const generateCardBtn = document.getElementById('generateCardBtn');
+        generateCardBtn.addEventListener('click', () => this.generateCard());
 
         // Add Enter key support
         const inputs = document.querySelectorAll('.input-field');
@@ -26,43 +42,45 @@ const MemeProfitCalculator = {
 
     // Get input values
     getInputValues() {
+        const entryAmount = parseFloat(document.getElementById('entryAmount').value);
+        const entryMarketCap = parseFloat(document.getElementById('entryMarketCap').value);
+        const targetMarketCap = parseFloat(document.getElementById('targetMarketCap').value);
+        
+        // Optional fields - default to 0 if empty
+        const buySlippageVal = document.getElementById('buySlippage').value;
+        const sellSlippageVal = document.getElementById('sellSlippage').value;
+        const priorityFeesVal = document.getElementById('priorityFees').value;
+        
+        const buySlippage = buySlippageVal === '' ? 0 : parseFloat(buySlippageVal);
+        const sellSlippage = sellSlippageVal === '' ? 0 : parseFloat(sellSlippageVal);
+        const priorityFees = priorityFeesVal === '' ? 0 : parseFloat(priorityFeesVal);
+        const includeBotFee = document.getElementById('botFee').checked;
+
         return {
-            entryAmount: parseFloat(document.getElementById('entryAmount').value),
-            entryPrice: parseFloat(document.getElementById('entryPrice').value),
-            exitPrice: parseFloat(document.getElementById('exitPrice').value),
-            buySlippage: parseFloat(document.getElementById('buySlippage').value),
-            sellSlippage: parseFloat(document.getElementById('sellSlippage').value),
-            priorityFees: parseFloat(document.getElementById('priorityFees').value),
-            includeBotFee: document.getElementById('botFee').checked
+            entryAmount,
+            entryMarketCap,
+            targetMarketCap,
+            buySlippage,
+            sellSlippage,
+            priorityFees,
+            includeBotFee
         };
     },
 
     // Validate inputs
     validate(values) {
-        const { entryAmount, entryPrice, exitPrice, buySlippage, sellSlippage, priorityFees } = values;
+        const { entryAmount, entryMarketCap, targetMarketCap } = values;
 
         if (isNaN(entryAmount) || entryAmount <= 0) {
             return 'Please enter a valid entry amount greater than 0';
         }
 
-        if (isNaN(entryPrice) || entryPrice <= 0) {
-            return 'Please enter a valid entry price greater than 0';
+        if (isNaN(entryMarketCap) || entryMarketCap <= 0) {
+            return 'Please enter a valid entry market cap greater than 0';
         }
 
-        if (isNaN(exitPrice) || exitPrice <= 0) {
-            return 'Please enter a valid exit price greater than 0';
-        }
-
-        if (isNaN(buySlippage) || buySlippage < 0 || buySlippage > 100) {
-            return 'Please enter a buy slippage between 0 and 100';
-        }
-
-        if (isNaN(sellSlippage) || sellSlippage < 0 || sellSlippage > 100) {
-            return 'Please enter a sell slippage between 0 and 100';
-        }
-
-        if (isNaN(priorityFees) || priorityFees < 0) {
-            return 'Please enter valid priority fees (0 or greater)';
+        if (isNaN(targetMarketCap) || targetMarketCap <= 0) {
+            return 'Please enter a valid target market cap greater than 0';
         }
 
         return null;
@@ -74,6 +92,7 @@ const MemeProfitCalculator = {
         errorElement.textContent = message;
         errorElement.classList.add('visible');
         document.getElementById('resultsSection').classList.remove('visible');
+        document.getElementById('generateCardBtn').classList.remove('visible');
     },
 
     // Hide error message
@@ -82,9 +101,14 @@ const MemeProfitCalculator = {
         errorElement.classList.remove('visible');
     },
 
-    // Format number to 4 decimal places
+    // Format number to specified decimal places
     formatDecimal(value, decimals = 4) {
         return parseFloat(value.toFixed(decimals));
+    },
+
+    // Format large numbers with commas
+    formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
 
     // Calculate profit
@@ -100,97 +124,131 @@ const MemeProfitCalculator = {
 
         this.hideError();
 
-        const { entryAmount, entryPrice, exitPrice, buySlippage, sellSlippage, priorityFees, includeBotFee } = values;
+        const { entryAmount, entryMarketCap, targetMarketCap, buySlippage, sellSlippage, priorityFees, includeBotFee } = values;
 
-        // Step 1: Convert Entry SOL into USD value
-        const entryValueUSD = entryAmount * this.solanaPrice;
+        // Step 1: Calculate multiplier
+        const multiplier = targetMarketCap / entryMarketCap;
 
-        // Step 2: Apply buy slippage to entry value
-        const buySlippageMultiplier = 1 - (buySlippage / 100);
-        const effectiveEntryValueUSD = entryValueUSD * buySlippageMultiplier;
+        // Step 2: Apply buy slippage to entry
+        const afterBuySlippage = entryAmount * (1 - buySlippage / 100);
 
-        // Step 3: Calculate tokens bought
-        const tokensBought = effectiveEntryValueUSD / entryPrice;
+        // Step 3: Calculate gross exit SOL (before sell slippage)
+        const grossExitSOL = afterBuySlippage * multiplier;
 
-        // Step 4: Calculate exit value before sell slippage
-        const exitValueBeforeSlippage = tokensBought * exitPrice;
+        // Step 4: Apply sell slippage
+        const afterSellSlippage = grossExitSOL * (1 - sellSlippage / 100);
 
-        // Step 5: Apply sell slippage
-        const sellSlippageMultiplier = 1 - (sellSlippage / 100);
-        const exitValueAfterSlippage = exitValueBeforeSlippage * sellSlippageMultiplier;
-
-        // Step 6: Deduct bot fee if selected (1% of exit value)
-        let exitValueAfterBotFee = exitValueAfterSlippage;
+        // Step 5: Deduct bot fee if checked (1% of exit value)
+        let afterBotFee = afterSellSlippage;
         if (includeBotFee) {
-            exitValueAfterBotFee = exitValueAfterSlippage * 0.99;
+            afterBotFee = afterSellSlippage * 0.99;
         }
 
-        // Step 7: Convert exit value back to SOL
-        const exitValueSOL = exitValueAfterBotFee / this.solanaPrice;
+        // Step 6: Deduct priority fees
+        const netSOL = afterBotFee - priorityFees;
 
-        // Step 8: Deduct priority fees
-        const finalSOL = exitValueSOL - priorityFees;
+        // Step 7: Calculate profit
+        const profitSOL = netSOL - entryAmount;
 
-        // Step 9: Calculate net profit
-        const netProfitSOL = finalSOL - entryAmount;
-        const netProfitUSD = netProfitSOL * this.solanaPrice;
+        // Step 8: Calculate ROI
+        const roiPercent = (profitSOL / entryAmount) * 100;
 
-        // Step 10: Calculate ROI percentage
-        const roi = (netProfitSOL / entryAmount) * 100;
-
-        // Step 11: Calculate break-even percentage
-        // To break even, we need to find the exit price where net profit = 0
-        // Working backwards:
-        // finalSOL = entryAmount
-        // exitValueSOL = entryAmount + priorityFees
-        // exitValueAfterBotFee = (entryAmount + priorityFees) * solanaPrice
-        // exitValueAfterSlippage = exitValueAfterBotFee / (includeBotFee ? 0.99 : 1)
-        // exitValueBeforeSlippage = exitValueAfterSlippage / sellSlippageMultiplier
-        // breakEvenExitPrice = exitValueBeforeSlippage / tokensBought
-        
-        const breakEvenSOL = entryAmount + priorityFees;
-        const breakEvenUSD = breakEvenSOL * this.solanaPrice;
-        const breakEvenAfterBotFee = breakEvenUSD / (includeBotFee ? 0.99 : 1);
-        const breakEvenBeforeSlippage = breakEvenAfterBotFee / sellSlippageMultiplier;
-        const breakEvenExitPrice = breakEvenBeforeSlippage / tokensBought;
-        const breakEvenMove = ((breakEvenExitPrice - entryPrice) / entryPrice) * 100;
+        // Store calculated data for card generation
+        this.calculatedData = {
+            entryAmount,
+            entryMarketCap,
+            targetMarketCap,
+            profitSOL,
+            netSOL,
+            roiPercent,
+            multiplier
+        };
 
         // Display results
-        this.displayResults(netProfitSOL, netProfitUSD, roi, breakEvenMove);
+        this.displayResults(profitSOL, netSOL, roiPercent, multiplier);
     },
 
     // Display results
-    displayResults(netProfitSOL, netProfitUSD, roi, breakEvenMove) {
-        // Format and display Net Profit (SOL)
-        const solElement = document.getElementById('netProfitSOL');
-        solElement.textContent = `${this.formatDecimal(netProfitSOL, 4)} SOL`;
-        solElement.className = 'result-value';
-        if (netProfitSOL > 0) {
-            solElement.classList.add('positive');
-        } else if (netProfitSOL < 0) {
-            solElement.classList.add('negative');
+    displayResults(profitSOL, netSOL, roiPercent, multiplier) {
+        // Format and display Projected Profit (SOL)
+        const profitElement = document.getElementById('profitSOL');
+        profitElement.textContent = `${this.formatDecimal(profitSOL, 4)} SOL`;
+        profitElement.className = 'result-value';
+        if (profitSOL > 0) {
+            profitElement.classList.add('positive');
+        } else if (profitSOL < 0) {
+            profitElement.classList.add('negative');
         }
 
-        // Format and display Net Profit (USD)
-        const usdElement = document.getElementById('netProfitUSD');
-        usdElement.textContent = `$${this.formatDecimal(netProfitUSD, 2)}`;
-        usdElement.className = 'result-value highlight';
+        // Format and display Projected Net SOL
+        const netElement = document.getElementById('netSOL');
+        netElement.textContent = `${this.formatDecimal(netSOL, 4)} SOL`;
+        netElement.className = 'result-value highlight';
 
         // Format and display ROI
         const roiElement = document.getElementById('roi');
-        roiElement.textContent = `${this.formatDecimal(roi, 2)}%`;
+        roiElement.textContent = `${this.formatDecimal(roiPercent, 2)}%`;
         roiElement.className = 'result-value';
-        if (roi > 0) {
+        if (roiPercent > 0) {
             roiElement.classList.add('positive');
-        } else if (roi < 0) {
+        } else if (roiPercent < 0) {
             roiElement.classList.add('negative');
         }
 
-        // Format and display Break-Even Move
-        document.getElementById('breakEven').textContent = `${this.formatDecimal(breakEvenMove, 2)}%`;
+        // Format and display Multiplier
+        document.getElementById('multiplier').textContent = `${this.formatDecimal(multiplier, 2)}x`;
 
         // Show results section
         document.getElementById('resultsSection').classList.add('visible');
+
+        // Show generate card button
+        document.getElementById('generateCardBtn').classList.add('visible');
+    },
+
+    // Generate shareable PnL card
+    generateCard() {
+        if (!this.calculatedData) {
+            this.showError('Please calculate PnL first');
+            return;
+        }
+
+        const { entryAmount, entryMarketCap, targetMarketCap, profitSOL, roiPercent } = this.calculatedData;
+
+        // Populate card with data
+        document.getElementById('cardEntryMC').textContent = `$${this.formatNumber(Math.round(entryMarketCap))}`;
+        document.getElementById('cardTargetMC').textContent = `$${this.formatNumber(Math.round(targetMarketCap))}`;
+        document.getElementById('cardEntrySOL').textContent = `${this.formatDecimal(entryAmount, 4)} SOL`;
+        document.getElementById('cardProfitSOL').textContent = `${this.formatDecimal(profitSOL, 4)} SOL`;
+        document.getElementById('cardROI').textContent = `${this.formatDecimal(roiPercent, 2)}%`;
+
+        // Select random quote
+        const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
+        document.getElementById('cardQuote').textContent = `"${randomQuote}"`;
+
+        // Show card for rendering
+        const card = document.getElementById('pnlCard');
+        card.classList.add('rendering');
+
+        // Use html2canvas to capture and download
+        html2canvas(card, {
+            width: 1200,
+            height: 675,
+            scale: 2,
+            backgroundColor: '#0b0f19'
+        }).then(canvas => {
+            // Convert canvas to blob and download
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = 'quantcalc-pnl.png';
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+
+                // Hide card after rendering
+                card.classList.remove('rendering');
+            });
+        });
     }
 };
 
