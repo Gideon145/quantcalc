@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Free position size calculator for forex, crypto, and stocks. Calculate optimal position sizes based on risk percentage, entry price, and stop loss. Includes formula, examples, and trading tips.">
     <title>Position Size Calculator for Forex & Crypto | QuantCalc</title>
+    <link rel="stylesheet" href="../style.css">
     <style>
         /* Reset and Base Styles */
         * {
@@ -121,30 +122,9 @@
             color: #64748b;
         }
 
-        /* Calculate Button */
-        .calculate-button {
-            width: 100%;
-            padding: 16px 24px;
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        /* Calculate Button - uses tool-btn from main style.css */
+        .tool-btn {
             margin-bottom: 32px;
-        }
-
-        .calculate-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
-            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-        }
-
-        .calculate-button:active {
-            transform: translateY(0);
         }
 
         /* Results Section */
@@ -505,7 +485,7 @@
             </div>
 
             <!-- Calculate Button -->
-            <button class="calculate-button" id="calculateBtn">Calculate Position Size</button>
+            <button class="tool-btn" id="calculateBtn">Calculate Position Size</button>
 
             <!-- Results Section -->
             <div class="results-section" id="resultsSection">
