@@ -113,6 +113,11 @@ body {
     box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
 }
 
+.tool-button-link {
+    text-decoration: none;
+    display: block;
+}
+
 .tool-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
