@@ -273,7 +273,7 @@ const MemeProfitCalculator = {
         document.getElementById('generateCardBtn').classList.add('visible');
     },
 
-    // Generate shareable PnL card
+    // Generate shareable PnL card using native Canvas API
     generateCard() {
         if (!this.calculatedData) {
             this.showError('Please calculate PnL first');
@@ -282,22 +282,79 @@ const MemeProfitCalculator = {
 
         const { entryAmount, entryMarketCap, targetMarketCap, profitSOL, profitUSD, roiPercent, multiplier } = this.calculatedData;
 
-        // Populate card with data
-        document.getElementById('cardEntryMC').textContent = `$${this.formatNumber(Math.round(entryMarketCap))}`;
-        document.getElementById('cardTargetMC').textContent = `$${this.formatNumber(Math.round(targetMarketCap))}`;
-        
-        // Format multiplier with commas for card
-        const multiplierDisplay = multiplier >= 1000 
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = 1200;
+        canvas.height = 630;
+
+        // Background (premium black gradient)
+        const bg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        bg.addColorStop(0, '#000000');
+        bg.addColorStop(1, '#111827');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Subtle diagonal stripe overlay
+        ctx.globalAlpha = 0.05;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        for (let i = -canvas.height; i < canvas.width; i += 40) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i + canvas.height, canvas.height);
+            ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+
+        // Title
+        ctx.fillStyle = '#3b82f6';
+        ctx.font = 'bold 64px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('QuantCalc', canvas.width / 2, 110);
+
+        // Subtitle
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '28px Arial';
+        ctx.fillText('Solana Token Market Cap PnL Analyzer', canvas.width / 2, 160);
+
+        // Stats Section
+        ctx.font = '24px Arial';
+        ctx.fillStyle = '#9ca3af';
+
+        const startY = 240;
+        const lineGap = 50;
+
+        const formattedEntryCap = '$' + this.formatNumber(Math.round(entryMarketCap));
+        const formattedTargetCap = '$' + this.formatNumber(Math.round(targetMarketCap));
+        const formattedMultiplier = multiplier >= 1000 
             ? this.formatNumber(Math.round(multiplier)) + 'x'
             : this.formatDecimal(multiplier, 2) + 'x';
-        document.getElementById('cardMultiplier').textContent = multiplierDisplay;
-        
-        document.getElementById('cardEntrySOL').textContent = `${this.formatDecimal(entryAmount, 4)} SOL`;
-        document.getElementById('cardProfitSOL').textContent = `${this.formatDecimal(profitSOL, 4)} SOL`;
-        document.getElementById('cardProfitUSD').textContent = `$${this.formatNumber(Math.round(profitUSD))}`;
-        document.getElementById('cardROI').textContent = `${this.formatDecimal(roiPercent, 2)}%`;
+        const formattedProfitUSD = '$' + this.formatNumber(Math.round(profitUSD));
 
-        // Add timestamp
+        const stats = [
+            `Entry Market Cap: ${formattedEntryCap}`,
+            `Target Market Cap: ${formattedTargetCap}`,
+            `Multiplier: ${formattedMultiplier}`,
+            `Entry Amount: ${this.formatDecimal(entryAmount, 4)} SOL`,
+            `Projected Profit: ${this.formatDecimal(profitSOL, 4)} SOL`,
+            `Projected Profit: ${formattedProfitUSD}`,
+            `ROI: ${this.formatDecimal(roiPercent, 2)}%`
+        ];
+
+        stats.forEach((line, i) => {
+            ctx.fillText(line, canvas.width / 2, startY + (i * lineGap));
+        });
+
+        // Funny Quotes
+        const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
+
+        ctx.fillStyle = '#22c55e';
+        ctx.font = 'italic 28px Arial';
+        ctx.fillText(`"${randomQuote}"`, canvas.width / 2, 580);
+
+        // Timestamp
         const now = new Date();
         const timestamp = now.toLocaleString('en-US', { 
             month: 'short', 
@@ -306,36 +363,22 @@ const MemeProfitCalculator = {
             hour: '2-digit',
             minute: '2-digit'
         });
-        document.getElementById('cardTimestamp').textContent = timestamp;
 
-        // Select random quote
-        const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
-        document.getElementById('cardQuote').textContent = `"${randomQuote}"`;
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '20px Arial';
+        ctx.fillText(timestamp, canvas.width / 2, 610);
 
-        // Show card for rendering
-        const card = document.getElementById('pnlCard');
-        card.classList.add('rendering');
+        // Website Footer
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 22px Arial';
+        ctx.fillText('www.quantcalc.trade', canvas.width / 2, 640);
 
-        // Use html2canvas to capture and download
-        html2canvas(card, {
-            width: 1200,
-            height: 675,
-            scale: 2,
-            backgroundColor: '#000000'
-        }).then(canvas => {
-            // Convert canvas to blob and download
-            canvas.toBlob(blob => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.download = 'quantcalc-pnl.png';
-                link.href = url;
-                link.click();
-                URL.revokeObjectURL(url);
-
-                // Hide card after rendering
-                card.classList.remove('rendering');
-            });
-        });
+        // Trigger download
+        const imageData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imageData;
+        link.download = 'quantcalc-pnl.png';
+        link.click();
     }
 };
 
