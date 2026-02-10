@@ -2,15 +2,11 @@
 const MemeProfitCalculator = {
     // Quote array for shareable cards
     quotes: [
-        "Grandma, is it today?",
-        "Mama, are we leaving the hood today?",
-        "Trust the thesis.",
-        "Diamond hands only.",
-        "Wen Lambo?",
-        "Chat, are we up?",
-        "WAGMI.",
-        "Not selling until 1000x.",
-        "This is financial advice. (It's not)"
+        "Grandma… is it today?",
+        "Mama… are we leaving the hood today?",
+        "Tell Binance we're coming.",
+        "Screenshots before the sell.",
+        "Risk first. Lambo later."
     ],
 
     // Store calculated values for card generation
@@ -42,31 +38,29 @@ const MemeProfitCalculator = {
         if (!value) return 0;
         
         // Convert to string and trim
-        let str = String(value).trim().toLowerCase();
+        const clean = String(value).toLowerCase().trim();
         
         // Remove commas
-        str = str.replace(/,/g, '');
+        const noCommas = clean.replace(/,/g, '');
+        
+        // Parse the number
+        const number = parseFloat(noCommas);
+        
+        if (isNaN(number)) return 0;
         
         // Check for suffix
-        let multiplier = 1;
-        
-        if (str.endsWith('k')) {
-            multiplier = 1000;
-            str = str.slice(0, -1);
-        } else if (str.endsWith('m')) {
-            multiplier = 1000000;
-            str = str.slice(0, -1);
-        } else if (str.endsWith('b')) {
-            multiplier = 1000000000;
-            str = str.slice(0, -1);
+        if (noCommas.endsWith('k')) {
+            return number * 1000;
+        }
+        if (noCommas.endsWith('m')) {
+            return number * 1000000;
+        }
+        if (noCommas.endsWith('b')) {
+            return number * 1000000000;
         }
         
-        // Parse number
-        const num = parseFloat(str);
-        
-        if (isNaN(num)) return 0;
-        
-        return num * multiplier;
+        // No suffix - return raw number
+        return number;
     },
 
     // Setup event listeners

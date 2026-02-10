@@ -108,6 +108,13 @@
             display: block;
             color: #cbd5e1;
             margin-bottom: 8px;
+        }
+
+        .input-helper {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 6px;
+            font-style: italic;
             font-size: 0.95rem;
             font-weight: 500;
         }
@@ -471,27 +478,25 @@
                 <div class="input-group">
                     <label class="input-label" for="entryMarketCap">Entry Market Cap (USD) *</label>
                     <input 
-                        type="number" 
+                        type="text" 
                         id="entryMarketCap" 
                         class="input-field" 
-                        placeholder="e.g., 1000000"
-                        step="1"
-                        min="0"
+                        placeholder="e.g., 20k, 500m, 1.5b"
                         required
                     >
+                    <div class="input-helper">Use k, m, or b (e.g., 20k, 150m, 1.2b)</div>
                 </div>
 
                 <div class="input-group">
                     <label class="input-label" for="targetMarketCap">Target Market Cap (USD) *</label>
                     <input 
-                        type="number" 
+                        type="text" 
                         id="targetMarketCap" 
                         class="input-field" 
-                        placeholder="e.g., 10000000"
-                        step="1"
-                        min="0"
+                        placeholder="e.g., 10m, 100m, 1b"
                         required
                     >
+                    <div class="input-helper">Use k, m, or b (e.g., 20k, 150m, 1.2b)</div>
                 </div>
 
                 <div class="input-group">
