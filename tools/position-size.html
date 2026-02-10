@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculate optimal position sizes based on your risk tolerance and account balance">
-    <title>Position Size Calculator - QuantCalc</title>
+    <meta name="description" content="Free position size calculator for forex, crypto, and stocks. Calculate optimal position sizes based on risk percentage, entry price, and stop loss. Includes formula, examples, and trading tips.">
+    <title>Position Size Calculator for Forex & Crypto | QuantCalc</title>
     <style>
         /* Reset and Base Styles */
         * {
@@ -201,9 +201,92 @@
             display: block;
         }
 
+        /* Content Sections */
+        .content-section {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-title {
+            font-size: 1.75rem;
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .content-text {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .formula-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .formula-line {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin: 12px 0;
+            line-height: 1.8;
+        }
+
+        .example-box {
+            background: #0f172a;
+            border-left: 4px solid #60a5fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .example-title {
+            color: #60a5fa;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .example-step {
+            color: #cbd5e1;
+            margin: 8px 0;
+            line-height: 1.7;
+        }
+
+        .highlight-value {
+            color: #a78bfa;
+            font-weight: 700;
+        }
+
+        .faq-item {
+            margin-bottom: 28px;
+        }
+
+        .faq-question {
+            color: #f1f5f9;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .faq-answer {
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
-            .calculator-card {
+            .calculator-card,
+            .content-section {
                 padding: 28px 20px;
             }
 
@@ -214,8 +297,145 @@
             .result-value {
                 font-size: 1.5rem;
             }
+
+            .content-title {
+                font-size: 1.5rem;
+            }
+
+            .formula-line {
+                font-size: 0.95rem;
+            }
         }
     </style>
+
+        <!-- Educational Content -->
+        <div class="content-section">
+            <h2 class="content-title">What is Position Size in Trading?</h2>
+            <p class="content-text">
+                Position size refers to the number of units (shares, contracts, or lots) you buy or sell in a trade. It's one of the most critical components of risk management in trading. Proper position sizing ensures that no single trade can significantly damage your trading account, even if it results in a loss.
+            </p>
+            <p class="content-text">
+                By calculating the correct position size, traders can maintain consistent risk across all their trades, regardless of the distance to their stop-loss or the volatility of the asset. This approach allows you to stay in the game longer and compound your returns over time.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="content-title">Position Size Formula Explained</h2>
+            <p class="content-text">
+                The position size formula uses your account balance, risk tolerance, entry price, and stop-loss level to determine how many units you should trade. Here's the complete formula:
+            </p>
+            
+            <div class="formula-box">
+                <div class="formula-line">
+                    <strong>Step 1:</strong> Risk Amount = Account Balance × (Risk % / 100)
+                </div>
+                <div class="formula-line">
+                    <strong>Step 2:</strong> Position Size = Risk Amount / |Entry Price - Stop Loss|
+                </div>
+                <div class="formula-line">
+                    <strong>Step 3:</strong> Units to Buy = Floor(Position Size)
+                </div>
+            </div>
+
+            <p class="content-text">
+                <strong>Risk Amount</strong> is the dollar amount you're willing to lose on this trade. If you have a $10,000 account and risk 2%, your risk amount is $200.
+            </p>
+            <p class="content-text">
+                <strong>Position Size</strong> is calculated by dividing your risk amount by the distance between your entry and stop-loss. This ensures that if your stop-loss is hit, you only lose your predetermined risk amount.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="content-title">Example Calculation</h2>
+            <p class="content-text">
+                Let's walk through a practical example to see how the position size calculator works:
+            </p>
+
+            <div class="example-box">
+                <div class="example-title">Trade Scenario:</div>
+                <div class="example-step">
+                    • Account Balance: <span class="highlight-value">$10,000</span>
+                </div>
+                <div class="example-step">
+                    • Risk Percentage: <span class="highlight-value">2%</span>
+                </div>
+                <div class="example-step">
+                    • Entry Price: <span class="highlight-value">$150.00</span>
+                </div>
+                <div class="example-step">
+                    • Stop Loss: <span class="highlight-value">$145.00</span>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">Step-by-Step Calculation:</div>
+                <div class="example-step">
+                    <strong>1. Calculate Risk Amount:</strong><br>
+                    $10,000 × (2 / 100) = <span class="highlight-value">$200</span>
+                </div>
+                <div class="example-step">
+                    <strong>2. Calculate Price Difference:</strong><br>
+                    |$150.00 - $145.00| = <span class="highlight-value">$5.00</span>
+                </div>
+                <div class="example-step">
+                    <strong>3. Calculate Position Size:</strong><br>
+                    $200 / $5.00 = <span class="highlight-value">40 units</span>
+                </div>
+                <div class="example-step">
+                    <strong>Result:</strong> You should buy <span class="highlight-value">40 units</span> (shares, contracts, or lots) of this asset to risk exactly 2% of your account.
+                </div>
+            </div>
+
+            <p class="content-text">
+                If the trade hits your stop-loss at $145.00, you'll lose $5.00 per unit × 40 units = $200, which is exactly 2% of your $10,000 account. This precision is why position sizing is essential for consistent risk management.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="content-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">What is a good risk percentage per trade?</div>
+                <div class="faq-answer">
+                    Most professional traders risk between 1-2% of their account per trade. Conservative traders may risk 0.5-1%, while more aggressive traders might go up to 3%. Never risk more than 5% on a single trade, as this can lead to rapid account depletion during losing streaks. The key is consistency—use the same risk percentage for every trade.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Why is position sizing important?</div>
+                <div class="faq-answer">
+                    Position sizing is crucial because it protects your trading capital from catastrophic losses. Without proper position sizing, one or two bad trades can wipe out weeks or months of profits. It also removes emotional decision-making—you calculate your position size based on math, not fear or greed. This discipline is what separates professional traders from amateurs.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Does this calculator work for forex and crypto?</div>
+                <div class="faq-answer">
+                    Yes, this position size calculator works for all markets including forex, cryptocurrency, stocks, futures, and options. The fundamental principle remains the same: determine how much you're willing to risk, measure the distance to your stop-loss, and calculate the appropriate position size. For forex, you may need to convert pip values. For crypto, ensure your entry and stop-loss prices are in the same currency (USD, USDT, etc.).
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I avoid overleveraging?</div>
+                <div class="faq-answer">
+                    To avoid overleveraging, never risk more than 2% of your account per trade, and limit your total exposure across all open positions to 6-10% of your account. Use this calculator for every trade—don't guess or use "gut feeling" to determine position sizes. Also, avoid increasing your position size after a winning streak (this is called "leverage creep"). Stick to your predefined risk rules regardless of recent performance.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Should I adjust my position size based on volatility?</div>
+                <div class="faq-answer">
+                    Your risk percentage should stay constant, but your position size will naturally adjust based on your stop-loss distance. In highly volatile markets, your stop-loss will typically be wider, which automatically results in a smaller position size for the same risk amount. This is the beauty of position sizing—it automatically accounts for volatility. You don't need to manually adjust; just set appropriate stop-losses based on market conditions.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What if I'm trading fractional shares or crypto?</div>
+                <div class="faq-answer">
+                    If your broker allows fractional shares or you're trading cryptocurrency, you can use the exact "Position Size" value from the calculator instead of rounding down to whole units. Most modern platforms support fractional trading, allowing you to risk precisely the amount you calculated. For traditional stock brokers that only allow whole shares, use the "Units to Buy" field which automatically rounds down.
+                </div>
+            </div>
+        </div>
 </head>
 <body>
     <div class="container">
