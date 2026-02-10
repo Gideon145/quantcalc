@@ -12,25 +12,7 @@ const QuantCalc = {
     // Initialize application
     init() {
         console.log(`QuantCalc v${this.version} initialized`);
-        this.setupEventListeners();
-    },
-    
-    // Setup event listeners
-    setupEventListeners() {
-        const toolButtons = document.querySelectorAll('.tool-button');
-        toolButtons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                const calculatorType = index === 0 ? 'position-size' : 'crypto-profit';
-                this.launchCalculator(calculatorType);
-            });
-        });
-    },
-    
-    // Launch calculator (placeholder)
-    launchCalculator(type) {
-        console.log(`Launching ${type} calculator...`);
-        // TODO: Implement calculator launch logic
-        alert(`${type} calculator coming soon!`);
+        // Event listeners removed - using native link navigation
     },
     
     // Position Size Calculator (placeholder)
