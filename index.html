@@ -7,13 +7,53 @@
     <title>QuantCalc - The #1 Solana Math Toolkit</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Hero Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.3);
+            }
+        }
+
+        .hero-title {
+            animation: fadeInUp 0.8s ease-out, glowPulse 3s ease-in-out infinite;
+        }
+
         .hero-tagline {
             font-size: 2rem;
             font-weight: 700;
-            color: #14f195;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 16px;
             letter-spacing: -0.01em;
-            text-shadow: 0 0 20px rgba(20, 241, 149, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .solana-logo {
+            display: inline-flex;
+            align-items: center;
+            height: 1.8rem;
+            width: auto;
         }
 
         .hero-description {
@@ -23,11 +63,16 @@
             max-width: 700px;
             margin: 0 auto;
             line-height: 1.6;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         @media (max-width: 768px) {
             .hero-tagline {
                 font-size: 1.5rem;
+            }
+
+            .solana-logo {
+                height: 1.4rem;
             }
 
             .hero-description {
@@ -38,6 +83,10 @@
         @media (max-width: 480px) {
             .hero-tagline {
                 font-size: 1.25rem;
+            }
+
+            .solana-logo {
+                height: 1.2rem;
             }
 
             .hero-description {
@@ -51,7 +100,21 @@
     <header class="hero">
         <div class="container">
             <h1 class="hero-title">QuantCalc</h1>
-            <p class="hero-tagline">The #1 Solana Math Toolkit</p>
+            <p class="hero-tagline">
+                The #1 
+                <svg class="solana-logo" viewBox="0 0 397.7 311.7" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="solanaGradient" x1="360.88" y1="351.46" x2="-263.69" y2="-96.54" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#00ffa3"/>
+                            <stop offset="1" stop-color="#dc1fff"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="url(#solanaGradient)"/>
+                    <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z" fill="url(#solanaGradient)"/>
+                    <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#solanaGradient)"/>
+                </svg>
+                Solana Math Toolkit
+            </p>
             <p class="hero-description">Professional risk & trading calculators for Solana, crypto, forex and beyond.</p>
         </div>
     </header>
