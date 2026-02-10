@@ -57,16 +57,69 @@ body {
     padding: 0 0 60px;
 }
 
+/* Featured Section Styling */
+.featured-section {
+    position: relative;
+}
+
+.featured-section .section-header {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.featured-section .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+}
+
 .section-header {
     text-align: center;
     margin-bottom: 40px;
+}
+
+.section-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
 }
 
 .section-title {
     font-size: 2rem;
     font-weight: 700;
     color: #f3f4f6;
-    margin-bottom: 12px;
+}
+
+.section-title-large {
+    font-size: 2.4rem;
+    color: #60a5fa;
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.section-title-small {
+    font-size: 1.75rem;
+}
+
+.featured-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .section-description {
@@ -221,6 +274,19 @@ body {
         padding: 40px 0;
     }
 
+    .section-title-large {
+        font-size: 2rem;
+    }
+
+    .section-title-small {
+        font-size: 1.5rem;
+    }
+
+    .featured-badge {
+        font-size: 0.7rem;
+        padding: 3px 10px;
+    }
+
     .tools-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -238,6 +304,18 @@ body {
 
     .hero-subtitle {
         font-size: 1rem;
+    }
+
+    .section-title-large {
+        font-size: 1.75rem;
+    }
+
+    .section-title-small {
+        font-size: 1.4rem;
+    }
+
+    .section-title-wrapper {
+        gap: 8px;
     }
 
     .tool-card {
