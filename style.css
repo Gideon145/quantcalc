@@ -126,11 +126,18 @@ body {
     color: #e5e7eb;
     text-decoration: none;
     text-align: center;
+    border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    outline: none;
+}
+
+.tool-btn:focus {
+    outline: none;
     box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
 }
 
