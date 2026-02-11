@@ -332,14 +332,15 @@ const MemeProfitCalculator = {
         ctx.font = '32px Arial';
         ctx.fillText('The #1 Solana Math Toolkit', canvas.width / 2, headerStartY + 55);
 
-        // Solana logo bars (3 gradient rectangles)
-        const barY = headerStartY + 88;
+        // 40px margin-bottom after subheader
+        const barY = headerStartY + 55 + 40;
         const barWidth = 50;
         const barHeight = 10;
         const barGap = 8;
         const totalBarWidth = (barWidth * 3) + (barGap * 2);
         const barStartX = (canvas.width - totalBarWidth) / 2;
 
+        // Solana logo bars (3 gradient rectangles)
         const solGradient = ctx.createLinearGradient(barStartX, barY, barStartX + totalBarWidth, barY);
         solGradient.addColorStop(0, '#14f195');
         solGradient.addColorStop(1, '#9945ff');
@@ -354,8 +355,9 @@ const MemeProfitCalculator = {
 
         // ========================================
         // TOKEN NAME (centered, bold, larger font)
+        // 20px margin-top, 40px margin-bottom
         // ========================================
-        const tokenNameY = barY + 28 + 50; // 28px margin below header + adjustment
+        const tokenNameY = barY + barHeight + 20 + 50; // 20px margin-top + adjustment for text
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 52px Arial';
         ctx.textAlign = 'center';
@@ -402,13 +404,14 @@ const MemeProfitCalculator = {
         const formattedProfitSOL = this.formatDecimal(profitSOL, 4) + ' SOL';
 
         // ========================================
-        // 2-COLUMN DETAIL GRID (with improved spacing)
+        // 2-COLUMN DETAIL GRID (with 28px margin between rows)
         // ========================================
         const leftX = 80;
         const rightX = 540;
         const boxWidth = 460;
-        const startY = tokenNameY + 56; // 24px margin below token name + adjustment
-        const rowGap = 142; // 32px gap between rows (110px box height + 32px gap)
+        const boxHeight = 110;
+        const startY = tokenNameY + 40; // 40px margin-bottom after token name
+        const rowGap = boxHeight + 28; // 28px margin-bottom between rows
 
         // Row 1: Entry MC | Target MC
         drawStatBox(leftX, startY, 'Entry Market Cap', formattedEntryCap, boxWidth);
@@ -423,9 +426,9 @@ const MemeProfitCalculator = {
         drawStatBox(rightX, startY + (rowGap * 2), 'Multiplier', formattedMultiplier, boxWidth);
 
         // ========================================
-        // ROI SECTION (full width, centered, improved styling)
+        // ROI SECTION (40px margin-top, 30px margin-bottom)
         // ========================================
-        const roiY = startY + (rowGap * 3) + 36; // 36px margin above ROI box
+        const roiY = startY + (rowGap * 3) + 40; // 40px margin-top above ROI box
         const roiBoxWidth = 920;
         const roiBoxHeight = 160;
         const roiBoxX = (canvas.width - roiBoxWidth) / 2;
@@ -461,8 +464,9 @@ const MemeProfitCalculator = {
 
         // ========================================
         // BOTTOM SECTION (with improved spacing)
+        // 20px margin-top after ROI, 12px margin-bottom after quote, 40px margin-bottom after timestamp
         // ========================================
-        const quoteY = roiY + roiBoxHeight + 50; // 30px margin below ROI
+        const quoteY = roiY + roiBoxHeight + 30 + 20; // 30px margin-bottom from ROI + 20px margin-top for quote
 
         // Funny quote (centered, green)
         const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
@@ -471,7 +475,7 @@ const MemeProfitCalculator = {
         ctx.textAlign = 'center';
         ctx.fillText(`"${randomQuote}"`, canvas.width / 2, quoteY);
 
-        // Timestamp (centered, grey, smaller)
+        // Timestamp (centered, grey, smaller) - 12px margin-bottom after quote
         const now = new Date();
         const timestamp = now.toLocaleString('en-US', { 
             month: 'short', 
@@ -483,13 +487,14 @@ const MemeProfitCalculator = {
 
         ctx.fillStyle = '#6b7280';
         ctx.font = '19px Arial';
-        ctx.fillText(timestamp, canvas.width / 2, quoteY + 45);
+        const timestampY = quoteY + 12 + 30; // 12px margin + text height adjustment
+        ctx.fillText(timestamp, canvas.width / 2, timestampY);
 
-        // Website footer (bottom-right, blue gradient, 40px margin)
+        // Website footer (bottom-right: bottom 30px, right 40px)
         ctx.fillStyle = '#3b82f6';
         ctx.font = '600 28px Arial';
         ctx.textAlign = 'right';
-        ctx.fillText('www.qunancalc.trade', canvas.width - 40, canvas.height - 40);
+        ctx.fillText('www.qunancalc.trade', canvas.width - 40, canvas.height - 30);
 
         // ========================================
         // EXPORT PNG
