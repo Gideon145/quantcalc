@@ -67,6 +67,9 @@ const MemeProfitCalculator = {
     setupEventListeners() {
         const calculateBtn = document.getElementById('calculateBtn');
         calculateBtn.addEventListener('click', () => this.calculate());
+        
+        const copyResultsBtn = document.getElementById('copyResultsBtn');
+        copyResultsBtn.addEventListener('click', () => this.copyResults());
 
         const generateCardBtn = document.getElementById('generateCardBtn');
         generateCardBtn.addEventListener('click', () => this.generateCard());
@@ -507,9 +510,76 @@ const MemeProfitCalculator = {
     }
 };
 
+// Toggle "How This Works" section
+function toggleHowItWorks() {
+    const content = document.getElementById("howContent");
+    content.classList.toggle("active");
+}
+
+// Copy results to clipboard
+MemeProfitCalculator.copyResults = function() {
+    if (!this.calculatedData) {
+        this.showToast('No results to copy');
+        return;
+    }
+    
+    const data = this.calculatedData;
+    const tokenName = document.getElementById('tokenName').value || 'N/A';
+    const entryMC = document.getElementById('entryMarketCap').value;
+    const targetMC = document.getElementById('targetMarketCap').value;
+    
+    const text = `QuantCalc – Solana Token PnL\n\nToken: ${tokenName}\nEntry MC: $${entryMC}\nTarget MC: $${targetMC}\nMultiplier: ${data.multiplier.toFixed(2)}x\nEntry: ${data.entryAmount.toFixed(4)} SOL\nProjected Profit: ${data.profitSOL.toFixed(4)} SOL\nROI: ${data.roi.toFixed(2)}%\n\nGenerated via quantcalc.trade`;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        this.showToast('Copied to clipboard');
+    }).catch(() => {
+        this.showToast('Failed to copy');
+    });
+};
+
+// Show toast notification
+MemeProfitCalculator.showToast = function(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2500);
+};
+
 // Initialize calculator when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => MemeProfitCalculator.init());
+    document.addEventListener('DOMContentLoaded', () => {
+        MemeProfitCalculator.init();
+        initPageTransitions();
+    });
 } else {
     MemeProfitCalculator.init();
+    initPageTransitions();
+}
+
+// Smooth page transitions
+function initPageTransitions() {
+    const links = document.querySelectorAll('a:not([target="_blank"])');
+    
+    links.forEach(link => {
+        if (link.classList.contains('tool-btn-disabled') || link.getAttribute('href')?.startsWith('#')) {
+            return;
+        }
+        
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            
+            if (href && !href.startsWith('http') && !href.startsWith('//')) {
+                e.preventDefault();
+                document.body.style.opacity = '0';
+                document.body.style.transition = 'opacity 0.3s ease';
+                
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            }
+        });
+    });
 }

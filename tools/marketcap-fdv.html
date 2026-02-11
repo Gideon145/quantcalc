@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Analyze token inflation risk by comparing Market Cap vs Fully Diluted Valuation. Understand future supply pressure for Solana tokens.">
+    <title>Market Cap vs FDV Analyzer | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Market Cap vs FDV Analyzer | QuantCalc">
+    <meta property="og:description" content="Analyze token inflation risk by comparing Market Cap vs Fully Diluted Valuation. Understand future supply pressure for Solana tokens.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/tools/marketcap-fdv.html">
+    
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeInUp 0.45s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .brand-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 6px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: #9ca3af;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .subtitle-line {
+            width: 140px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #f3f4f6;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        .card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .card + .card {
+            margin-top: 24px;
+        }
+
+        .how-section {
+            margin-top: 32px;
+            margin-bottom: 32px;
+            padding: 24px 28px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .how-section h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #f1f5f9;
+        }
+
+        .how-section p,
+        .how-section li {
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .how-to-list {
+            display: grid;
+            gap: 10px;
+            color: #cbd5e1;
+            font-size: 0.98rem;
+        }
+
+        .how-to-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .how-to-number {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .how-to-tip {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .tool-btn {
+            margin-top: 6px;
+        }
+
+        .error-message {
+            display: none;
+            background: #7f1d1d;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .results-section {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid #1f2937;
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-card {
+            background: #0b0f19;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 100px;
+        }
+
+        .result-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .ratio-low {
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .ratio-low .result-value {
+            color: #22c55e;
+        }
+
+        .ratio-medium {
+            border-color: rgba(250, 204, 21, 0.5);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+        }
+
+        .ratio-medium .result-value {
+            color: #facc15;
+        }
+
+        .ratio-high {
+            border-color: rgba(248, 113, 113, 0.55);
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+        }
+
+        .ratio-high .result-value {
+            color: #f87171;
+        }
+
+        .locked-low {
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .locked-low .result-value {
+            color: #22c55e;
+        }
+
+        .locked-medium {
+            border-color: rgba(250, 204, 21, 0.5);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+        }
+
+        .locked-medium .result-value {
+            color: #facc15;
+        }
+
+        .locked-high {
+            border-color: rgba(248, 113, 113, 0.55);
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+        }
+
+        .locked-high .result-value {
+            color: #f87171;
+        }
+
+        .result-explanation {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            font-style: italic;
+            padding: 12px;
+            background: #0b0f19;
+            border-radius: 8px;
+            border: 1px solid #1f2937;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 24px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <header class="header">
+            <a href="/" class="back-link">Back to Home</a>
+            <div class="brand-title">QuantCalc</div>
+            <div class="brand-subtitle">The #1 Solana Math Toolkit</div>
+            <div class="subtitle-line"></div>
+            <div class="page-title">Market Cap vs FDV Analyzer</div>
+            <div class="page-description">Understand token inflation risk and future supply pressure.</div>
+        </header>
+
+        <div class="how-section">
+            <h3>How to Use</h3>
+            <p>1. Enter current token price.</p>
+            <p>2. Enter circulating supply.</p>
+            <p>3. Enter total supply.</p>
+            <p>4. Click Calculate to compare Market Cap and FDV.</p>
+            <p style="font-style: italic; margin-top: 12px;">A large gap between Market Cap and FDV may signal future selling pressure.</p>
+        </div>
+
+        <section class="card">
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="input-section">
+                <h2 class="section-title">Enter Token Details</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="tokenPrice">Token Price</label>
+                    <input type="number" id="tokenPrice" class="input-field" placeholder="e.g., 0.50" step="0.0001" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="circulatingSupply">Circulating Supply</label>
+                    <input type="number" id="circulatingSupply" class="input-field" placeholder="e.g., 100000000" step="1" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="totalSupply">Total Supply</label>
+                    <input type="number" id="totalSupply" class="input-field" placeholder="e.g., 1000000000" step="1" min="0">
+                </div>
+            </div>
+
+            <button class="tool-btn" id="calculateBtn">Analyze Token</button>
+
+            <div class="results-section" id="resultsSection">
+                <div class="results-title">Results</div>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Market Cap</div>
+                        <div class="result-value" id="marketCap">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Fully Diluted Valuation (FDV)</div>
+                        <div class="result-value" id="fdv">$0</div>
+                    </div>
+                    <div class="result-card" id="ratioCard">
+                        <div class="result-label">FDV / Market Cap Ratio</div>
+                        <div class="result-value" id="fdvRatio">1.00x</div>
+                    </div>
+                    <div class="result-card" id="lockedCard">
+                        <div class="result-label">Locked Supply</div>
+                        <div class="result-value" id="lockedSupply">0%</div>
+                    </div>
+                </div>
+                <div class="result-explanation">A high FDV ratio suggests significant future token unlock pressure.</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        const compactFormatter = new Intl.NumberFormat('en-US', {
+            notation: 'compact',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        const MarketCapAnalyzer = {
+            init() {
+                this.cacheElements();
+                this.bindEvents();
+            },
+
+            cacheElements() {
+                this.tokenPriceInput = document.getElementById('tokenPrice');
+                this.circulatingSupplyInput = document.getElementById('circulatingSupply');
+                this.totalSupplyInput = document.getElementById('totalSupply');
+                this.calculateBtn = document.getElementById('calculateBtn');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.resultsSection = document.getElementById('resultsSection');
+                this.marketCap = document.getElementById('marketCap');
+                this.fdv = document.getElementById('fdv');
+                this.fdvRatio = document.getElementById('fdvRatio');
+                this.lockedSupply = document.getElementById('lockedSupply');
+                this.ratioCard = document.getElementById('ratioCard');
+                this.lockedCard = document.getElementById('lockedCard');
+            },
+
+            bindEvents() {
+                this.calculateBtn.addEventListener('click', () => this.calculate());
+            },
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.classList.add('visible');
+                this.resultsSection.classList.remove('visible');
+            },
+
+            clearError() {
+                this.errorMessage.textContent = '';
+                this.errorMessage.classList.remove('visible');
+            },
+
+            calculate() {
+                const tokenPrice = parseFloat(this.tokenPriceInput.value);
+                const circulatingSupply = parseFloat(this.circulatingSupplyInput.value);
+                const totalSupply = parseFloat(this.totalSupplyInput.value);
+
+                if ([tokenPrice, circulatingSupply, totalSupply].some((val) => Number.isNaN(val))) {
+                    this.showError('Please fill in all required fields with valid numbers.');
+                    return;
+                }
+
+                if (tokenPrice <= 0 || circulatingSupply <= 0 || totalSupply <= 0) {
+                    this.showError('All values must be greater than zero.');
+                    return;
+                }
+
+                if (circulatingSupply > totalSupply) {
+                    this.showError('Circulating supply cannot exceed total supply.');
+                    return;
+                }
+
+                const marketCapValue = tokenPrice * circulatingSupply;
+                const fdvValue = tokenPrice * totalSupply;
+                const ratio = fdvValue / marketCapValue;
+                const lockedPercent = ((totalSupply - circulatingSupply) / totalSupply) * 100;
+
+                this.clearError();
+                this.resultsSection.classList.add('visible');
+
+                this.marketCap.textContent = '$' + compactFormatter.format(marketCapValue);
+                this.fdv.textContent = '$' + compactFormatter.format(fdvValue);
+                this.fdvRatio.textContent = ratio.toFixed(2) + 'x';
+                this.lockedSupply.textContent = lockedPercent.toFixed(2) + '%';
+
+                // Style FDV ratio card
+                this.ratioCard.classList.remove('ratio-low', 'ratio-medium', 'ratio-high');
+                if (ratio < 1.5) {
+                    this.ratioCard.classList.add('ratio-low');
+                } else if (ratio <= 3) {
+                    this.ratioCard.classList.add('ratio-medium');
+                } else {
+                    this.ratioCard.classList.add('ratio-high');
+                }
+
+                // Style locked supply card
+                this.lockedCard.classList.remove('locked-low', 'locked-medium', 'locked-high');
+                if (lockedPercent < 25) {
+                    this.lockedCard.classList.add('locked-low');
+                } else if (lockedPercent <= 50) {
+                    this.lockedCard.classList.add('locked-medium');
+                } else {
+                    this.lockedCard.classList.add('locked-high');
+                }
+            }
+        };
+
+        MarketCapAnalyzer.init();
+    </script>
+</body>
+</html>

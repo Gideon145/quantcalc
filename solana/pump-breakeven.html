@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate your true break-even point on Pump.fun including all fees, slippage, and taxes.">
+    <title>Pump.fun Break-Even Calculator | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Pump.fun Break-Even Calculator | QuantCalc">
+    <meta property="og:description" content="Calculate your true break-even point on Pump.fun including all fees, slippage, and taxes.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/solana/pump-breakeven.html">
+    
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(125, 166, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(125, 166, 255, 0.5);
+            }
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        /* Calculator Card */
+        .calculator-card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+        }
+
+        /* Input Section */
+        .input-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Calculate Button */
+        .tool-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            margin-bottom: 32px;
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px 2px rgba(59, 130, 246, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            border-top: 1px solid #1f2937;
+            padding-top: 32px;
+        }
+
+        .results-section.visible {
+            display: block;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-item {
+            background: #0b0f19;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #1f2937;
+        }
+
+        .result-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            color: #f1f5f9;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .result-value.highlight {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        .result-value.warning {
+            color: #fbbf24;
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            background: #7f1d1d;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* How To Use Section */
+        .how-to-use {
+            background: #0b0f19;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin-bottom: 32px;
+        }
+
+        .how-title {
+            font-size: 1.15rem;
+            color: #f1f5f9;
+            margin-bottom: 16px;
+
+            .how-to-use {
+                padding: 20px 24px;
+            }
+
+            .how-steps li {
+                padding-left: 36px;
+            }
+
+            .breakdown-item {
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .breakdown-value {
+                font-size: 1rem;
+            }
+            font-weight: 600;
+        }
+
+        .how-steps {
+            list-style: none;
+            counter-reset: step-counter;
+            padding-left: 0;
+        }
+
+        .how-steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 12px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .how-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            background: #1e3a8a;
+            color: #93c5fd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .how-steps li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Advanced Settings */
+        .advanced-settings {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #1f2937;
+        }
+
+        .advanced-toggle {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #94a3b8;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .advanced-toggle:hover {
+            border-color: #60a5fa;
+            color: #60a5fa;
+        }
+
+        #advancedIcon {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            font-size: 0.75rem;
+        }
+
+        #advancedIcon.open {
+            transform: rotate(90deg);
+        }
+
+        .advanced-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s ease;
+            margin-top: 0;
+        }
+
+        .advanced-content.active {
+            max-height: 600px;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        /* Breakdown Section */
+        .breakdown-section {
+            display: none;
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid #1f2937;
+        }
+
+        .breakdown-section.visible {
+            display: block;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            background: #0b0f19;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #1f2937;
+        }
+
+        .breakdown-total {
+            background: #1e3a8a;
+            border-color: #2563eb;
+            font-weight: 600;
+        }
+
+        .breakdown-label {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .breakdown-total .breakdown-label {
+            color: #93c5fd;
+        }
+
+        .breakdown-value {
+            color: #f1f5f9;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .breakdown-warning {
+            margin-top: 24px;
+            padding: 16px 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #fca5a5;
+            font-size: 0.95rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .breakdown-warning span {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .calculator-card {
+                padding: 28px 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .result-value {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="/" class="back-link">Back to Home</a>
+            <h1 class="page-title">🎯 Pump.fun Break-Even Calculator</h1>
+            <p class="page-description">Know exactly when you're actually in profit.</p>
+        </div>
+
+        <!-- Calculator Card -->
+        <div class="calculator-card">
+            <div class="error-message" id="errorMessage"></div>
+
+            <!-- How To Use Section -->
+            <div class="how-to-use">
+                <h2 class="how-title">🔥 How To Use</h2>
+                <ol class="how-steps">
+                    <li>Enter how much SOL you used to buy.</li>
+                    <li>Add your estimated total fees (slippage + tax).</li>
+                    <li>Click calculate.</li>
+                    <li>See how much the token must pump before you break even.</li>
+                </ol>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2 class="section-title">Enter Trade Parameters</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="entryAmount">Entry Amount (SOL) *</label>
+                    <input 
+                        type="number" 
+                        id="entryAmount" 
+                        class="input-field" 
+                        placeholder="e.g., 10"
+                        step="0.0001"
+                        min="0"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="estimatedFees">Estimated Total Fees (%)</label>
+                    <input 
+                        type="number" 
+                        id="estimatedFees" 
+                        class="input-field" 
+                        placeholder="e.g., 12"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                    >
+                    <p class="helper-text">Includes slippage, tax, and trading fees.</p>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="extraFees">Extra SOL Spent on Fees</label>
+                    <input 
+                        type="number" 
+                        id="extraFees" 
+                        class="input-field" 
+                        placeholder="e.g., 0.02"
+                        step="0.0001"
+                        min="0"
+                    >
+                    <p class="helper-text">Gas, priority fees, or bribes paid in SOL.</p>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="advanced-settings">
+                    <button class="advanced-toggle" onclick="toggleAdvanced()">
+                        <span id="advancedIcon">▶</span> Advanced Settings
+                    </button>
+                    <div class="advanced-content" id="advancedContent">
+                        <div class="input-group">
+                            <label class="input-label" for="buySlippage">Buy Slippage (%)</label>
+                            <input 
+                                type="number" 
+                                id="buySlippage" 
+                                class="input-field" 
+                                placeholder="e.g., 5"
+                                step="0.1"
+                                min="0"
+                                max="100"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="sellSlippage">Sell Slippage (%)</label>
+                            <input 
+                                type="number" 
+                                id="sellSlippage" 
+                                class="input-field" 
+                                placeholder="e.g., 5"
+                                step="0.1"
+                                min="0"
+                                max="100"
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="tokenTax">Token Tax (%)</label>
+                            <input 
+                                type="number" 
+                                id="tokenTax" 
+                                class="input-field" 
+                                placeholder="e.g., 1"
+                                step="0.1"
+                                min="0"
+                                max="100"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculate Button -->
+            <button class="tool-btn" id="calculateBtn">Calculate Break-Even</button>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <h2 class="section-title">Break-Even Analysis</h2>
+
+                <div class="result-item">
+                    <div class="result-label">Break-Even Multiplier</div>
+                    <div class="result-value warning" id="multiplier">0.00x</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">Required Increase</div>
+                    <div class="result-value highlight" id="requiredIncrease">0.00%</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">Break-Even SOL Target</div>
+                    <div class="result-value" id="breakEvenTarget">0.0000 SOL</div>
+                </div>
+            </div>
+
+            <!-- Breakdown Section -->
+            <div class="breakdown-section" id="breakdownSection">
+                <h2 class="section-title">Break-Even Breakdown</h2>
+
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Entry Amount:</span>
+                    <span class="breakdown-value" id="breakdownEntry">0.0000 SOL</span>
+                </div>
+
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Estimated Fees (SOL):</span>
+                    <span class="breakdown-value" id="breakdownEstimatedFees">0.0000 SOL</span>
+                </div>
+
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Extra Fees (SOL):</span>
+                    <span class="breakdown-value" id="breakdownExtraFees">0.0000 SOL</span>
+                </div>
+
+                <div class="breakdown-item breakdown-total">
+                    <span class="breakdown-label">Total Effective Cost:</span>
+                    <span class="breakdown-value" id="breakdownTotal">0.0000 SOL</span>
+                </div>
+
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Break-Even Multiplier:</span>
+                    <span class="breakdown-value" id="breakdownMultiplier">0.00x</span>
+                </div>
+
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Required Increase:</span>
+                    <span class="breakdown-value" id="breakdownIncrease">0.00%</span>
+                </div>
+
+                <p class="breakdown-warning">
+                    If the token doesn't move at least <span id="warningPercent">0.00%</span>, you're still in loss.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="pump-breakeven.js"></script>
+</body>
+</html>

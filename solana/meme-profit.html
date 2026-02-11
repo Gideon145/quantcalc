@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Project unrealized profit based on market cap targets, execution costs, and on-chain fees for Solana tokens.">
-    <title>Solana Token Market Cap PnL Analyzer | QuantCalc</title>
+    <meta name="description" content="Calculate potential SOL and USD profit based on market cap targets and circulating supply.">
+    <title>Solana Token PnL Analyzer | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Solana Token PnL Analyzer | QuantCalc">
+    <meta property="og:description" content="Calculate potential SOL and USD profit based on market cap targets and circulating supply.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/solana/meme-profit.html">
+    
     <link rel="stylesheet" href="../style.css">
     <style>
         /* Reset and Base Styles */
@@ -52,11 +59,28 @@
             text-decoration: none;
             font-size: 0.95rem;
             margin-bottom: 20px;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
         }
 
         .back-link:hover {
             color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
         }
 
         .back-link::before {
@@ -201,6 +225,55 @@
             box-shadow: 0 0 20px 2px rgba(59, 130, 246, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
+        /* Copy Button */
+        .copy-btn {
+            display: none;
+            width: 100%;
+            padding: 14px 24px;
+            background: #065f46;
+            color: #e5e7eb;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            margin-top: 20px;
+        }
+
+        .copy-btn.visible {
+            display: block;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            background: #047857;
+            box-shadow: 0 0 20px 2px rgba(16, 185, 129, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #065f46;
+            color: #ffffff;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Results Section */
         .results-section {
             display: none;
@@ -264,6 +337,33 @@
             display: block;
         }
 
+        /* How Section */
+        .how-section {
+            margin-top: 32px;
+            margin-bottom: 32px;
+            padding: 24px 28px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .how-section h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #f1f5f9;
+        }
+
+        .how-section p {
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .how-section p:last-child {
+            margin-bottom: 0;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .calculator-card {
@@ -277,16 +377,48 @@
             .result-value {
                 font-size: 1.5rem;
             }
+
+            .how-content {
+                padding: 0 20px;
+                font-size: 14px;
+            }
+
+            .how-toggle {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Copied to clipboard</div>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
             <a href="/" class="back-link">Back to Home</a>
             <h1 class="page-title">🚀 Solana Token Market Cap PnL Analyzer</h1>
             <p class="page-description">Project unrealized profit based on market cap targets, execution costs, and on-chain fees.</p>
+        </div>
+
+        <!-- How This Works Section -->
+        <div class="how-section">
+            <h3>How This Works</h3>
+            <p>
+                This calculator estimates your potential return based on market cap growth.
+                If a token moves from your entry market cap to your target market cap,
+                your position increases proportionally.
+            </p>
+            <p>
+                Multiplier = Target Market Cap ÷ Entry Market Cap
+            </p>
+            <p>
+                Projected Profit = Entry Amount × (Multiplier − 1)
+            </p>
+            <p>
+                ROI = (Profit ÷ Entry Amount) × 100
+            </p>
         </div>
 
         <!-- Calculator Card -->
@@ -427,6 +559,9 @@
                     <div class="result-label">Market Cap Multiplier</div>
                     <div class="result-value" id="multiplier">0.00x</div>
                 </div>
+
+                <!-- Copy Results Button -->
+                <button class="copy-btn visible" id="copyResultsBtn">📋 Copy Results</button>
             </div>
 
             <!-- Generate Card Button -->

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate estimated liquidation price for leveraged long and short positions.">
+    <title>Perpetual Liquidation Calculator | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Perpetual Liquidation Calculator | QuantCalc">
+    <meta property="og:description" content="Calculate estimated liquidation price for leveraged long and short positions.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/tools/perp-liquidation.html">
+    
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeInUp 0.45s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .brand-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 6px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: #9ca3af;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .subtitle-line {
+            width: 140px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #f3f4f6;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        .card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .card + .card {
+            margin-top: 24px;
+        }
+
+        .how-section {
+            margin-top: 32px;
+            margin-bottom: 32px;
+            padding: 24px 28px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .how-section h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #f1f5f9;
+        }
+
+        .how-section p,
+        .how-section li {
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .how-to-list {
+            display: grid;
+            gap: 10px;
+            color: #cbd5e1;
+            font-size: 0.98rem;
+        }
+
+        .how-to-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .how-to-number {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .how-to-tip {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .input-field, .select-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus, .select-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .select-field {
+            cursor: pointer;
+        }
+
+        .tool-btn {
+            margin-top: 6px;
+        }
+
+        .error-message {
+            display: none;
+            background: #7f1d1d;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .results-section {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid #1f2937;
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-card {
+            background: #0b0f19;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 100px;
+        }
+
+        .result-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .distance-high {
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .distance-high .result-value {
+            color: #22c55e;
+        }
+
+        .distance-medium {
+            border-color: rgba(250, 204, 21, 0.5);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+        }
+
+        .distance-medium .result-value {
+            color: #facc15;
+        }
+
+        .distance-low {
+            border-color: rgba(248, 113, 113, 0.55);
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+        }
+
+        .distance-low .result-value {
+            color: #f87171;
+        }
+
+        .result-explanation {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            font-style: italic;
+            padding: 12px;
+            background: #0b0f19;
+            border-radius: 8px;
+            border: 1px solid #1f2937;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 24px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <header class="header">
+            <a href="/" class="back-link">Back to Home</a>
+            <div class="brand-title">QuantCalc</div>
+            <div class="brand-subtitle">The #1 Solana Math Toolkit</div>
+            <div class="subtitle-line"></div>
+            <div class="page-title">Perpetual Liquidation Calculator</div>
+            <div class="page-description">Estimate your liquidation price before entering a leveraged trade.</div>
+        </header>
+
+        <div class="how-section">
+            <h3>How to Use</h3>
+            <p>1. Enter your entry price.</p>
+            <p>2. Enter leverage (e.g., 5x, 10x).</p>
+            <p>3. Enter your collateral amount.</p>
+            <p>4. Select Long or Short.</p>
+            <p>5. Click Calculate to estimate your liquidation price.</p>
+            <p style="font-style: italic; margin-top: 12px;">Higher leverage reduces the price distance before liquidation.</p>
+        </div>
+
+        <section class="card">
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="input-section">
+                <h2 class="section-title">Enter Position Details</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="entryPrice">Entry Price</label>
+                    <input type="number" id="entryPrice" class="input-field" placeholder="e.g., 100" step="0.0001" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="leverage">Leverage</label>
+                    <input type="number" id="leverage" class="input-field" placeholder="e.g., 10" step="0.1" min="1">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="collateral">Collateral</label>
+                    <input type="number" id="collateral" class="input-field" placeholder="e.g., 1000" step="0.01" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="positionType">Position Type</label>
+                    <select id="positionType" class="select-field">
+                        <option value="long">Long</option>
+                        <option value="short">Short</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="tool-btn" id="calculateBtn">Calculate Liquidation</button>
+
+            <div class="results-section" id="resultsSection">
+                <div class="results-title">Results</div>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Position Size</div>
+                        <div class="result-value" id="positionSize">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Est. Liquidation Price</div>
+                        <div class="result-value" id="liquidationPrice">$0</div>
+                    </div>
+                    <div class="result-card" id="distanceCard">
+                        <div class="result-label">Distance to Liquidation</div>
+                        <div class="result-value" id="distancePercent">0%</div>
+                    </div>
+                </div>
+                <div class="result-explanation">The closer this percentage is to zero, the higher your liquidation risk.</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 6
+        });
+
+        const PerpLiquidationCalculator = {
+            init() {
+                this.cacheElements();
+                this.bindEvents();
+            },
+
+            cacheElements() {
+                this.entryPriceInput = document.getElementById('entryPrice');
+                this.leverageInput = document.getElementById('leverage');
+                this.collateralInput = document.getElementById('collateral');
+                this.positionTypeSelect = document.getElementById('positionType');
+                this.calculateBtn = document.getElementById('calculateBtn');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.resultsSection = document.getElementById('resultsSection');
+                this.positionSize = document.getElementById('positionSize');
+                this.liquidationPrice = document.getElementById('liquidationPrice');
+                this.distancePercent = document.getElementById('distancePercent');
+                this.distanceCard = document.getElementById('distanceCard');
+            },
+
+            bindEvents() {
+                this.calculateBtn.addEventListener('click', () => this.calculate());
+            },
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.classList.add('visible');
+                this.resultsSection.classList.remove('visible');
+            },
+
+            clearError() {
+                this.errorMessage.textContent = '';
+                this.errorMessage.classList.remove('visible');
+            },
+
+            calculate() {
+                const entryPrice = parseFloat(this.entryPriceInput.value);
+                const leverage = parseFloat(this.leverageInput.value);
+                const collateral = parseFloat(this.collateralInput.value);
+                const positionType = this.positionTypeSelect.value;
+
+                if ([entryPrice, leverage, collateral].some((val) => Number.isNaN(val))) {
+                    this.showError('Please fill in all required fields with valid numbers.');
+                    return;
+                }
+
+                if (entryPrice <= 0 || collateral <= 0) {
+                    this.showError('Entry price and collateral must be greater than zero.');
+                    return;
+                }
+
+                if (leverage < 1) {
+                    this.showError('Leverage must be at least 1x.');
+                    return;
+                }
+
+                const positionSizeValue = collateral * leverage;
+
+                let liquidationPriceValue;
+                if (positionType === 'long') {
+                    liquidationPriceValue = entryPrice * (1 - (1 / leverage));
+                } else {
+                    liquidationPriceValue = entryPrice * (1 + (1 / leverage));
+                }
+
+                const distance = Math.abs((entryPrice - liquidationPriceValue) / entryPrice) * 100;
+
+                this.clearError();
+                this.resultsSection.classList.add('visible');
+
+                this.positionSize.textContent = '$' + formatter.format(positionSizeValue);
+                this.liquidationPrice.textContent = '$' + formatter.format(liquidationPriceValue);
+                this.distancePercent.textContent = distance.toFixed(2) + '%';
+
+                // Style distance card
+                this.distanceCard.classList.remove('distance-high', 'distance-medium', 'distance-low');
+                if (distance > 20) {
+                    this.distanceCard.classList.add('distance-high');
+                } else if (distance >= 10) {
+                    this.distanceCard.classList.add('distance-medium');
+                } else {
+                    this.distanceCard.classList.add('distance-low');
+                }
+            }
+        };
+
+        PerpLiquidationCalculator.init();
+    </script>
+</body>
+</html>

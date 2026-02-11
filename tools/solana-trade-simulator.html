@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simulate Solana meme coin profits, slippage impact, break-even levels, and structured exit strategies before entering a trade.">
+    <title>Solana Trade Simulator Pro | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Solana Trade Simulator Pro | QuantCalc">
+    <meta property="og:description" content="Simulate Solana meme coin profits, slippage impact, break-even levels, and structured exit strategies before entering a trade.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/tools/solana-trade-simulator.html">
+    
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .page-subtitle {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 6px;
+            color: #60a5fa;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        .header-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, transparent);
+            margin-top: 24px;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+        }
+
+        /* How to Use Section */
+        .how-to-use {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+        }
+
+        .how-to-title {
+            font-size: 1.3rem;
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .how-to-steps {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .how-to-steps li {
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .how-to-steps li::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .how-to-tip {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #3b82f6;
+            padding: 12px 16px;
+            border-radius: 6px;
+            color: #93c5fd;
+            font-size: 0.95rem;
+            margin-top: 16px;
+        }
+
+        /* Calculator Card */
+        .calculator-card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+            margin-bottom: 32px;
+        }
+
+        /* Input Section */
+        .input-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .input-group {
+            margin-bottom: 0;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Calculate Button */
+        .calculate-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            margin-top: 12px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px 4px rgba(59, 130, 246, 0.5), 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 32px;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        /* Tab System */
+        .tab-navigation {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid #1f2937;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            color: #9ca3af;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: #cbd5e1;
+        }
+
+        .tab-btn.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Outcome Matrix Table */
+        .outcome-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .outcome-table th {
+            background: #1f2937;
+            color: #f1f5f9;
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-bottom: 2px solid #374151;
+        }
+
+        .outcome-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #1f2937;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
+        .outcome-table tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .outcome-table tr.high-roi {
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .outcome-table tr.high-roi:hover {
+            background: rgba(16, 185, 129, 0.12);
+        }
+
+        .outcome-table .multiplier-cell {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .outcome-table .profit-cell {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .outcome-table .roi-cell {
+            color: #34d399;
+            font-weight: 600;
+        }
+
+        /* Reality Engine */
+        .reality-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .reality-item {
+            background: #1f2937;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #374151;
+        }
+
+        .reality-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .reality-value {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .reality-value.warning {
+            color: #fbbf24;
+        }
+
+        .reality-value.danger {
+            color: #ef4444;
+        }
+
+        .reality-value.success {
+            color: #10b981;
+        }
+
+        .reality-note {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 3px solid #fbbf24;
+            padding: 12px 16px;
+            border-radius: 6px;
+            color: #fcd34d;
+            font-size: 0.95rem;
+            margin-top: 20px;
+        }
+
+        /* Smart Money Mode */
+        .smart-money-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            margin-bottom: 28px;
+            padding: 24px;
+            background: #1f2937;
+            border-radius: 10px;
+            border: 1px solid #374151;
+        }
+
+        .smart-money-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            margin-top: 28px;
+        }
+
+        .smart-result-card {
+            background: #1f2937;
+            padding: 24px;
+            border-radius: 10px;
+            border: 1px solid #374151;
+            text-align: center;
+        }
+
+        .smart-result-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .smart-result-value {
+            color: #f1f5f9;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .smart-result-value.positive {
+            color: #10b981;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .calculator-card,
+            .how-to-use,
+            .results-section {
+                padding: 24px;
+            }
+
+            .input-grid,
+            .reality-grid,
+            .smart-money-inputs,
+            .smart-money-results {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .tab-navigation {
+                flex-direction: column;
+                gap: 8px;
+                border-bottom: none;
+            }
+
+            .tab-btn {
+                border-bottom: none;
+                border-left: 3px solid transparent;
+                text-align: left;
+            }
+
+            .tab-btn.active {
+                border-left-color: #60a5fa;
+                border-bottom-color: transparent;
+                background: rgba(59, 130, 246, 0.1);
+            }
+
+            .outcome-table {
+                font-size: 0.85rem;
+            }
+
+            .outcome-table th,
+            .outcome-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="../index.html" class="back-link">QuantCalc</a>
+            <div class="page-subtitle">FLAGSHIP TOOL</div>
+            <h1 class="page-title">Solana Trade Simulator Pro</h1>
+            <p class="page-description">Simulate profit, risk, scaling strategies, and real execution costs before entering a trade.</p>
+            <div class="header-divider"></div>
+        </div>
+
+        <!-- How to Use -->
+        <div class="how-to-use">
+            <h2 class="how-to-title">How to Use</h2>
+            <ul class="how-to-steps">
+                <li data-step="1.">Enter your entry market cap and circulating supply.</li>
+                <li data-step="2.">Enter how much SOL you plan to invest.</li>
+                <li data-step="3.">Add slippage and optional tax.</li>
+                <li data-step="4.">Switch between tabs to simulate different trade scenarios.</li>
+                <li data-step="5.">Use the matrix to visualize profit at multiple targets.</li>
+            </ul>
+            <div class="how-to-tip">
+                💡 This tool helps you simulate outcomes before committing capital.
+            </div>
+        </div>
+
+        <!-- Calculator Card -->
+        <div class="calculator-card">
+            <div class="input-section">
+                <h2 class="section-title">Trade Parameters</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="entryMC" class="input-label">Entry Market Cap</label>
+                        <input type="text" id="entryMC" class="input-field" placeholder="e.g., 100k, 1m, 50m">
+                        <div class="helper-text">Supports k, m, b notation</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="supply" class="input-label">Circulating Supply</label>
+                        <input type="number" id="supply" class="input-field" placeholder="e.g., 1000000000">
+                    </div>
+                    <div class="input-group">
+                        <label for="entryAmount" class="input-label">Entry Amount (SOL)</label>
+                        <input type="number" id="entryAmount" class="input-field" placeholder="e.g., 1.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="buySlippage" class="input-label">Buy Slippage (%)</label>
+                        <input type="number" id="buySlippage" class="input-field" placeholder="Optional, e.g., 2">
+                    </div>
+                    <div class="input-group">
+                        <label for="sellSlippage" class="input-label">Sell Slippage (%)</label>
+                        <input type="number" id="sellSlippage" class="input-field" placeholder="Optional, e.g., 2">
+                    </div>
+                    <div class="input-group">
+                        <label for="tokenTax" class="input-label">Token Tax (%)</label>
+                        <input type="number" id="tokenTax" class="input-field" placeholder="Optional, e.g., 5">
+                    </div>
+                </div>
+                <button class="calculate-btn" onclick="runSimulation()">Run Simulation</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('matrix')">Outcome Matrix</button>
+                <button class="tab-btn" onclick="switchTab('reality')">Reality Engine</button>
+                <button class="tab-btn" onclick="switchTab('smartmoney')">Smart Money Mode</button>
+            </div>
+
+            <!-- Tab 1: Outcome Matrix -->
+            <div class="tab-content active" id="tab-matrix">
+                <h2 class="section-title">Profit Projections</h2>
+                <table class="outcome-table">
+                    <thead>
+                        <tr>
+                            <th>Target Market Cap</th>
+                            <th>Multiplier</th>
+                            <th>Projected Profit (SOL)</th>
+                            <th>ROI %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matrixTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab 2: Reality Engine -->
+            <div class="tab-content" id="tab-reality">
+                <h2 class="section-title">Real Execution Costs</h2>
+                <div class="reality-grid">
+                    <div class="reality-item">
+                        <div class="reality-label">Real Entry Cost</div>
+                        <div class="reality-value" id="realEntryCost">0 SOL</div>
+                    </div>
+                    <div class="reality-item">
+                        <div class="reality-label">Real Exit Cost Impact</div>
+                        <div class="reality-value danger" id="realExitCost">0 SOL</div>
+                    </div>
+                    <div class="reality-item">
+                        <div class="reality-label">Break-even Multiplier</div>
+                        <div class="reality-value warning" id="breakEvenMultiplier">0x</div>
+                    </div>
+                    <div class="reality-item">
+                        <div class="reality-label">Effective ROI After Fees</div>
+                        <div class="reality-value" id="effectiveROI">0%</div>
+                    </div>
+                </div>
+                <div class="reality-note">
+                    ⚠️ Low liquidity and fees significantly impact true ROI.
+                </div>
+            </div>
+
+            <!-- Tab 3: Smart Money Mode -->
+            <div class="tab-content" id="tab-smartmoney">
+                <h2 class="section-title">Scale-Out Strategy</h2>
+                <div class="smart-money-inputs">
+                    <div class="input-group">
+                        <label for="sell1Pct" class="input-label">Sell % at 1st Target</label>
+                        <input type="number" id="sell1Pct" class="input-field" placeholder="e.g., 50">
+                    </div>
+                    <div class="input-group">
+                        <label for="target1X" class="input-label">First Target Multiplier</label>
+                        <input type="number" id="target1X" class="input-field" placeholder="e.g., 2">
+                    </div>
+                    <div class="input-group">
+                        <label for="sell2Pct" class="input-label">Sell % at 2nd Target</label>
+                        <input type="number" id="sell2Pct" class="input-field" placeholder="e.g., 30">
+                    </div>
+                    <div class="input-group">
+                        <label for="target2X" class="input-label">Second Target Multiplier</label>
+                        <input type="number" id="target2X" class="input-field" placeholder="e.g., 5">
+                    </div>
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label for="finalTargetX" class="input-label">Final Target Multiplier</label>
+                        <input type="number" id="finalTargetX" class="input-field" placeholder="e.g., 10">
+                    </div>
+                </div>
+                <button class="calculate-btn" onclick="calculateSmartMoney()">Calculate Scale-Out</button>
+                
+                <div class="smart-money-results" id="smartMoneyResults" style="display: none;">
+                    <div class="smart-result-card">
+                        <div class="smart-result-label">Total Realized SOL</div>
+                        <div class="smart-result-value positive" id="totalRealized">0</div>
+                    </div>
+                    <div class="smart-result-card">
+                        <div class="smart-result-label">Remaining Position Value</div>
+                        <div class="smart-result-value" id="remainingValue">0 SOL</div>
+                    </div>
+                    <div class="smart-result-card">
+                        <div class="smart-result-label">Total ROI</div>
+                        <div class="smart-result-value positive" id="totalROI">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let simulationData = null;
+
+        // Parse market cap with k/m/b support
+        function parseMarketCap(input) {
+            if (!input) return 0;
+            const str = input.toString().toLowerCase().trim();
+            const multipliers = {
+                'k': 1000,
+                'm': 1000000,
+                'b': 1000000000
+            };
+            
+            const match = str.match(/^([\d.]+)([kmb]?)$/);
+            if (!match) return parseFloat(str) || 0;
+            
+            const value = parseFloat(match[1]);
+            const suffix = match[2];
+            return value * (multipliers[suffix] || 1);
+        }
+
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        }
+
+        // Format market cap
+        function formatMarketCap(mc) {
+            if (mc >= 1000000000) return `$${(mc / 1000000000).toFixed(2)}B`;
+            if (mc >= 1000000) return `$${(mc / 1000000).toFixed(2)}M`;
+            if (mc >= 1000) return `$${(mc / 1000).toFixed(2)}K`;
+            return `$${mc.toFixed(2)}`;
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            // Update tab buttons
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update tab content
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+
+        // Run main simulation
+        function runSimulation() {
+            // Get inputs
+            const entryMCInput = document.getElementById('entryMC').value;
+            const supply = parseFloat(document.getElementById('supply').value);
+            const entryAmount = parseFloat(document.getElementById('entryAmount').value);
+            const buySlippage = parseFloat(document.getElementById('buySlippage').value) || 0;
+            const sellSlippage = parseFloat(document.getElementById('sellSlippage').value) || 0;
+            const tokenTax = parseFloat(document.getElementById('tokenTax').value) || 0;
+
+            // Validate inputs
+            if (!entryMCInput || !supply || !entryAmount) {
+                alert('Please fill in Entry Market Cap, Circulating Supply, and Entry Amount.');
+                return;
+            }
+
+            const entryMC = parseMarketCap(entryMCInput);
+            if (entryMC <= 0) {
+                alert('Invalid Entry Market Cap format.');
+                return;
+            }
+
+            // Calculate real entry cost (after buy slippage)
+            const realEntryCost = entryAmount * (1 + buySlippage / 100);
+
+            // Store simulation data
+            simulationData = {
+                entryMC,
+                supply,
+                entryAmount,
+                realEntryCost,
+                buySlippage,
+                sellSlippage,
+                tokenTax
+            };
+
+            // Populate Outcome Matrix
+            populateOutcomeMatrix();
+
+            // Populate Reality Engine
+            populateRealityEngine();
+
+            // Show results
+            document.getElementById('resultsSection').classList.add('visible');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Populate Outcome Matrix
+        function populateOutcomeMatrix() {
+            const { entryMC, realEntryCost, sellSlippage, tokenTax } = simulationData;
+            const multipliers = [2, 3, 5, 10, 20];
+            const tbody = document.getElementById('matrixTableBody');
+            tbody.innerHTML = '';
+
+            multipliers.forEach(mult => {
+                const targetMC = entryMC * mult;
+                const grossProfit = realEntryCost * mult;
+                
+                // Apply sell slippage and tax
+                const afterSlippage = grossProfit * (1 - sellSlippage / 100);
+                const afterTax = afterSlippage * (1 - tokenTax / 100);
+                const netProfit = afterTax - realEntryCost;
+                const roi = (netProfit / realEntryCost) * 100;
+
+                const row = document.createElement('tr');
+                if (roi > 200) row.classList.add('high-roi');
+
+                row.innerHTML = `
+                    <td>${formatMarketCap(targetMC)}</td>
+                    <td class="multiplier-cell">${mult}x</td>
+                    <td class="profit-cell">${netProfit.toFixed(3)} SOL</td>
+                    <td class="roi-cell">${roi.toFixed(2)}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Populate Reality Engine
+        function populateRealityEngine() {
+            const { entryMC, realEntryCost, buySlippage, sellSlippage, tokenTax } = simulationData;
+
+            // Real entry cost
+            document.getElementById('realEntryCost').textContent = `${realEntryCost.toFixed(3)} SOL`;
+
+            // Real exit cost (total fees on a 1x exit)
+            const exitCostPct = sellSlippage + tokenTax;
+            const exitCostSOL = realEntryCost * (exitCostPct / 100);
+            document.getElementById('realExitCost').textContent = `${exitCostSOL.toFixed(3)} SOL (${exitCostPct.toFixed(1)}%)`;
+
+            // Break-even multiplier
+            const totalFeePct = buySlippage + sellSlippage + tokenTax;
+            const breakEven = 1 + (totalFeePct / 100);
+            document.getElementById('breakEvenMultiplier').textContent = `${breakEven.toFixed(3)}x`;
+
+            // Effective ROI at 2x (example)
+            const grossAt2x = realEntryCost * 2;
+            const afterSlippage = grossAt2x * (1 - sellSlippage / 100);
+            const afterTax = afterSlippage * (1 - tokenTax / 100);
+            const netProfit = afterTax - realEntryCost;
+            const effectiveROI = (netProfit / realEntryCost) * 100;
+            
+            const roiElement = document.getElementById('effectiveROI');
+            roiElement.textContent = `${effectiveROI.toFixed(2)}%`;
+            roiElement.className = 'reality-value';
+            if (effectiveROI > 50) {
+                roiElement.classList.add('success');
+            } else if (effectiveROI < 0) {
+                roiElement.classList.add('danger');
+            } else {
+                roiElement.classList.add('warning');
+            }
+        }
+
+        // Calculate Smart Money Mode
+        function calculateSmartMoney() {
+            if (!simulationData) {
+                alert('Please run the simulation first.');
+                return;
+            }
+
+            const sell1Pct = parseFloat(document.getElementById('sell1Pct').value) || 0;
+            const target1X = parseFloat(document.getElementById('target1X').value) || 0;
+            const sell2Pct = parseFloat(document.getElementById('sell2Pct').value) || 0;
+            const target2X = parseFloat(document.getElementById('target2X').value) || 0;
+            const finalTargetX = parseFloat(document.getElementById('finalTargetX').value) || 0;
+
+            if (sell1Pct + sell2Pct > 100) {
+                alert('Total sell percentages cannot exceed 100%.');
+                return;
+            }
+
+            if (!target1X || !target2X || !finalTargetX) {
+                alert('Please fill in all target multipliers.');
+                return;
+            }
+
+            const { realEntryCost, sellSlippage, tokenTax } = simulationData;
+
+            // Calculate each scale-out
+            let totalRealized = 0;
+            let remainingPct = 100;
+
+            // First sale
+            if (sell1Pct > 0 && target1X > 0) {
+                const saleValue = (sell1Pct / 100) * realEntryCost * target1X;
+                const afterSlippage = saleValue * (1 - sellSlippage / 100);
+                const afterTax = afterSlippage * (1 - tokenTax / 100);
+                totalRealized += afterTax;
+                remainingPct -= sell1Pct;
+            }
+
+            // Second sale
+            if (sell2Pct > 0 && target2X > 0) {
+                const saleValue = (sell2Pct / 100) * realEntryCost * target2X;
+                const afterSlippage = saleValue * (1 - sellSlippage / 100);
+                const afterTax = afterSlippage * (1 - tokenTax / 100);
+                totalRealized += afterTax;
+                remainingPct -= sell2Pct;
+            }
+
+            // Remaining position at final target
+            const remainingValue = (remainingPct / 100) * realEntryCost * finalTargetX;
+            const afterSlippage = remainingValue * (1 - sellSlippage / 100);
+            const afterTax = afterSlippage * (1 - tokenTax / 100);
+            
+            const finalRealized = totalRealized + afterTax;
+            const totalROI = ((finalRealized - realEntryCost) / realEntryCost) * 100;
+
+            // Display results
+            document.getElementById('totalRealized').textContent = `${finalRealized.toFixed(3)} SOL`;
+            document.getElementById('remainingValue').textContent = `${afterTax.toFixed(3)} SOL`;
+            
+            const roiElement = document.getElementById('totalROI');
+            roiElement.textContent = `${totalROI.toFixed(2)}%`;
+            if (totalROI > 100) {
+                roiElement.classList.add('positive');
+            } else {
+                roiElement.classList.remove('positive');
+            }
+
+            document.getElementById('smartMoneyResults').style.display = 'grid';
+        }
+    </script>
+</body>
+</html>

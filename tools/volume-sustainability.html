@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Estimate how much daily buy volume is needed to sustain price levels for Solana tokens.">
+    <title>Solana Volume Sustainability Calculator | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Solana Volume Sustainability Calculator | QuantCalc">
+    <meta property="og:description" content="Estimate how much daily buy volume is needed to sustain price levels for Solana tokens.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/tools/volume-sustainability.html">
+    
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Fade-in Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeInUp 0.45s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 32px;
+            animation-delay: 0s;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        /* How to Use Section */
+        .how-to-use {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation-delay: 0.1s;
+        }
+
+        .how-to-title {
+            font-size: 1.3rem;
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .how-to-steps {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .how-to-steps li {
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .how-to-steps li::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .how-to-tip {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #3b82f6;
+            padding: 12px 16px;
+            border-radius: 6px;
+            color: #93c5fd;
+            font-size: 0.95rem;
+        }
+
+        /* Calculator Card */
+        .calculator-card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            margin-bottom: 32px;
+            animation-delay: 0.2s;
+        }
+
+        /* Input Section */
+        .input-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Calculate Button */
+        .calculate-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px 4px rgba(59, 130, 246, 0.5), 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            margin-bottom: 32px;
+            animation: fadeInUp 0.45s ease forwards;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .result-card {
+            background: #1f2937;
+            padding: 24px;
+            border-radius: 10px;
+            border: 1px solid #374151;
+        }
+
+        .result-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .result-value {
+            color: #f1f5f9;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .result-value.positive {
+            color: #10b981;
+        }
+
+        .result-value.warning {
+            color: #fbbf24;
+        }
+
+        .result-value.danger {
+            color: #ef4444;
+        }
+
+        .results-note {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+            padding: 12px 16px;
+            border-radius: 6px;
+            color: #fca5a5;
+            font-size: 0.95rem;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .calculator-card,
+            .how-to-use,
+            .results-section {
+                padding: 24px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <a href="../index.html" class="back-link">QuantCalc</a>
+            <h1 class="page-title">Volume Sustainability Calculator</h1>
+            <p class="page-description">Estimate how much daily buy volume is needed to sustain price levels.</p>
+        </div>
+
+        <!-- How to Use -->
+        <div class="how-to-use fade-in">
+            <h2 class="how-to-title">How to Use</h2>
+            <ul class="how-to-steps">
+                <li data-step="1.">Enter current market cap.</li>
+                <li data-step="2.">Enter circulating supply.</li>
+                <li data-step="3.">Enter estimated daily sell pressure (%).</li>
+                <li data-step="4.">Click Calculate to estimate required buy volume.</li>
+            </ul>
+            <div class="how-to-tip">
+                💡 If buy volume doesn't offset sell pressure, price declines.
+            </div>
+        </div>
+
+        <!-- Calculator Card -->
+        <div class="calculator-card fade-in">
+            <div class="input-section">
+                <h2 class="section-title">Token Parameters</h2>
+                <div class="input-group">
+                    <label for="marketCap" class="input-label">Market Cap (USD)</label>
+                    <input type="number" id="marketCap" class="input-field" placeholder="e.g., 10000000">
+                    <div class="helper-text">Current market capitalization</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="supply" class="input-label">Circulating Supply</label>
+                    <input type="number" id="supply" class="input-field" placeholder="e.g., 1000000000">
+                    <div class="helper-text">Total tokens in circulation</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="sellPressure" class="input-label">Estimated Daily Sell Pressure (%)</label>
+                    <input type="number" id="sellPressure" class="input-field" placeholder="e.g., 2">
+                    <div class="helper-text">Daily sell pressure as % of market cap</div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateVolume()">Estimate Required Volume</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <h2 class="section-title">Sustainability Analysis</h2>
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-label">Current Price</div>
+                    <div class="result-value" id="currentPrice">$0</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-label">Daily Sell Pressure Value</div>
+                    <div class="result-value danger" id="sellPressureValue">$0</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-label">Required Daily Buy Volume</div>
+                    <div class="result-value" id="requiredVolume">$0</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-label">Est. Daily Price Decline (if unmet)</div>
+                    <div class="result-value danger" id="priceDecline">0%</div>
+                </div>
+            </div>
+            <div class="results-note">
+                ⚠️ High sell pressure requires sustained capital inflow.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateVolume() {
+            // Get inputs
+            const marketCap = parseFloat(document.getElementById('marketCap').value);
+            const supply = parseFloat(document.getElementById('supply').value);
+            const sellPressure = parseFloat(document.getElementById('sellPressure').value);
+
+            // Validate inputs
+            if (!marketCap || marketCap <= 0) {
+                alert('Please enter a valid Market Cap.');
+                return;
+            }
+
+            if (!supply || supply <= 0) {
+                alert('Please enter a valid Circulating Supply.');
+                return;
+            }
+
+            if (!sellPressure || sellPressure <= 0) {
+                alert('Please enter a valid Daily Sell Pressure (%).');
+                return;
+            }
+
+            // Calculate current price
+            const currentPrice = marketCap / supply;
+
+            // Calculate daily sell pressure value
+            const dailySellValue = marketCap * (sellPressure / 100);
+
+            // Required daily buy volume equals sell pressure to maintain price
+            const requiredVolume = dailySellValue;
+
+            // Price decline if no volume
+            const priceDropPct = sellPressure;
+
+            // Format currency
+            function formatCurrency(value) {
+                if (value >= 1000000) {
+                    return `$${(value / 1000000).toFixed(2)}M`;
+                } else if (value >= 1000) {
+                    return `$${(value / 1000).toFixed(2)}K`;
+                } else {
+                    return `$${value.toFixed(2)}`;
+                }
+            }
+
+            function formatPrice(value) {
+                if (value < 0.000001) {
+                    return `$${value.toExponential(2)}`;
+                } else if (value < 0.01) {
+                    return `$${value.toFixed(6)}`;
+                } else {
+                    return `$${value.toFixed(4)}`;
+                }
+            }
+
+            // Display results
+            document.getElementById('currentPrice').textContent = formatPrice(currentPrice);
+            document.getElementById('sellPressureValue').textContent = formatCurrency(dailySellValue);
+            
+            const requiredVolumeElement = document.getElementById('requiredVolume');
+            requiredVolumeElement.textContent = formatCurrency(requiredVolume);
+            
+            // Color code based on volume relative to market cap
+            const volumeToMCRatio = (requiredVolume / marketCap) * 100;
+            requiredVolumeElement.className = 'result-value';
+            if (volumeToMCRatio < 5) {
+                requiredVolumeElement.classList.add('positive');
+            } else if (volumeToMCRatio <= 10) {
+                requiredVolumeElement.classList.add('warning');
+            } else {
+                requiredVolumeElement.classList.add('danger');
+            }
+
+            document.getElementById('priceDecline').textContent = `${priceDropPct.toFixed(2)}%`;
+
+            // Show results
+            document.getElementById('resultsSection').classList.add('visible');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>

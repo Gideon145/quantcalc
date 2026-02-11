@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The #1 Solana Math Toolkit - Professional risk & trading calculators for Solana, crypto, forex and beyond. Position sizing, profit calculations, and on-chain tools.">
-    <title>QuantCalc - The #1 Solana Math Toolkit</title>
+    <meta name="description" content="Free Solana trading calculators including profit simulation, impermanent loss modeling, liquidation risk, and tokenomics tools.">
+    <title>QuantCalc | The Solana Trading Command Center</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="QuantCalc | The Solana Trading Command Center">
+    <meta property="og:description" content="Free Solana trading calculators including profit simulation, impermanent loss modeling, liquidation risk, and tokenomics tools.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/">
+    
     <link rel="stylesheet" href="style.css">
     <style>
         /* Hero Animations */
@@ -143,22 +150,12 @@
     <header class="hero">
         <div class="container">
             <h1 class="hero-title">QuantCalc</h1>
-            <p class="hero-tagline">
-                The #1 
-                <svg class="solana-logo" viewBox="0 0 397.7 311.7" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="solanaGradient" x1="360.88" y1="351.46" x2="-263.69" y2="-96.54" gradientUnits="userSpaceOnUse">
-                            <stop offset="0" stop-color="#00ffa3"/>
-                            <stop offset="1" stop-color="#dc1fff"/>
-                        </linearGradient>
-                    </defs>
-                    <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="url(#solanaGradient)"/>
-                    <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z" fill="url(#solanaGradient)"/>
-                    <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#solanaGradient)"/>
-                </svg>
-                Solana Math Toolkit
-            </p>
-            <p class="hero-description">Professional risk & trading calculators for Solana, crypto, forex and beyond.</p>
+            <h2 class="hero-subtitle">The Solana Trading Command Center</h2>
+            <p class="hero-description">Simulate profit, model execution costs, and plan structured exits before deploying capital.</p>
+            <div class="hero-buttons">
+                <a href="./tools/solana-trade-simulator.html" class="hero-btn primary">Launch Trade Simulator</a>
+                <button class="hero-btn secondary" onclick="document.querySelector('.tools-section').scrollIntoView({behavior: 'smooth'})">Explore All Tools</button>
+            </div>
         </div>
     </header>
 
@@ -175,8 +172,21 @@
                     <p class="section-description">Specialized tools built for Solana traders and on-chain precision.</p>
                 </div>
                 <div class="tools-grid">
+                    <!-- Solana Trade Simulator Pro Card (FLAGSHIP) -->
+                    <div class="tool-card">
+                        <div class="tool-badge advanced">ADVANCED</div>
+                        <div class="tool-icon">⚡</div>
+                        <h3 class="tool-title">Solana Trade Simulator Pro</h3>
+                        <p class="tool-description">
+                            Simulate profit, risk, scaling strategies, and real execution costs 
+                            before entering a trade. Complete 3-in-1 trading analysis suite.
+                        </p>
+                        <a href="./tools/solana-trade-simulator.html" class="tool-btn">Launch Simulator</a>
+                    </div>
+
                     <!-- Solana Token PnL Analyzer Card -->
                     <div class="tool-card">
+                        <div class="tool-badge popular">POPULAR</div>
                         <div class="tool-icon">🚀</div>
                         <h3 class="tool-title">Solana Token PnL Analyzer</h3>
                         <p class="tool-description">
@@ -186,26 +196,76 @@
                         <a href="./solana/meme-profit.html" class="tool-btn">Launch Analyzer</a>
                     </div>
 
-                    <!-- Pump.fun Break-even Calculator Card -->
+                    <!-- Meme Coin Exit Ladder Planner Card -->
                     <div class="tool-card">
-                        <div class="tool-icon">⚡</div>
-                        <h3 class="tool-title">Pump.fun Break-even Calculator</h3>
+                        <div class="tool-badge strategy">STRATEGY</div>
+                        <div class="tool-icon">🪜</div>
+                        <h3 class="tool-title">Meme Coin Exit Ladder Planner</h3>
                         <p class="tool-description">
-                            Determine your break-even price on Pump.fun launches accounting for 
-                            bonding curve mechanics, fees, and slippage.
+                            Plan structured scale-outs while securing profits and keeping a moonbag.
+                            Simulate multiple exit targets with precision.
                         </p>
-                        <a href="#" class="tool-btn tool-btn-disabled">Coming Soon</a>
+                        <a href="./tools/exit-ladder-planner.html" class="tool-btn">Launch Calculator</a>
                     </div>
 
-                    <!-- Liquidity Impact Estimator Card -->
+                    <!-- Volume Sustainability Calculator Card -->
                     <div class="tool-card">
-                        <div class="tool-icon">💧</div>
-                        <h3 class="tool-title">Liquidity Impact Estimator</h3>
+                        <div class="tool-badge onchain">ON-CHAIN</div>
+                        <div class="tool-icon">📈</div>
+                        <h3 class="tool-title">Volume Sustainability Calculator</h3>
                         <p class="tool-description">
-                            Estimate price impact and optimal trade sizing based on current 
-                            liquidity pools and order book depth.
+                            Estimate how much daily buy volume is needed to sustain price levels
+                            against sell pressure. Critical for trend analysis.
                         </p>
-                        <a href="#" class="tool-btn tool-btn-disabled">Coming Soon</a>
+                        <a href="./tools/volume-sustainability.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Pump.fun Break-even Calculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge launch">LAUNCH</div>
+                        <div class="tool-icon">🎯</div>
+                        <h3 class="tool-title">Pump.fun Break-Even Calculator</h3>
+                        <p class="tool-description">
+                            Know exactly when you're in profit. Calculate break-even points 
+                            accounting for all fees, slippage, and token taxes.
+                        </p>
+                        <a href="./solana/pump-breakeven.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Impermanent Loss Calculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge defi">DEFI</div>
+                        <div class="tool-icon">🌊</div>
+                        <h3 class="tool-title">Impermanent Loss & Yield Simulator</h3>
+                        <p class="tool-description">
+                            Calculate impermanent loss for liquidity pools and see if 
+                            farming rewards offset your risk exposure.
+                        </p>
+                        <a href="./tools/impermanent-loss.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Market Cap vs FDV Analyzer Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge tokenomics">TOKENOMICS</div>
+                        <div class="tool-icon">📊</div>
+                        <h3 class="tool-title">Market Cap vs FDV Analyzer</h3>
+                        <p class="tool-description">
+                            Understand token inflation risk and future supply pressure by 
+                            comparing market cap to fully diluted valuation.
+                        </p>
+                        <a href="./tools/marketcap-fdv.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Market Cap Flip Calculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge projection">PROJECTION</div>
+                        <div class="tool-icon">🔄</div>
+                        <h3 class="tool-title">Market Cap Flip Calculator</h3>
+                        <p class="tool-description">
+                            Calculate what happens if your token reaches another token's market cap.
+                            Project price targets and potential gains.
+                        </p>
+                        <a href="./tools/marketcap-flip.html" class="tool-btn">Launch Calculator</a>
                     </div>
                 </div>
             </div>
@@ -221,6 +281,7 @@
                 <div class="tools-grid">
                     <!-- Position Size Calculator Card -->
                     <div class="tool-card">
+                        <div class="tool-badge risk">RISK</div>
                         <div class="tool-icon">📊</div>
                         <h3 class="tool-title">Position Size Calculator</h3>
                         <p class="tool-description">
@@ -230,15 +291,99 @@
                         <a href="./tools/position-size.html" class="tool-btn">Launch Calculator</a>
                     </div>
 
-                    <!-- Crypto Profit Calculator Card -->
+                    <!-- Trade Risk/Reward Calculator Card -->
                     <div class="tool-card">
-                        <div class="tool-icon">₿</div>
-                        <h3 class="tool-title">Crypto Profit Calculator</h3>
+                        <div class="tool-badge essential">ESSENTIAL</div>
+                        <div class="tool-icon">⚖️</div>
+                        <h3 class="tool-title">Trade Risk/Reward Calculator</h3>
                         <p class="tool-description">
-                            Analyze potential profits and losses for cryptocurrency trades 
-                            with real-time calculations and percentage returns.
+                            Calculate risk per unit, reward per unit, and R:R ratio with optional
+                            position size and percentage move targets.
                         </p>
-                        <a href="./tools/crypto-profit.html" class="tool-btn tool-btn-disabled">Coming Soon</a>
+                        <a href="./tools/risk-reward.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Perpetual Liquidation Calculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge leverage">LEVERAGE</div>
+                        <div class="tool-icon">⚠️</div>
+                        <h3 class="tool-title">Perpetual Liquidation Calculator</h3>
+                        <p class="tool-description">
+                            Estimate your liquidation price before entering leveraged trades.
+                            Know your risk and maintain safe margin levels.
+                        </p>
+                        <a href="./tools/perp-liquidation.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Slippage & True Cost Calculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge execution">EXECUTION</div>
+                        <div class="tool-icon">💸</div>
+                        <h3 class="tool-title">Slippage & True Cost Calculator</h3>
+                        <p class="tool-description">
+                            Calculate the real cost of slippage, token taxes, and execution fees.
+                            Know exactly how much you need to pump to break even.
+                        </p>
+                        <a href="./tools/slippage-reality.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- DCA Calculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge accumulation">ACCUMULATION</div>
+                        <div class="tool-icon">📈</div>
+                        <h3 class="tool-title">DCA Calculator</h3>
+                        <p class="tool-description">
+                            Calculate your new average entry price when dollar cost averaging.
+                            See how much your cost basis improves with additional buys.
+                        </p>
+                        <a href="./tools/dca-calculator.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Token Burn Impact Calculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge supply">SUPPLY</div>
+                        <div class="tool-icon">🔥</div>
+                        <h3 class="tool-title">Token Burn Impact Calculator</h3>
+                        <p class="tool-description">
+                            See how burning supply could affect token price. Understand 
+                            deflationary tokenomics and projected price impact.
+                        </p>
+                        <a href="./tools/token-burn-impact.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+
+                    <!-- Airdrop Value Speculator Card -->
+                    <div class="tool-card">
+                        <div class="tool-badge airdrop">AIRDROP</div>
+                        <div class="tool-icon">🪂</div>
+                        <h3 class="tool-title">Airdrop Value Speculator</h3>
+                        <p class="tool-description">
+                            Estimate how much your upcoming airdrop could be worth based on 
+                            points allocation and estimated token price.
+                        </p>
+                        <a href="./tools/airdrop-speculator.html" class="tool-btn">Launch Calculator</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why QuantCalc Section -->
+        <section class="why-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title section-title-small">Why QuantCalc?</h2>
+                </div>
+                <div class="why-grid">
+                    <div class="why-card">
+                        <h3 class="why-title">Built for Solana Traders</h3>
+                        <p class="why-description">Designed around real on-chain execution, liquidity, and tokenomics — not fantasy ROI.</p>
+                    </div>
+                    <div class="why-card">
+                        <h3 class="why-title">Real Execution Math</h3>
+                        <p class="why-description">Includes slippage, tax, and scale-out modeling so projections reflect reality.</p>
+                    </div>
+                    <div class="why-card">
+                        <h3 class="why-title">Free Professional Toolkit</h3>
+                        <p class="why-description">Access institutional-grade simulations without paywalls.</p>
                     </div>
                 </div>
             </div>
@@ -248,7 +393,11 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 QuantCalc. Professional trading tools for modern traders.</p>
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
         </div>
     </footer>
 

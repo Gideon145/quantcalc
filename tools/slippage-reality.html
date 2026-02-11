@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate the true cost of slippage, token tax, and fees. See how much you need to pump to break even.">
+    <title>Slippage Cost Calculator | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Slippage Cost Calculator | QuantCalc">
+    <meta property="og:description" content="Calculate the true cost of slippage, token tax, and fees. See how much you need to pump to break even.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/tools/slippage-reality.html">
+    
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .brand-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 6px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: #9ca3af;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .subtitle-line {
+            width: 140px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #f3f4f6;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        .card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.15s both;
+        }
+
+        .card + .card {
+            margin-top: 24px;
+        }
+
+        .how-section {
+            margin-top: 32px;
+            margin-bottom: 32px;
+            padding: 24px 28px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .how-section h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #f1f5f9;
+        }
+
+        .how-section p,
+        .how-section li {
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .how-to-list {
+            display: grid;
+            gap: 10px;
+            color: #cbd5e1;
+            font-size: 0.98rem;
+        }
+
+        .how-to-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .how-to-number {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .how-to-tip {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .tool-btn {
+            margin-top: 6px;
+        }
+
+        .error-message {
+            display: none;
+            background: #7f1d1d;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .results-section {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid #1f2937;
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .result-card {
+            background: #0b0f19;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 100px;
+        }
+
+        .result-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .pump-green {
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .pump-green .result-value {
+            color: #22c55e;
+        }
+
+        .pump-yellow {
+            border-color: rgba(250, 204, 21, 0.5);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+        }
+
+        .pump-yellow .result-value {
+            color: #facc15;
+        }
+
+        .pump-red {
+            border-color: rgba(248, 113, 113, 0.55);
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+        }
+
+        .pump-red .result-value {
+            color: #f87171;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 24px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="/" class="back-link">Back to Home</a>
+            <div class="brand-title">QuantCalc</div>
+            <div class="brand-subtitle">The #1 Solana Math Toolkit</div>
+            <div class="subtitle-line"></div>
+            <div class="page-title">Slippage & True Cost Calculator</div>
+            <div class="page-description">See the real cost of slippage, tax, and execution fees before you trade.</div>
+        </header>
+
+        <div class="how-section">
+            <h3>How to Use</h3>
+            <p>1. Enter how much you plan to trade.</p>
+            <p>2. Enter your estimated buy slippage.</p>
+            <p>3. Enter your sell slippage.</p>
+            <p>4. Add token tax if applicable.</p>
+            <p>5. Click Calculate to see the true cost impact.</p>
+            <p style="font-style: italic; margin-top: 12px;">Even small slippage adds up fast on low-liquidity tokens.</p>
+        </div>
+
+        <section class="card">
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="input-section">
+                <h2 class="section-title">Enter Trade Details</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="tradeAmount">Trade Amount (SOL)</label>
+                    <input type="number" id="tradeAmount" class="input-field" placeholder="e.g., 10" step="0.01" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="buySlippage">Buy Slippage (%)</label>
+                    <input type="number" id="buySlippage" class="input-field" placeholder="e.g., 5" step="0.1" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="sellSlippage">Sell Slippage (%)</label>
+                    <input type="number" id="sellSlippage" class="input-field" placeholder="e.g., 8" step="0.1" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="tokenTax">Token Tax (%) - Optional</label>
+                    <input type="number" id="tokenTax" class="input-field" placeholder="e.g., 10" step="0.1" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="extraFees">Extra Fees (SOL) - Optional</label>
+                    <input type="number" id="extraFees" class="input-field" placeholder="e.g., 0.1" step="0.01" min="0">
+                </div>
+            </div>
+
+            <button class="tool-btn" id="calculateBtn">Calculate True Cost</button>
+
+            <div class="results-section" id="resultsSection">
+                <div class="results-title">Results</div>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Buy Slippage Cost</div>
+                        <div class="result-value" id="buyCost">0 SOL</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Sell Slippage Cost</div>
+                        <div class="result-value" id="sellCost">0 SOL</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Tax Cost</div>
+                        <div class="result-value" id="taxCost">0 SOL</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Total Fees</div>
+                        <div class="result-value" id="totalFees">0 SOL</div>
+                    </div>
+                    <div class="result-card" id="pumpCard">
+                        <div class="result-label">Minimum Pump Required</div>
+                        <div class="result-value" id="minPump">0%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 6
+        });
+
+        const SlippageCalculator = {
+            init() {
+                this.cacheElements();
+                this.bindEvents();
+            },
+
+            cacheElements() {
+                this.tradeAmountInput = document.getElementById('tradeAmount');
+                this.buySlippageInput = document.getElementById('buySlippage');
+                this.sellSlippageInput = document.getElementById('sellSlippage');
+                this.tokenTaxInput = document.getElementById('tokenTax');
+                this.extraFeesInput = document.getElementById('extraFees');
+                this.calculateBtn = document.getElementById('calculateBtn');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.resultsSection = document.getElementById('resultsSection');
+                this.buyCost = document.getElementById('buyCost');
+                this.sellCost = document.getElementById('sellCost');
+                this.taxCost = document.getElementById('taxCost');
+                this.totalFees = document.getElementById('totalFees');
+                this.minPump = document.getElementById('minPump');
+                this.pumpCard = document.getElementById('pumpCard');
+            },
+
+            bindEvents() {
+                this.calculateBtn.addEventListener('click', () => this.calculate());
+            },
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.classList.add('visible');
+                this.resultsSection.classList.remove('visible');
+            },
+
+            clearError() {
+                this.errorMessage.textContent = '';
+                this.errorMessage.classList.remove('visible');
+            },
+
+            calculate() {
+                const tradeAmount = parseFloat(this.tradeAmountInput.value);
+                const buySlippage = parseFloat(this.buySlippageInput.value);
+                const sellSlippage = parseFloat(this.sellSlippageInput.value);
+                const tokenTax = parseFloat(this.tokenTaxInput.value) || 0;
+                const extraFees = parseFloat(this.extraFeesInput.value) || 0;
+
+                if ([tradeAmount, buySlippage, sellSlippage].some((val) => Number.isNaN(val))) {
+                    this.showError('Please fill in Trade Amount, Buy Slippage, and Sell Slippage.');
+                    return;
+                }
+
+                if (tradeAmount <= 0) {
+                    this.showError('Trade amount must be greater than zero.');
+                    return;
+                }
+
+                if (buySlippage < 0 || sellSlippage < 0 || tokenTax < 0 || extraFees < 0) {
+                    this.showError('Values cannot be negative.');
+                    return;
+                }
+
+                const buyCostSOL = tradeAmount * (buySlippage / 100);
+                const sellCostSOL = tradeAmount * (sellSlippage / 100);
+                const taxCostSOL = tradeAmount * (tokenTax / 100);
+                const totalFeesSOL = buyCostSOL + sellCostSOL + taxCostSOL + extraFees;
+                const minimumPumpRequired = (totalFeesSOL / tradeAmount) * 100;
+
+                this.clearError();
+                this.resultsSection.classList.add('visible');
+
+                this.buyCost.textContent = formatter.format(buyCostSOL) + ' SOL';
+                this.sellCost.textContent = formatter.format(sellCostSOL) + ' SOL';
+                this.taxCost.textContent = formatter.format(taxCostSOL) + ' SOL';
+                this.totalFees.textContent = formatter.format(totalFeesSOL) + ' SOL';
+                this.minPump.textContent = minimumPumpRequired.toFixed(2) + '%';
+
+                this.pumpCard.classList.remove('pump-green', 'pump-yellow', 'pump-red');
+
+                if (minimumPumpRequired > 10) {
+                    this.pumpCard.classList.add('pump-red');
+                } else if (minimumPumpRequired >= 5) {
+                    this.pumpCard.classList.add('pump-yellow');
+                } else {
+                    this.pumpCard.classList.add('pump-green');
+                }
+            }
+        };
+
+        SlippageCalculator.init();
+    </script>
+</body>
+</html>

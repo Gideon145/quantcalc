@@ -13,6 +13,16 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Container */
@@ -25,19 +35,92 @@ body {
 
 /* Hero Section */
 .hero {
-    padding: 80px 0 60px;
+    padding: 100px 0 80px;
     text-align: center;
     background: #0b0f19;
     border-bottom: 1px solid #1f2937;
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 700;
     color: #3b82f6;
-    margin-bottom: 16px;
+    margin-bottom: 48px;
     letter-spacing: -0.02em;
     text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin-bottom: 24px;
+    position: relative;
+    display: inline-block;
+}
+
+.hero-subtitle::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, transparent);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+}
+
+.hero-description {
+    font-size: 1.15rem;
+    color: #9ca3af;
+    font-weight: 400;
+    max-width: 650px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    font-family: inherit;
+}
+
+.hero-btn.primary {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.hero-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+.hero-btn.secondary {
+    background: transparent;
+    color: #93c5fd;
+    border: 1px solid #3b82f6;
+}
+
+.hero-btn.secondary:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: #60a5fa;
 }
 
 .hero-subtitle {
@@ -142,21 +225,144 @@ body {
     border: 1px solid #1f2937;
     border-radius: 16px;
     padding: 40px 32px;
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.tool-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0), rgba(139, 92, 246, 0));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
 }
 
 .tool-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-    border-color: #374151;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), 0 0 30px rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
     background: #151d2e;
+}
+
+.tool-card:hover::after {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.4));
+    opacity: 1;
 }
 
 .tool-icon {
     font-size: 3rem;
     margin-bottom: 20px;
     filter: grayscale(20%);
+}
+
+/* Tool Badges */
+.tool-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+/* Solana Tools Badge Colors */
+.tool-badge.advanced {
+    background: #7b5cff;
+    color: white;
+}
+
+.tool-badge.popular {
+    background: #ff6b35;
+    color: white;
+}
+
+.tool-badge.strategy {
+    background: #9c27b0;
+    color: white;
+}
+
+.tool-badge.onchain {
+    background: #00c2a8;
+    color: white;
+}
+
+.tool-badge.launch {
+    background: #ff9800;
+    color: white;
+}
+
+.tool-badge.defi {
+    background: #00bcd4;
+    color: white;
+}
+
+.tool-badge.tokenomics {
+    background: #3f51b5;
+    color: white;
+}
+
+.tool-badge.projection {
+    background: #607d8b;
+    color: white;
+}
+
+/* Core Trading Tools Badge Colors */
+.tool-badge.risk {
+    background: #e53935;
+    color: white;
+}
+
+.tool-badge.essential {
+    background: #1e88e5;
+    color: white;
+}
+
+.tool-badge.leverage {
+    background: #ff3b3b;
+    color: white;
+}
+
+.tool-badge.execution {
+    background: #8e24aa;
+    color: white;
+}
+
+.tool-badge.accumulation {
+    background: #43a047;
+    color: white;
+}
+
+.tool-badge.supply {
+    background: #795548;
+    color: white;
+}
+
+.tool-badge.airdrop {
+    background: #00e5ff;
+    color: #111;
+}
+
+/* Legacy badge (if needed) */
+.tool-badge.featured {
+    background: linear-gradient(90deg, #f5c542, #ff9f1c);
+    color: #111;
 }
 
 .tool-title {
@@ -209,6 +415,21 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     outline: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.tool-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .tool-btn:focus {
@@ -221,6 +442,10 @@ body {
     transform: translateY(-2px);
     background: #2563eb;
     box-shadow: 0 0 20px 2px rgba(59, 130, 246, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tool-btn:hover::before {
+    opacity: 1;
 }
 
 .tool-button:active,
@@ -249,11 +474,73 @@ body {
 /* Footer */
 .footer {
     padding: 40px 0;
-    text-align: center;
     border-top: 1px solid #1f2937;
-    background: #121826;
+    background: #0b0f19;
     color: #6b7280;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0.7;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+    flex: 1;
+}
+
+.footer-left {
+    text-align: left;
+}
+
+.footer-center {
+    text-align: center;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+/* Why QuantCalc Section */
+.why-section {
+    padding: 60px 0 80px;
+    background: #0b0f19;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.why-card {
+    background: #121826;
+    border: 1px solid #1f2937;
+    border-radius: 12px;
+    padding: 32px;
+    transition: all 0.3s ease;
+}
+
+.why-card:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+.why-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #f3f4f6;
+    margin-bottom: 12px;
+}
+
+.why-description {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 /* Responsive Design */
@@ -264,6 +551,42 @@ body {
 
     .hero-title {
         font-size: 2.5rem;
+        margin-bottom: 32px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hero-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .why-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
+        text-align: center;
     }
 
     .hero-subtitle {

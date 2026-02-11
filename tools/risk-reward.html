@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate trade risk, reward, and risk-to-reward ratio with optional position size and percentage moves.">
+    <title>Risk Reward Calculator | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Risk Reward Calculator | QuantCalc">
+    <meta property="og:description" content="Calculate trade risk, reward, and risk-to-reward ratio with optional position size and percentage moves.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/tools/risk-reward.html">
+    
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .brand-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 6px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand-subtitle {
+            font-size: 1.05rem;
+            color: #9ca3af;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .subtitle-line {
+            width: 140px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #f3f4f6;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        /* Card Base */
+        .card {
+            background: #121826;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.15s both;
+        }
+
+        .card + .card {
+            margin-top: 24px;
+        }
+
+        .how-section {
+            margin-top: 32px;
+            margin-bottom: 32px;
+            padding: 24px 28px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .how-section h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #f1f5f9;
+        }
+
+        .how-section p,
+        .how-section li {
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        /* How to Use */
+        .how-to-list {
+            display: grid;
+            gap: 10px;
+            color: #cbd5e1;
+            font-size: 0.98rem;
+        }
+
+        .how-to-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .how-to-number {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .how-to-tip {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Inputs */
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .tool-btn {
+            margin-top: 6px;
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            background: #7f1d1d;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Results */
+        .results-section {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid #1f2937;
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .result-card {
+            background: #0b0f19;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 18px;
+            min-height: 96px;
+        }
+
+        .result-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            color: #f1f5f9;
+            font-size: 1.45rem;
+            font-weight: 700;
+        }
+
+        .ratio-card {
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            box-shadow: 0 0 18px rgba(59, 130, 246, 0.2);
+        }
+
+        .ratio-green {
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .ratio-yellow {
+            border-color: rgba(250, 204, 21, 0.5);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+        }
+
+        .ratio-red {
+            border-color: rgba(248, 113, 113, 0.55);
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+        }
+
+        .results-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 24px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="/" class="back-link">Back to Home</a>
+            <div class="brand-title">QuantCalc</div>
+            <div class="brand-subtitle">The #1 Solana Math Toolkit</div>
+            <div class="subtitle-line"></div>
+            <div class="page-title">Trade Risk/Reward Calculator</div>
+            <div class="page-description">Quickly calculate your risk, reward, and R:R ratio before entering a trade.</div>
+        </header>
+
+        <div class="how-section">
+            <h3>How to Use</h3>
+            <p>1. Enter your planned Entry Price.</p>
+            <p>2. Enter your Stop Loss price.</p>
+            <p>3. Enter your Take Profit price.</p>
+            <p>4. Optionally enter your position size.</p>
+            <p>5. Click Calculate to see your risk, reward, and R:R ratio.</p>
+            <p style="font-style: italic; margin-top: 12px;">Always know your risk before entering a trade.</p>
+        </div>
+
+        <section class="card">
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="input-section">
+                <h2 class="section-title">Enter Trade Parameters</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="entryPrice">Entry Price</label>
+                    <input type="number" id="entryPrice" class="input-field" placeholder="e.g., 25.50" step="0.0001" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="stopLoss">Stop Loss</label>
+                    <input type="number" id="stopLoss" class="input-field" placeholder="e.g., 24.20" step="0.0001" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="takeProfit">Take Profit</label>
+                    <input type="number" id="takeProfit" class="input-field" placeholder="e.g., 29.80" step="0.0001" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="positionSize">Position Size (optional)</label>
+                    <input type="number" id="positionSize" class="input-field" placeholder="e.g., 200" step="0.0001" min="0">
+                </div>
+            </div>
+
+            <button class="tool-btn" id="calculateBtn">Calculate Risk/Reward</button>
+
+            <div class="results-section" id="resultsSection">
+                <div class="results-title">Results</div>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Risk per Unit</div>
+                        <div class="result-value" id="riskPerUnit">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Reward per Unit</div>
+                        <div class="result-value" id="rewardPerUnit">0</div>
+                    </div>
+                    <div class="result-card ratio-card" id="ratioCard">
+                        <div class="result-label">R:R Ratio</div>
+                        <div class="result-value" id="ratioValue">0 : 1</div>
+                    </div>
+                    <div class="result-card" id="lossCard" hidden>
+                        <div class="result-label">Potential Loss</div>
+                        <div class="result-value" id="potentialLoss">0</div>
+                    </div>
+                    <div class="result-card" id="profitCard" hidden>
+                        <div class="result-label">Potential Profit</div>
+                        <div class="result-value" id="potentialProfit">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">% Move to Stop</div>
+                        <div class="result-value" id="percentToStop">0%</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">% Move to Target</div>
+                        <div class="result-value" id="percentToTarget">0%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 6
+        });
+
+        const RiskRewardCalculator = {
+            init() {
+                this.cacheElements();
+                this.bindEvents();
+            },
+
+            cacheElements() {
+                this.entryInput = document.getElementById('entryPrice');
+                this.stopInput = document.getElementById('stopLoss');
+                this.takeInput = document.getElementById('takeProfit');
+                this.sizeInput = document.getElementById('positionSize');
+                this.calculateBtn = document.getElementById('calculateBtn');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.resultsSection = document.getElementById('resultsSection');
+                this.riskPerUnit = document.getElementById('riskPerUnit');
+                this.rewardPerUnit = document.getElementById('rewardPerUnit');
+                this.ratioValue = document.getElementById('ratioValue');
+                this.ratioCard = document.getElementById('ratioCard');
+                this.potentialLoss = document.getElementById('potentialLoss');
+                this.potentialProfit = document.getElementById('potentialProfit');
+                this.percentToStop = document.getElementById('percentToStop');
+                this.percentToTarget = document.getElementById('percentToTarget');
+                this.lossCard = document.getElementById('lossCard');
+                this.profitCard = document.getElementById('profitCard');
+            },
+
+            bindEvents() {
+                this.calculateBtn.addEventListener('click', () => this.calculate());
+            },
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.classList.add('visible');
+                this.resultsSection.classList.remove('visible');
+            },
+
+            clearError() {
+                this.errorMessage.textContent = '';
+                this.errorMessage.classList.remove('visible');
+            },
+
+            calculate() {
+                const entry = parseFloat(this.entryInput.value);
+                const stopLoss = parseFloat(this.stopInput.value);
+                const takeProfit = parseFloat(this.takeInput.value);
+                const positionSize = parseFloat(this.sizeInput.value);
+
+                if ([entry, stopLoss, takeProfit].some((value) => Number.isNaN(value))) {
+                    this.showError('Please enter valid numbers for Entry, Stop Loss, and Take Profit.');
+                    return;
+                }
+
+                if (entry === 0) {
+                    this.showError('Entry price must be greater than zero.');
+                    return;
+                }
+
+                if (stopLoss === entry) {
+                    this.showError('Stop Loss cannot equal Entry price.');
+                    return;
+                }
+
+                const riskPerUnit = Math.abs(entry - stopLoss);
+                if (riskPerUnit === 0) {
+                    this.showError('Risk per unit cannot be zero.');
+                    return;
+                }
+
+                const rewardPerUnit = Math.abs(takeProfit - entry);
+                const ratio = rewardPerUnit / riskPerUnit;
+                const isShort = stopLoss > entry;
+
+                const percentToStop = isShort
+                    ? ((stopLoss - entry) / entry) * 100
+                    : ((entry - stopLoss) / entry) * 100;
+                const percentToTarget = isShort
+                    ? ((entry - takeProfit) / entry) * 100
+                    : ((takeProfit - entry) / entry) * 100;
+
+                this.clearError();
+                this.resultsSection.classList.add('visible');
+
+                this.riskPerUnit.textContent = formatter.format(riskPerUnit);
+                this.rewardPerUnit.textContent = formatter.format(rewardPerUnit);
+                this.ratioValue.textContent = `${ratio.toFixed(2)} : 1`;
+
+                this.updateRatioStyles(ratio);
+
+                const sizeProvided = Number.isFinite(positionSize) && positionSize > 0;
+                this.lossCard.hidden = !sizeProvided;
+                this.profitCard.hidden = !sizeProvided;
+
+                if (sizeProvided) {
+                    this.potentialLoss.textContent = formatter.format(riskPerUnit * positionSize);
+                    this.potentialProfit.textContent = formatter.format(rewardPerUnit * positionSize);
+                }
+
+                this.percentToStop.textContent = `${percentToStop.toFixed(2)}%`;
+                this.percentToTarget.textContent = `${percentToTarget.toFixed(2)}%`;
+            },
+
+            updateRatioStyles(ratio) {
+                this.ratioCard.classList.remove('ratio-green', 'ratio-yellow', 'ratio-red');
+
+                if (ratio >= 2) {
+                    this.ratioCard.classList.add('ratio-green');
+                } else if (ratio >= 1) {
+                    this.ratioCard.classList.add('ratio-yellow');
+                } else {
+                    this.ratioCard.classList.add('ratio-red');
+                }
+            }
+        };
+
+        RiskRewardCalculator.init();
+    </script>
+</body>
+</html>
