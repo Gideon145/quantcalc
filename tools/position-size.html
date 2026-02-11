@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
     <meta name="description" content="Calculate optimal position sizes based on risk percentage, entry price, and stop loss for forex, crypto, and stocks.">
     <title>Position Size Calculator | QuantCalc</title>
     
@@ -10,8 +12,11 @@
     <meta property="og:title" content="Position Size Calculator | QuantCalc">
     <meta property="og:description" content="Calculate optimal position sizes based on risk percentage, entry price, and stop loss for forex, crypto, and stocks.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://quantcalc.app/tools/position-size.html">
+    <meta property="og:url" content="https://quantcalc.tools/tools/position-size.html">
     
+    <link rel="canonical" href="https://quantcalc.tools/tools/position-size.html">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
     <link rel="stylesheet" href="../style.css">
     <style>
         /* Reset and Base Styles */
@@ -73,6 +78,15 @@
         .page-description {
             color: #94a3b8;
             font-size: 1.05rem;
+        }
+
+        /* How to Use Section */
+        .how-to-use {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 32px;
         }
 
         /* Calculator Card */
@@ -431,6 +445,18 @@
             <a href="/" class="back-link">Back to Home</a>
             <h1 class="page-title">Position Size Calculator</h1>
             <p class="page-description">Calculate optimal position sizes based on your risk tolerance and account balance</p>
+        </div>
+
+        <!-- How to Use Section -->
+        <div class="how-to-use">
+            <h3 style="font-size: 1.1rem; color: #e2e8f0; margin-bottom: 16px; font-weight: 600;">How to Use</h3>
+            <ul style="color: #94a3b8; line-height: 1.8; padding-left: 20px;">
+                <li>Enter your total account balance in dollars</li>
+                <li>Set your risk percentage (recommended: 1-2% per trade)</li>
+                <li>Input your planned entry price</li>
+                <li>Enter your stop-loss price</li>
+                <li>Click "Calculate Position Size" to see how many units to buy</li>
+            </ul>
         </div>
 
         <!-- Calculator Card -->

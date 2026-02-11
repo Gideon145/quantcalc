@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://quantcalc.app/sitemap.xml
+Sitemap: https://quantcalc.tools/sitemap.xml

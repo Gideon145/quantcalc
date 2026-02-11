@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://quantcalc.app/</loc>
+    <loc>https://quantcalc.tools/</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -10,56 +10,63 @@
   
   <!-- Solana Tools -->
   <url>
-    <loc>https://quantcalc.app/tools/solana-trade-simulator.html</loc>
+    <loc>https://quantcalc.tools/tools/solana-trade-simulator.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/solana/meme-profit.html</loc>
+    <loc>https://quantcalc.tools/solana/trade-simulator-pro.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/solana/pump-breakeven.html</loc>
+    <loc>https://quantcalc.tools/solana/meme-profit.html</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://quantcalc.tools/solana/pump-breakeven.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/exit-ladder-planner.html</loc>
+    <loc>https://quantcalc.tools/tools/exit-ladder-planner.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/volume-sustainability.html</loc>
+    <loc>https://quantcalc.tools/tools/volume-sustainability.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/impermanent-loss.html</loc>
+    <loc>https://quantcalc.tools/tools/impermanent-loss.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/marketcap-fdv.html</loc>
+    <loc>https://quantcalc.tools/tools/marketcap-fdv.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/marketcap-flip.html</loc>
+    <loc>https://quantcalc.tools/tools/marketcap-flip.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -67,49 +74,49 @@
   
   <!-- Core Trading Tools -->
   <url>
-    <loc>https://quantcalc.app/tools/position-size.html</loc>
+    <loc>https://quantcalc.tools/tools/position-size.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/risk-reward.html</loc>
+    <loc>https://quantcalc.tools/tools/risk-reward.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/perp-liquidation.html</loc>
+    <loc>https://quantcalc.tools/tools/perp-liquidation.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/slippage-reality.html</loc>
+    <loc>https://quantcalc.tools/tools/slippage-reality.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/dca-calculator.html</loc>
+    <loc>https://quantcalc.tools/tools/dca-calculator.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/token-burn-impact.html</loc>
+    <loc>https://quantcalc.tools/tools/token-burn-impact.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.app/tools/airdrop-speculator.html</loc>
+    <loc>https://quantcalc.tools/tools/airdrop-speculator.html</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
