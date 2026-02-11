@@ -282,21 +282,29 @@ const MemeProfitCalculator = {
 
         const { entryAmount, entryMarketCap, targetMarketCap, profitSOL, profitUSD, roiPercent, multiplier } = this.calculatedData;
 
+        // Get token name (optional)
+        const tokenNameInput = document.getElementById('tokenName');
+        const tokenName = tokenNameInput && tokenNameInput.value.trim() 
+            ? tokenNameInput.value.trim() 
+            : 'Solana Token';
+
         // Create canvas (vertical layout)
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
         canvas.width = 1080;
-        canvas.height = 1350;
+        canvas.height = 1400;
 
-        // Background (premium vertical gradient)
+        // ========================================
+        // BACKGROUND
+        // ========================================
         const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
         bg.addColorStop(0, '#000000');
         bg.addColorStop(1, '#0f172a');
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Subtle diagonal stripe overlay
+        // Diagonal stripe overlay
         ctx.globalAlpha = 0.05;
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1;
@@ -308,64 +316,76 @@ const MemeProfitCalculator = {
         }
         ctx.globalAlpha = 1;
 
-        // Header: Title
+        // ========================================
+        // HEADER SECTION
+        // ========================================
+        // Title with blue gradient
         ctx.fillStyle = '#3b82f6';
         ctx.font = 'bold 72px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('QuantCalc', canvas.width / 2, 120);
+        ctx.fillText('QuantCalc', canvas.width / 2, 100);
 
-        // Header: Subtitle
+        // Subtitle
         ctx.fillStyle = '#ffffff';
-        ctx.font = '36px Arial';
-        ctx.fillText('The #1 Solana Math Toolkit', canvas.width / 2, 180);
+        ctx.font = '32px Arial';
+        ctx.fillText('The #1 Solana Math Toolkit', canvas.width / 2, 155);
 
-        // Solana gradient bar icon (3 small rounded rectangles)
-        const barY = 220;
-        const barWidth = 60;
-        const barHeight = 12;
-        const barGap = 10;
+        // Solana logo bars (3 gradient rectangles)
+        const barY = 185;
+        const barWidth = 50;
+        const barHeight = 10;
+        const barGap = 8;
         const totalBarWidth = (barWidth * 3) + (barGap * 2);
         const barStartX = (canvas.width - totalBarWidth) / 2;
 
-        const gradient1 = ctx.createLinearGradient(barStartX, barY, barStartX + barWidth, barY);
-        gradient1.addColorStop(0, '#14f195');
-        gradient1.addColorStop(1, '#9945ff');
+        const solGradient = ctx.createLinearGradient(barStartX, barY, barStartX + totalBarWidth, barY);
+        solGradient.addColorStop(0, '#14f195');
+        solGradient.addColorStop(1, '#9945ff');
 
         for (let i = 0; i < 3; i++) {
-            ctx.fillStyle = gradient1;
+            ctx.fillStyle = solGradient;
             const x = barStartX + (i * (barWidth + barGap));
             ctx.beginPath();
-            ctx.roundRect(x, barY, barWidth, barHeight, 6);
+            ctx.roundRect(x, barY, barWidth, barHeight, 5);
             ctx.fill();
         }
 
-        // Helper function to draw rounded stat box
-        const drawStatBox = (x, y, label, value) => {
-            const boxWidth = 420;
-            const boxHeight = 120;
+        // ========================================
+        // TOKEN NAME (centered, bold)
+        // ========================================
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 48px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(tokenName.toUpperCase(), canvas.width / 2, 270);
+
+        // ========================================
+        // HELPER FUNCTION: DRAW STAT BOX
+        // ========================================
+        const drawStatBox = (x, y, label, value, width = 460) => {
+            const boxHeight = 110;
             const radius = 12;
 
-            // Draw box background
+            // Box background
             ctx.fillStyle = '#111827';
             ctx.beginPath();
-            ctx.roundRect(x - boxWidth / 2, y, boxWidth, boxHeight, radius);
+            ctx.roundRect(x, y, width, boxHeight, radius);
             ctx.fill();
 
-            // Draw box border
+            // Box border
             ctx.strokeStyle = '#1f2937';
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Draw label
+            // Label (grey, small)
             ctx.fillStyle = '#9ca3af';
-            ctx.font = '20px Arial';
+            ctx.font = '18px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(label, x, y + 40);
+            ctx.fillText(label, x + width / 2, y + 35);
 
-            // Draw value
+            // Value (white, bold)
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 32px Arial';
-            ctx.fillText(value, x, y + 85);
+            ctx.font = 'bold 28px Arial';
+            ctx.fillText(value, x + width / 2, y + 75);
         };
 
         // Format values
@@ -378,58 +398,70 @@ const MemeProfitCalculator = {
         const formattedEntryAmount = this.formatDecimal(entryAmount, 4) + ' SOL';
         const formattedProfitSOL = this.formatDecimal(profitSOL, 4) + ' SOL';
 
-        // Two-column stats grid
-        const leftX = 270;
-        const rightX = canvas.width - 270;
-        const startY = 300;
-        const rowGap = 160;
+        // ========================================
+        // 2-COLUMN DETAIL GRID
+        // ========================================
+        const leftX = 80;
+        const rightX = 540;
+        const boxWidth = 460;
+        const startY = 320;
+        const rowGap = 140;
 
-        // Row 1
-        drawStatBox(leftX, startY, 'Entry Market Cap', formattedEntryCap);
-        drawStatBox(rightX, startY, 'Target Market Cap', formattedTargetCap);
+        // Row 1: Entry MC | Target MC
+        drawStatBox(leftX, startY, 'Entry Market Cap', formattedEntryCap, boxWidth);
+        drawStatBox(rightX, startY, 'Target Market Cap', formattedTargetCap, boxWidth);
 
-        // Row 2
-        drawStatBox(leftX, startY + rowGap, 'Entry Amount', formattedEntryAmount);
-        drawStatBox(rightX, startY + rowGap, 'Projected Profit (SOL)', formattedProfitSOL);
+        // Row 2: Entry Amount | Profit SOL
+        drawStatBox(leftX, startY + rowGap, 'Entry Amount', formattedEntryAmount, boxWidth);
+        drawStatBox(rightX, startY + rowGap, 'Projected Profit (SOL)', formattedProfitSOL, boxWidth);
 
-        // Row 3
-        drawStatBox(leftX, startY + (rowGap * 2), 'Projected Profit (USD)', formattedProfitUSD);
-        drawStatBox(rightX, startY + (rowGap * 2), 'Multiplier', formattedMultiplier);
+        // Row 3: Profit USD | Multiplier
+        drawStatBox(leftX, startY + (rowGap * 2), 'Projected Profit (USD)', formattedProfitUSD, boxWidth);
+        drawStatBox(rightX, startY + (rowGap * 2), 'Multiplier', formattedMultiplier, boxWidth);
 
-        // Big ROI Section
-        const roiY = 900;
-        const roiBoxWidth = 700;
-        const roiBoxHeight = 160;
+        // ========================================
+        // ROI SECTION (full width, centered)
+        // ========================================
+        const roiY = startY + (rowGap * 3);
+        const roiBoxWidth = 920;
+        const roiBoxHeight = 140;
+        const roiBoxX = (canvas.width - roiBoxWidth) / 2;
 
-        // Draw ROI box
+        // ROI box background
         ctx.fillStyle = '#111827';
         ctx.beginPath();
-        ctx.roundRect((canvas.width - roiBoxWidth) / 2, roiY, roiBoxWidth, roiBoxHeight, 16);
+        ctx.roundRect(roiBoxX, roiY, roiBoxWidth, roiBoxHeight, 16);
         ctx.fill();
 
+        // ROI box border (green highlight)
         ctx.strokeStyle = '#22c55e';
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // ROI Label
+        // ROI label
         ctx.fillStyle = '#9ca3af';
-        ctx.font = '28px Arial';
+        ctx.font = '24px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('ROI', canvas.width / 2, roiY + 45);
 
-        // ROI Value
+        // ROI value (large green)
         ctx.fillStyle = '#22c55e';
-        ctx.font = 'bold 96px Arial';
-        ctx.fillText(this.formatDecimal(roiPercent, 2) + '%', canvas.width / 2, roiY + 130);
+        ctx.font = 'bold 88px Arial';
+        ctx.fillText(this.formatDecimal(roiPercent, 2) + '%', canvas.width / 2, roiY + 115);
 
-        // Funny Quote
+        // ========================================
+        // BOTTOM SECTION
+        // ========================================
+        const bottomY = roiY + roiBoxHeight + 60;
+
+        // Funny quote (centered, green)
         const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
         ctx.fillStyle = '#22c55e';
-        ctx.font = 'italic 32px Arial';
+        ctx.font = 'italic 28px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText(`"${randomQuote}"`, canvas.width / 2, 1120);
+        ctx.fillText(`"${randomQuote}"`, canvas.width / 2, bottomY);
 
-        // Timestamp
+        // Timestamp (centered, grey)
         const now = new Date();
         const timestamp = now.toLocaleString('en-US', { 
             month: 'short', 
@@ -440,16 +472,18 @@ const MemeProfitCalculator = {
         });
 
         ctx.fillStyle = '#6b7280';
-        ctx.font = '22px Arial';
-        ctx.fillText(timestamp, canvas.width / 2, 1180);
+        ctx.font = '20px Arial';
+        ctx.fillText(timestamp, canvas.width / 2, bottomY + 40);
 
-        // Website Footer (right aligned)
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 24px Arial';
+        // Website link (bottom-right, blue gradient effect)
+        ctx.fillStyle = '#3b82f6';
+        ctx.font = 'bold 32px Arial';
         ctx.textAlign = 'right';
-        ctx.fillText('www.quantcalc.trade', canvas.width - 40, canvas.height - 40);
+        ctx.fillText('QuantCalc', canvas.width - 50, canvas.height - 50);
 
-        // Trigger download
+        // ========================================
+        // EXPORT PNG
+        // ========================================
         const imageData = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = imageData;
