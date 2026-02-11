@@ -273,7 +273,7 @@ const MemeProfitCalculator = {
         document.getElementById('generateCardBtn').classList.add('visible');
     },
 
-    // Generate shareable PnL card using native Canvas API
+    // Generate shareable PnL card using native Canvas API - REBUILT FROM SCRATCH
     generateCard() {
         if (!this.calculatedData) {
             this.showError('Please calculate PnL first');
@@ -288,16 +288,15 @@ const MemeProfitCalculator = {
             ? tokenNameInput.value.trim() 
             : 'Solana Token';
 
-        // Create canvas (vertical layout with improved spacing)
+        // Create canvas
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
         canvas.width = 1080;
-        // Height will be determined by content, set to reasonable default
-        canvas.height = 1400;
+        canvas.height = 1350; // Auto-determined by content
 
         // ========================================
-        // BACKGROUND (Enhanced contrast)
+        // BACKGROUND
         // ========================================
         const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
         bg.addColorStop(0, '#000000');
@@ -305,7 +304,7 @@ const MemeProfitCalculator = {
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Diagonal stripe overlay (subtle texture)
+        // Diagonal stripe overlay
         ctx.globalAlpha = 0.06;
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1;
@@ -318,30 +317,29 @@ const MemeProfitCalculator = {
         ctx.globalAlpha = 1;
 
         // ========================================
-        // HEADER SECTION (with top padding)
+        // HEADER SECTION
         // ========================================
-        const headerStartY = 80; // 40px top padding
+        const headerY = 80;
 
-        // Title with blue gradient
+        // Title
         ctx.fillStyle = '#3b82f6';
         ctx.font = 'bold 72px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('QuantCalc', canvas.width / 2, headerStartY);
+        ctx.fillText('QuantCalc', canvas.width / 2, headerY);
 
         // Subtitle
         ctx.fillStyle = '#e5e7eb';
         ctx.font = '32px Arial';
-        ctx.fillText('The #1 Solana Math Toolkit', canvas.width / 2, headerStartY + 55);
+        ctx.fillText('The #1 Solana Math Toolkit', canvas.width / 2, headerY + 55);
 
-        // 40px margin-bottom after subheader
-        const barY = headerStartY + 55 + 40;
+        // Solana logo bars
+        const barY = headerY + 95;
         const barWidth = 50;
         const barHeight = 10;
         const barGap = 8;
         const totalBarWidth = (barWidth * 3) + (barGap * 2);
         const barStartX = (canvas.width - totalBarWidth) / 2;
 
-        // Solana logo bars (3 gradient rectangles)
         const solGradient = ctx.createLinearGradient(barStartX, barY, barStartX + totalBarWidth, barY);
         solGradient.addColorStop(0, '#14f195');
         solGradient.addColorStop(1, '#9945ff');
@@ -354,27 +352,38 @@ const MemeProfitCalculator = {
             ctx.fill();
         }
 
-        // ========================================
-        // TOKEN NAME (centered, bold, larger font)
-        // 20px margin-top, 40px margin-bottom
-        // ========================================
-        const tokenNameY = barY + barHeight + 20 + 50; // 20px margin-top + adjustment for text
+        // Token name
+        const tokenNameY = barY + 60;
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 52px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(tokenName.toUpperCase(), canvas.width / 2, tokenNameY);
 
         // ========================================
-        // HELPER FUNCTION: DRAW STAT BOX
+        // GRID LAYOUT - REBUILT FROM SCRATCH
+        // Grid: 2 columns, 32px gaps
         // ========================================
-        const drawStatBox = (x, y, label, value, width = 460) => {
-            const boxHeight = 110;
-            const radius = 12;
+        const gridStartY = tokenNameY + 60; // 60px padding after token name
+        const boxWidth = 434; // (900 - 32) / 2 for 900px container with 32px gap
+        const boxHeight = 110;
+        const columnGap = 32;
+        const rowGap = 32;
+        
+        // Center grid (900px width container)
+        const gridContainerWidth = 900;
+        const gridLeftMargin = (canvas.width - gridContainerWidth) / 2; // 90px
+        
+        const col1X = gridLeftMargin;
+        const col2X = gridLeftMargin + boxWidth + columnGap;
 
-            // Box background (darker for more contrast)
+        // Helper function to draw stat box
+        const drawStatBox = (x, y, label, value) => {
+            const radius = 14;
+
+            // Box background
             ctx.fillStyle = '#0f1419';
             ctx.beginPath();
-            ctx.roundRect(x, y, width, boxHeight, radius);
+            ctx.roundRect(x, y, boxWidth, boxHeight, radius);
             ctx.fill();
 
             // Box border
@@ -382,16 +391,16 @@ const MemeProfitCalculator = {
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Label (grey, small)
+            // Label
             ctx.fillStyle = '#9ca3af';
             ctx.font = '18px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(label, x + width / 2, y + 35);
+            ctx.fillText(label, x + boxWidth / 2, y + 35);
 
-            // Value (white, bold, larger)
+            // Value
             ctx.fillStyle = '#f9fafb';
             ctx.font = 'bold 30px Arial';
-            ctx.fillText(value, x + width / 2, y + 75);
+            ctx.fillText(value, x + boxWidth / 2, y + 75);
         };
 
         // Format values
@@ -404,55 +413,39 @@ const MemeProfitCalculator = {
         const formattedEntryAmount = this.formatDecimal(entryAmount, 4) + ' SOL';
         const formattedProfitSOL = this.formatDecimal(profitSOL, 4) + ' SOL';
 
-        // ========================================
-        // 2-COLUMN DETAIL GRID (with 28px gap between cards)
-        // ========================================
-        const boxWidth = 460;
-        const boxHeight = 110;
-        const horizontalGap = 28;
-        
-        // Calculate positions to center the grid with 28px gap
-        const totalGridWidth = (boxWidth * 2) + horizontalGap; // 948px
-        const leftMargin = (canvas.width - totalGridWidth) / 2; // 66px
-        
-        const leftX = leftMargin; // 66px
-        const rightX = leftMargin + boxWidth + horizontalGap; // 554px
-        
-        const startY = tokenNameY + 40; // 40px margin-bottom after token name
-        const rowGap = boxHeight + 28; // 28px vertical gap between rows
-
         // Row 1: Entry MC | Target MC
-        drawStatBox(leftX, startY, 'Entry Market Cap', formattedEntryCap, boxWidth);
-        drawStatBox(rightX, startY, 'Target Market Cap', formattedTargetCap, boxWidth);
+        const row1Y = gridStartY;
+        drawStatBox(col1X, row1Y, 'Entry Market Cap', formattedEntryCap);
+        drawStatBox(col2X, row1Y, 'Target Market Cap', formattedTargetCap);
 
         // Row 2: Entry Amount | Profit SOL
-        drawStatBox(leftX, startY + rowGap, 'Entry Amount', formattedEntryAmount, boxWidth);
-        drawStatBox(rightX, startY + rowGap, 'Projected Profit (SOL)', formattedProfitSOL, boxWidth);
+        const row2Y = row1Y + boxHeight + rowGap;
+        drawStatBox(col1X, row2Y, 'Entry Amount', formattedEntryAmount);
+        drawStatBox(col2X, row2Y, 'Projected Profit (SOL)', formattedProfitSOL);
 
         // Row 3: Profit USD | Multiplier
-        drawStatBox(leftX, startY + (rowGap * 2), 'Projected Profit (USD)', formattedProfitUSD, boxWidth);
-        drawStatBox(rightX, startY + (rowGap * 2), 'Multiplier', formattedMultiplier, boxWidth);
+        const row3Y = row2Y + boxHeight + rowGap;
+        drawStatBox(col1X, row3Y, 'Projected Profit (USD)', formattedProfitUSD);
+        drawStatBox(col2X, row3Y, 'Multiplier', formattedMultiplier);
 
         // ========================================
-        // ROI SECTION (40px margin-top, 30px margin-bottom)
+        // ROI BOX (full width)
+        // 20px margin-top, 24px margin-bottom
         // ========================================
-        const roiY = startY + (rowGap * 3) + 40; // 40px margin-top above ROI box
-        const roiBoxWidth = 920;
+        const roiY = row3Y + boxHeight + 20;
+        const roiBoxWidth = gridContainerWidth;
         const roiBoxHeight = 160;
         const roiBoxX = (canvas.width - roiBoxWidth) / 2;
 
-        // ROI box background (darker)
+        // ROI box background
         ctx.fillStyle = '#0f1419';
         ctx.beginPath();
         ctx.roundRect(roiBoxX, roiY, roiBoxWidth, roiBoxHeight, 18);
         ctx.fill();
 
-        // ROI box border with subtle glow
+        // ROI box border with glow
         ctx.strokeStyle = '#10b981';
         ctx.lineWidth = 3;
-        ctx.stroke();
-
-        // Add subtle glow effect
         ctx.shadowColor = 'rgba(16, 185, 129, 0.3)';
         ctx.shadowBlur = 15;
         ctx.stroke();
@@ -465,24 +458,24 @@ const MemeProfitCalculator = {
         ctx.textAlign = 'center';
         ctx.fillText('ROI', canvas.width / 2, roiY + 50);
 
-        // ROI value (large green, slightly reduced intensity)
+        // ROI value
         ctx.fillStyle = '#10b981';
         ctx.font = 'bold 88px Arial';
         ctx.fillText(this.formatDecimal(roiPercent, 2) + '%', canvas.width / 2, roiY + 125);
 
         // ========================================
-        // BOTTOM SECTION (optimized spacing)
+        // BOTTOM SECTION
         // ========================================
-        const quoteY = roiY + roiBoxHeight + 40; // 40px margin after ROI
+        const quoteY = roiY + roiBoxHeight + 40;
 
-        // Funny quote (centered, green)
+        // Quote
         const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
         ctx.fillStyle = '#10b981';
         ctx.font = 'italic 30px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(`"${randomQuote}"`, canvas.width / 2, quoteY);
 
-        // Timestamp (centered, grey, smaller) - 35px below quote
+        // Timestamp
         const now = new Date();
         const timestamp = now.toLocaleString('en-US', { 
             month: 'short', 
@@ -494,11 +487,10 @@ const MemeProfitCalculator = {
 
         ctx.fillStyle = '#6b7280';
         ctx.font = '19px Arial';
-        const timestampY = quoteY + 35;
-        ctx.fillText(timestamp, canvas.width / 2, timestampY);
+        ctx.fillText(timestamp, canvas.width / 2, quoteY + 40);
 
-        // Website footer (bottom-right: 40px padding from bottom and right)
-        const footerY = timestampY + 70; // 70px below timestamp
+        // Website footer (bottom-right)
+        const footerY = quoteY + 100; // 60px below timestamp
         ctx.fillStyle = '#3b82f6';
         ctx.font = '600 28px Arial';
         ctx.textAlign = 'right';
