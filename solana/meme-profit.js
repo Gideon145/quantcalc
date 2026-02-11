@@ -282,17 +282,17 @@ const MemeProfitCalculator = {
 
         const { entryAmount, entryMarketCap, targetMarketCap, profitSOL, profitUSD, roiPercent, multiplier } = this.calculatedData;
 
-        // Create canvas
+        // Create canvas (vertical layout)
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = 1200;
-        canvas.height = 630;
+        canvas.width = 1080;
+        canvas.height = 1350;
 
-        // Background (premium black gradient)
-        const bg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        // Background (premium vertical gradient)
+        const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
         bg.addColorStop(0, '#000000');
-        bg.addColorStop(1, '#111827');
+        bg.addColorStop(1, '#0f172a');
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -300,7 +300,7 @@ const MemeProfitCalculator = {
         ctx.globalAlpha = 0.05;
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1;
-        for (let i = -canvas.height; i < canvas.width; i += 40) {
+        for (let i = -canvas.height; i < canvas.width + canvas.height; i += 40) {
             ctx.beginPath();
             ctx.moveTo(i, 0);
             ctx.lineTo(i + canvas.height, canvas.height);
@@ -308,51 +308,126 @@ const MemeProfitCalculator = {
         }
         ctx.globalAlpha = 1;
 
-        // Title
+        // Header: Title
         ctx.fillStyle = '#3b82f6';
-        ctx.font = 'bold 64px Arial';
+        ctx.font = 'bold 72px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('QuantCalc', canvas.width / 2, 110);
+        ctx.fillText('QuantCalc', canvas.width / 2, 120);
 
-        // Subtitle
+        // Header: Subtitle
         ctx.fillStyle = '#ffffff';
-        ctx.font = '28px Arial';
-        ctx.fillText('Solana Token Market Cap PnL Analyzer', canvas.width / 2, 160);
+        ctx.font = '36px Arial';
+        ctx.fillText('The #1 Solana Math Toolkit', canvas.width / 2, 180);
 
-        // Stats Section
-        ctx.font = '24px Arial';
-        ctx.fillStyle = '#9ca3af';
+        // Solana gradient bar icon (3 small rounded rectangles)
+        const barY = 220;
+        const barWidth = 60;
+        const barHeight = 12;
+        const barGap = 10;
+        const totalBarWidth = (barWidth * 3) + (barGap * 2);
+        const barStartX = (canvas.width - totalBarWidth) / 2;
 
-        const startY = 240;
-        const lineGap = 50;
+        const gradient1 = ctx.createLinearGradient(barStartX, barY, barStartX + barWidth, barY);
+        gradient1.addColorStop(0, '#14f195');
+        gradient1.addColorStop(1, '#9945ff');
 
+        for (let i = 0; i < 3; i++) {
+            ctx.fillStyle = gradient1;
+            const x = barStartX + (i * (barWidth + barGap));
+            ctx.beginPath();
+            ctx.roundRect(x, barY, barWidth, barHeight, 6);
+            ctx.fill();
+        }
+
+        // Helper function to draw rounded stat box
+        const drawStatBox = (x, y, label, value) => {
+            const boxWidth = 420;
+            const boxHeight = 120;
+            const radius = 12;
+
+            // Draw box background
+            ctx.fillStyle = '#111827';
+            ctx.beginPath();
+            ctx.roundRect(x - boxWidth / 2, y, boxWidth, boxHeight, radius);
+            ctx.fill();
+
+            // Draw box border
+            ctx.strokeStyle = '#1f2937';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw label
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x, y + 40);
+
+            // Draw value
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText(value, x, y + 85);
+        };
+
+        // Format values
         const formattedEntryCap = '$' + this.formatNumber(Math.round(entryMarketCap));
         const formattedTargetCap = '$' + this.formatNumber(Math.round(targetMarketCap));
         const formattedMultiplier = multiplier >= 1000 
             ? this.formatNumber(Math.round(multiplier)) + 'x'
             : this.formatDecimal(multiplier, 2) + 'x';
         const formattedProfitUSD = '$' + this.formatNumber(Math.round(profitUSD));
+        const formattedEntryAmount = this.formatDecimal(entryAmount, 4) + ' SOL';
+        const formattedProfitSOL = this.formatDecimal(profitSOL, 4) + ' SOL';
 
-        const stats = [
-            `Entry Market Cap: ${formattedEntryCap}`,
-            `Target Market Cap: ${formattedTargetCap}`,
-            `Multiplier: ${formattedMultiplier}`,
-            `Entry Amount: ${this.formatDecimal(entryAmount, 4)} SOL`,
-            `Projected Profit: ${this.formatDecimal(profitSOL, 4)} SOL`,
-            `Projected Profit: ${formattedProfitUSD}`,
-            `ROI: ${this.formatDecimal(roiPercent, 2)}%`
-        ];
+        // Two-column stats grid
+        const leftX = 270;
+        const rightX = canvas.width - 270;
+        const startY = 300;
+        const rowGap = 160;
 
-        stats.forEach((line, i) => {
-            ctx.fillText(line, canvas.width / 2, startY + (i * lineGap));
-        });
+        // Row 1
+        drawStatBox(leftX, startY, 'Entry Market Cap', formattedEntryCap);
+        drawStatBox(rightX, startY, 'Target Market Cap', formattedTargetCap);
 
-        // Funny Quotes
-        const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
+        // Row 2
+        drawStatBox(leftX, startY + rowGap, 'Entry Amount', formattedEntryAmount);
+        drawStatBox(rightX, startY + rowGap, 'Projected Profit (SOL)', formattedProfitSOL);
 
+        // Row 3
+        drawStatBox(leftX, startY + (rowGap * 2), 'Projected Profit (USD)', formattedProfitUSD);
+        drawStatBox(rightX, startY + (rowGap * 2), 'Multiplier', formattedMultiplier);
+
+        // Big ROI Section
+        const roiY = 900;
+        const roiBoxWidth = 700;
+        const roiBoxHeight = 160;
+
+        // Draw ROI box
+        ctx.fillStyle = '#111827';
+        ctx.beginPath();
+        ctx.roundRect((canvas.width - roiBoxWidth) / 2, roiY, roiBoxWidth, roiBoxHeight, 16);
+        ctx.fill();
+
+        ctx.strokeStyle = '#22c55e';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // ROI Label
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '28px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('ROI', canvas.width / 2, roiY + 45);
+
+        // ROI Value
         ctx.fillStyle = '#22c55e';
-        ctx.font = 'italic 28px Arial';
-        ctx.fillText(`"${randomQuote}"`, canvas.width / 2, 580);
+        ctx.font = 'bold 96px Arial';
+        ctx.fillText(this.formatDecimal(roiPercent, 2) + '%', canvas.width / 2, roiY + 130);
+
+        // Funny Quote
+        const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
+        ctx.fillStyle = '#22c55e';
+        ctx.font = 'italic 32px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(`"${randomQuote}"`, canvas.width / 2, 1120);
 
         // Timestamp
         const now = new Date();
@@ -365,13 +440,14 @@ const MemeProfitCalculator = {
         });
 
         ctx.fillStyle = '#6b7280';
-        ctx.font = '20px Arial';
-        ctx.fillText(timestamp, canvas.width / 2, 610);
+        ctx.font = '22px Arial';
+        ctx.fillText(timestamp, canvas.width / 2, 1180);
 
-        // Website Footer
+        // Website Footer (right aligned)
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 22px Arial';
-        ctx.fillText('www.quantcalc.trade', canvas.width / 2, 640);
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'right';
+        ctx.fillText('www.quantcalc.trade', canvas.width - 40, canvas.height - 40);
 
         // Trigger download
         const imageData = canvas.toDataURL('image/png');
