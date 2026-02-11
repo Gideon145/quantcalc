@@ -293,7 +293,8 @@ const MemeProfitCalculator = {
         const ctx = canvas.getContext('2d');
 
         canvas.width = 1080;
-        canvas.height = 1500;
+        // Height will be determined by content, set to reasonable default
+        canvas.height = 1400;
 
         // ========================================
         // BACKGROUND (Enhanced contrast)
@@ -404,14 +405,21 @@ const MemeProfitCalculator = {
         const formattedProfitSOL = this.formatDecimal(profitSOL, 4) + ' SOL';
 
         // ========================================
-        // 2-COLUMN DETAIL GRID (with 28px margin between rows)
+        // 2-COLUMN DETAIL GRID (with 28px gap between cards)
         // ========================================
-        const leftX = 80;
-        const rightX = 540;
         const boxWidth = 460;
         const boxHeight = 110;
+        const horizontalGap = 28;
+        
+        // Calculate positions to center the grid with 28px gap
+        const totalGridWidth = (boxWidth * 2) + horizontalGap; // 948px
+        const leftMargin = (canvas.width - totalGridWidth) / 2; // 66px
+        
+        const leftX = leftMargin; // 66px
+        const rightX = leftMargin + boxWidth + horizontalGap; // 554px
+        
         const startY = tokenNameY + 40; // 40px margin-bottom after token name
-        const rowGap = boxHeight + 28; // 28px margin-bottom between rows
+        const rowGap = boxHeight + 28; // 28px vertical gap between rows
 
         // Row 1: Entry MC | Target MC
         drawStatBox(leftX, startY, 'Entry Market Cap', formattedEntryCap, boxWidth);
@@ -463,10 +471,9 @@ const MemeProfitCalculator = {
         ctx.fillText(this.formatDecimal(roiPercent, 2) + '%', canvas.width / 2, roiY + 125);
 
         // ========================================
-        // BOTTOM SECTION (with improved spacing)
-        // 20px margin-top after ROI, 12px margin-bottom after quote, 40px margin-bottom after timestamp
+        // BOTTOM SECTION (optimized spacing)
         // ========================================
-        const quoteY = roiY + roiBoxHeight + 30 + 20; // 30px margin-bottom from ROI + 20px margin-top for quote
+        const quoteY = roiY + roiBoxHeight + 40; // 40px margin after ROI
 
         // Funny quote (centered, green)
         const randomQuote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
@@ -475,7 +482,7 @@ const MemeProfitCalculator = {
         ctx.textAlign = 'center';
         ctx.fillText(`"${randomQuote}"`, canvas.width / 2, quoteY);
 
-        // Timestamp (centered, grey, smaller) - 12px margin-bottom after quote
+        // Timestamp (centered, grey, smaller) - 35px below quote
         const now = new Date();
         const timestamp = now.toLocaleString('en-US', { 
             month: 'short', 
@@ -487,14 +494,15 @@ const MemeProfitCalculator = {
 
         ctx.fillStyle = '#6b7280';
         ctx.font = '19px Arial';
-        const timestampY = quoteY + 12 + 30; // 12px margin + text height adjustment
+        const timestampY = quoteY + 35;
         ctx.fillText(timestamp, canvas.width / 2, timestampY);
 
-        // Website footer (bottom-right: bottom 30px, right 40px)
+        // Website footer (bottom-right: 40px padding from bottom and right)
+        const footerY = timestampY + 70; // 70px below timestamp
         ctx.fillStyle = '#3b82f6';
         ctx.font = '600 28px Arial';
         ctx.textAlign = 'right';
-        ctx.fillText('www.qunancalc.trade', canvas.width - 40, canvas.height - 30);
+        ctx.fillText('www.qunancalc.trade', canvas.width - 40, footerY);
 
         // ========================================
         // EXPORT PNG
