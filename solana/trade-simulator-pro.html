@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Trade Simulator Pro | QuantCalc</title>
+    <meta name="description" content="Simulate profit, risk, scaling strategies, and execution costs before entering a Solana trade. Test entries before risking capital.">
+    <meta property="og:title" content="Solana Trade Simulator Pro | QuantCalc">
+    <meta property="og:description" content="Simulate profit, risk, scaling strategies, and execution costs before entering a Solana trade. Test entries before risking capital.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quantcalc.app/solana/trade-simulator-pro.html">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .landing-hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .landing-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .landing-hero .subheading {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .landing-hero .description {
+            font-size: 1.1rem;
+            color: #64748b;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-ctas .btn-primary {
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hero-ctas .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .hero-ctas .btn-secondary {
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            color: #3b82f6;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hero-ctas .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 48px;
+            color: #e2e8f0;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            text-align: center;
+            max-width: 800px;
+            margin: -32px auto 48px;
+            line-height: 1.7;
+        }
+
+        .problem-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .problem-item {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .problem-item h3 {
+            font-size: 1.3rem;
+            color: #fca5a5;
+            margin-bottom: 8px;
+        }
+
+        .solution-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 32px;
+        }
+
+        .solution-box h3 {
+            font-size: 1.5rem;
+            color: #86efac;
+            margin-bottom: 16px;
+        }
+
+        .solution-box p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 36px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: #e2e8f0;
+            margin-bottom: 16px;
+        }
+
+        .feature-card p {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .steps-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 28px;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .step-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+            min-width: 50px;
+        }
+
+        .step-content h3 {
+            font-size: 1.3rem;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        .audience-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .audience-item {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #c4b5fd;
+            font-weight: 500;
+        }
+
+        .final-cta {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .final-cta h2 {
+            font-size: 2.5rem;
+            color: #e2e8f0;
+            margin-bottom: 32px;
+            font-weight: 700;
+        }
+
+        .final-cta .btn-large {
+            padding: 20px 60px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .final-cta .btn-large:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 48px rgba(59, 130, 246, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .landing-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .landing-hero .subheading {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-ctas .btn-primary,
+            .hero-ctas .btn-secondary {
+                width: 100%;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .final-cta h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="landing-hero fade-in" style="animation-delay: 0.1s;">
+        <h1>Solana Trade Simulator Pro</h1>
+        <div class="subheading">Simulate profit, risk, scaling strategies, and execution costs before entering a trade.</div>
+        <div class="description">
+            Test entries before risking capital. Model slippage, fees, and scaling strategies. 
+            Avoid emotional trading mistakes by seeing the full picture before you commit.
+        </div>
+        <div class="hero-ctas">
+            <a href="../tools/solana-trade-simulator.html" class="btn-primary">Launch Simulator</a>
+            <a href="../index.html" class="btn-secondary">Back to Tools</a>
+        </div>
+    </section>
+
+    <!-- Why This Tool Exists -->
+    <section class="section fade-in" style="animation-delay: 0.2s;">
+        <h2 class="section-title">Why Most Traders Lose on Solana</h2>
+        
+        <div class="problem-list">
+            <div class="problem-item">
+                <h3>Ignoring Slippage</h3>
+                <p>Your $1,000 turns into $850 after slippage kills your entry.</p>
+            </div>
+            <div class="problem-item">
+                <h3>Underestimating Fees</h3>
+                <p>Priority fees, taxes, and platform cuts eat 10-15% of your profit.</p>
+            </div>
+            <div class="problem-item">
+                <h3>Poor Scaling Strategy</h3>
+                <p>You sell everything at 2x, then watch it run to 50x without you.</p>
+            </div>
+            <div class="problem-item">
+                <h3>Emotional Exits</h3>
+                <p>No plan means panic selling at the worst possible moment.</p>
+            </div>
+        </div>
+
+        <div class="solution-box">
+            <h3>How Trade Simulator Pro Solves This</h3>
+            <p>
+                Instead of learning these lessons with real money, simulate every scenario first. 
+                Model your entry with slippage. Test ladder exits. Calculate net profit after all fees. 
+                See exactly what happens at every price target before you trade. 
+                Turn guesswork into data-driven decisions.
+            </p>
+        </div>
+    </section>
+
+    <!-- What You Can Simulate -->
+    <section class="section fade-in" style="animation-delay: 0.3s;">
+        <h2 class="section-title">What You Can Simulate</h2>
+        <p class="section-subtitle">
+            Three powerful simulation engines in one tool. Test every variable before risking a single dollar.
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Profit Modeling</h3>
+                <p>
+                    Simulate realistic exit targets across multiple scenarios. 
+                    Calculate true net profit after slippage, fees, and taxes. 
+                    See your exact returns at 2x, 5x, 10x, or any custom target.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚠️</div>
+                <h3>Risk & Execution Costs</h3>
+                <p>
+                    Account for slippage impact on entry and exit. 
+                    Include priority fees and tax rates. 
+                    Understand exactly what you'll pay to execute your trade.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Scaling Strategy Testing</h3>
+                <p>
+                    Test ladder entries with multiple buy tranches. 
+                    Model ladder exits across different profit levels. 
+                    Experiment with allocation sizes to optimize your position.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section fade-in" style="animation-delay: 0.4s;">
+        <h2 class="section-title">How It Works</h2>
+        
+        <div class="steps-container">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Enter Trade Parameters</h3>
+                    <p>Input your position size, entry price, market cap, and target multipliers. Choose your simulation mode: Outcome Matrix, Reality Engine, or Smart Money Mode.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Add Slippage, Fees, Scaling</h3>
+                    <p>Configure slippage percentages for entries and exits. Set priority fees and tax rates. Define your scaling strategy with multiple entry or exit points.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Analyze Net Outcome Before Trading</h3>
+                    <p>Review comprehensive results showing your true profit after all costs. See worst-case, best-case, and realistic scenarios. Make informed decisions with complete data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who This Is For -->
+    <section class="section fade-in" style="animation-delay: 0.5s;">
+        <h2 class="section-title">Who This Is For</h2>
+        
+        <div class="audience-list">
+            <div class="audience-item">🐸 Meme Coin Traders</div>
+            <div class="audience-item">⚡ Snipers</div>
+            <div class="audience-item">📈 Swing Traders</div>
+            <div class="audience-item">🎯 Risk-Focused Traders</div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="section fade-in" style="animation-delay: 0.6s;">
+        <div class="final-cta">
+            <h2>Stop guessing. Simulate first.</h2>
+            <a href="../tools/solana-trade-simulator.html" class="btn-large">Open Trade Simulator Pro</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: 40px 20px; text-align: center; border-top: 1px solid rgba(59, 130, 246, 0.1); margin-top: 60px;">
+        <p style="color: #64748b; font-size: 0.95rem;">
+            QuantCalc &copy; 2026 | The Solana Trading Command Center
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
