@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0b0f19">
     <meta name="author" content="QuantCalc">
-    <meta name="description" content="Analyze your Solana token trades with a real PnL calculator. Track entry price, exit price, fees, position size, and calculate true profit or loss instantly.">
-    <title>Solana Token PnL Analyzer | Real Profit & Loss Calculator | QuantCalc</title>
+    <meta name="description" content="Calculate real profit and loss on Solana token trades with our free Solana PnL calculator. Track ROI, trading fees, and net returns instantly.">
+    <title>Solana Token PnL Calculator (Real Profit & Loss Analyzer) | QuantCalc</title>
     
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Solana Token PnL Analyzer | Real Profit & Loss Calculator | QuantCalc">
@@ -44,6 +44,39 @@
         "priceCurrency": "USD"
       }
     }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "What is a Solana PnL calculator?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "A Solana PnL (Profit and Loss) calculator is a tool that helps traders calculate their real profit or loss on Solana token trades. It accounts for entry price, exit price, position size, and all trading fees (buy fees, sell fees, and transaction costs) to give you an accurate net return calculation."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How do you calculate profit on Solana token trades?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "To calculate profit on Solana token trades: 1) Calculate gross profit: (Exit Price - Entry Price) × Token Amount, 2) Calculate total fees: (Entry Cost × Buy Fee %) + (Exit Value × Sell Fee %), 3) Subtract fees from gross profit to get net profit, 4) Divide net profit by total entry cost to get ROI percentage. This calculator automates all these steps instantly."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Does this calculator include Solana trading fees?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, this Solana PnL calculator includes all trading fees. You can input your buy fee percentage and sell fee percentage to account for platform fees, DEX swap fees, or any transaction costs. The calculator shows both gross P&L (before fees) and net P&L (after all fees) so you see your true profit or loss."
+                    }
+                }
+            ]
+        }
     </script>
     <style>
         * {
@@ -391,8 +424,9 @@
     <div class="container">
         <div class="header">
             <a href="/" class="back-link">← Back to Tools</a>
-            <h1>Solana Token PnL Analyzer</h1>
+            <h1>Solana Token PnL Calculator</h1>
             <p class="subtitle">Calculate your true profit or loss after all fees and taxes</p>
+            <p style="margin: 1.5rem auto; max-width: 900px; line-height: 1.7; color: #e0e0e0;">This <strong>Solana Token PnL Calculator</strong> helps you calculate real profit and loss on Solana token trades with precision. Enter your entry price, exit price, and token amount to instantly see your net returns after accounting for trading fees, buy/sell taxes, and transaction costs. Perfect for Solana traders who need accurate ROI calculations before executing trades.</p>
         </div>
 
         <div class="card">
@@ -506,11 +540,39 @@
             </div>
         </div>
 
+        <div class="guide-cta" style="margin-top: 3rem; margin-bottom: 2rem;">
+            <h3>Related Resources</h3>
+            <p>Explore more tools to optimize your Solana trading strategy</p>
+            <a href="/tools/position-size" class="guide-link">Position Size Calculator</a>
+            <a href="/tools/risk-reward" class="guide-link">Risk/Reward Calculator</a>
+        </div>
+
         <div class="guide-cta">
             <h3>Learn More About PnL Calculation</h3>
             <p>Master the fundamentals of profit tracking and trading strategy on Solana</p>
             <a href="/guides/how-to-calculate-profit-and-loss-on-solana" class="guide-link">PnL Calculation Guide</a>
             <a href="/guides/solana-trading-strategy-guide" class="guide-link">Trading Strategy Guide</a>
+        </div>
+
+        <div class="guide-cta" style="margin-top: 3rem;">
+            <h3>Frequently Asked Questions</h3>
+            
+            <div style="text-align: left; max-width: 800px; margin: 2rem auto;">
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #00d4aa; margin-bottom: 0.5rem; font-size: 1.1rem;">What is a Solana PnL calculator?</h4>
+                    <p style="color: #e0e0e0; line-height: 1.6;">A Solana PnL (Profit and Loss) calculator is a tool that helps traders calculate their real profit or loss on Solana token trades. It accounts for entry price, exit price, position size, and all trading fees (buy fees, sell fees, and transaction costs) to give you an accurate net return calculation.</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #00d4aa; margin-bottom: 0.5rem; font-size: 1.1rem;">How do you calculate profit on Solana token trades?</h4>
+                    <p style="color: #e0e0e0; line-height: 1.6;">To calculate profit on Solana token trades: 1) Calculate gross profit: (Exit Price - Entry Price) × Token Amount, 2) Calculate total fees: (Entry Cost × Buy Fee %) + (Exit Value × Sell Fee %), 3) Subtract fees from gross profit to get net profit, 4) Divide net profit by total entry cost to get ROI percentage. This calculator automates all these steps instantly.</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #00d4aa; margin-bottom: 0.5rem; font-size: 1.1rem;">Does this calculator include Solana trading fees?</h4>
+                    <p style="color: #e0e0e0; line-height: 1.6;">Yes, this Solana PnL calculator includes all trading fees. You can input your buy fee percentage and sell fee percentage to account for platform fees, DEX swap fees, or any transaction costs. The calculator shows both gross P&L (before fees) and net P&L (after all fees) so you see your true profit or loss.</p>
+                </div>
+            </div>
         </div>
     </div>
 
