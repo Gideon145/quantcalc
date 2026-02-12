@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Analyze your Solana token trades with a real PnL calculator. Track entry price, exit price, fees, position size, and calculate true profit or loss instantly.">
+    <title>Solana Token PnL Analyzer | Real Profit & Loss Calculator | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Solana Token PnL Analyzer | Real Profit & Loss Calculator | QuantCalc">
+    <meta property="og:description" content="Analyze your Solana token trades with a real PnL calculator. Track entry price, exit price, fees, position size, and calculate true profit or loss instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.quantcalc.tools/tools/solana-token-pnl-analyzer">
+    
+    <link rel="canonical" href="https://www.quantcalc.tools/tools/solana-token-pnl-analyzer">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Solana Token PnL Analyzer",
+      "description": "Analyze your Solana token trades with a real PnL calculator. Track entry price, exit price, fees, position size, and calculate true profit or loss instantly.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "url": "https://www.quantcalc.tools/tools/solana-token-pnl-analyzer",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #60a5fa;
+            transition: width 0.3s ease;
+        }
+
+        .back-link:hover::after {
+            width: 100%;
+        }
+
+        .back-link:hover {
+            color: #93c5fd;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .card {
+            background: #1a1f2e;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            color: #f1f5f9;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .how-to-list {
+            display: grid;
+            gap: 10px;
+            color: #cbd5e1;
+            font-size: 0.98rem;
+        }
+
+        .how-to-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .how-to-number {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .how-to-tip {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-label {
+            display: block;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0b0f19;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .tool-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .tool-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            display: none;
+            background: #7f1d1d;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .results-section {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid #1f2937;
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .result-item {
+            background: #0f172a;
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid #1e293b;
+        }
+
+        .result-label {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .result-value.positive {
+            color: #10b981;
+        }
+
+        .result-value.negative {
+            color: #ef4444;
+        }
+
+        .result-breakdown {
+            margin-top: 24px;
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #1e293b;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #1e293b;
+            font-size: 0.95rem;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #f1f5f9;
+        }
+
+        .breakdown-label {
+            color: #94a3b8;
+        }
+
+        .breakdown-value {
+            color: #e2e8f0;
+        }
+
+        .guide-cta {
+            margin-top: 32px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .guide-cta h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .guide-cta p {
+            color: #bfdbfe;
+            margin-bottom: 18px;
+            font-size: 0.95rem;
+        }
+
+        .guide-link {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: 0 6px;
+        }
+
+        .guide-link:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.9rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-link {
+                display: block;
+                margin: 8px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Tools</a>
+            <h1>Solana Token PnL Analyzer</h1>
+            <p class="subtitle">Calculate your true profit or loss after all fees and taxes</p>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">How to Use This Calculator</h2>
+            <div class="how-to-list">
+                <div class="how-to-item">
+                    <span class="how-to-number">1.</span>
+                    <span>Enter your entry price and the token amount you bought</span>
+                </div>
+                <div class="how-to-item">
+                    <span class="how-to-number">2.</span>
+                    <span>Enter your exit price (or planned exit price)</span>
+                </div>
+                <div class="how-to-item">
+                    <span class="how-to-number">3.</span>
+                    <span>Add buy and sell fees (include DEX fees + token taxes)</span>
+                </div>
+                <div class="how-to-item">
+                    <span class="how-to-number">4.</span>
+                    <span>Click Calculate to see your real profit/loss after all costs</span>
+                </div>
+            </div>
+            <p class="how-to-tip">💡 Tip: Most Solana DEXs charge ~0.25% fees. Always check if tokens have additional buy/sell taxes (common in meme coins).</p>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Trade Details</h2>
+            
+            <div id="errorMessage" class="error-message"></div>
+
+            <div class="input-section">
+                <div class="input-group">
+                    <label class="input-label" for="entryPrice">Entry Price ($)</label>
+                    <input type="number" id="entryPrice" class="input-field" placeholder="e.g., 0.05" step="any" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="exitPrice">Exit Price ($)</label>
+                    <input type="number" id="exitPrice" class="input-field" placeholder="e.g., 0.06" step="any" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="tokenAmount">Token Amount</label>
+                    <input type="number" id="tokenAmount" class="input-field" placeholder="e.g., 10000" step="any" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="buyFee">Buy Fee (%)</label>
+                    <input type="number" id="buyFee" class="input-field" placeholder="e.g., 0.25" step="0.01" min="0" max="100" value="0.25">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="sellFee">Sell Fee (%)</label>
+                    <input type="number" id="sellFee" class="input-field" placeholder="e.g., 0.25" step="0.01" min="0" max="100" value="0.25">
+                </div>
+
+                <button class="tool-btn" onclick="calculatePnL()">Calculate PnL</button>
+            </div>
+
+            <div id="results" class="results-section">
+                <h3 class="results-title">Results</h3>
+                
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Gross P&L</div>
+                        <div id="grossPnL" class="result-value">$0.00</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Total Fees</div>
+                        <div id="totalFees" class="result-value">$0.00</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Net P&L</div>
+                        <div id="netPnL" class="result-value">$0.00</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">ROI</div>
+                        <div id="roi" class="result-value">0.00%</div>
+                    </div>
+                </div>
+
+                <div class="result-breakdown">
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Entry Cost</span>
+                        <span id="entryCost" class="breakdown-value">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Buy Fee</span>
+                        <span id="buyFeeAmount" class="breakdown-value">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Total Entry</span>
+                        <span id="totalEntry" class="breakdown-value">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Exit Value</span>
+                        <span id="exitValue" class="breakdown-value">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Sell Fee</span>
+                        <span id="sellFeeAmount" class="breakdown-value">$0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Net Exit Value</span>
+                        <span id="netExitValue" class="breakdown-value">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-cta">
+            <h3>Learn More About PnL Calculation</h3>
+            <p>Master the fundamentals of profit tracking and trading strategy on Solana</p>
+            <a href="/guides/how-to-calculate-profit-and-loss-on-solana" class="guide-link">PnL Calculation Guide</a>
+            <a href="/guides/solana-trading-strategy-guide" class="guide-link">Trading Strategy Guide</a>
+        </div>
+    </div>
+
+    <script>
+        function calculatePnL() {
+            // Get input values
+            const entryPrice = parseFloat(document.getElementById('entryPrice').value);
+            const exitPrice = parseFloat(document.getElementById('exitPrice').value);
+            const tokenAmount = parseFloat(document.getElementById('tokenAmount').value);
+            const buyFee = parseFloat(document.getElementById('buyFee').value);
+            const sellFee = parseFloat(document.getElementById('sellFee').value);
+
+            // Validation
+            const errorMsg = document.getElementById('errorMessage');
+            const resultsSection = document.getElementById('results');
+
+            if (!entryPrice || !exitPrice || !tokenAmount || entryPrice <= 0 || exitPrice <= 0 || tokenAmount <= 0) {
+                errorMsg.textContent = 'Please enter valid positive numbers for all required fields.';
+                errorMsg.classList.add('visible');
+                resultsSection.classList.remove('visible');
+                return;
+            }
+
+            if (buyFee < 0 || buyFee > 100 || sellFee < 0 || sellFee > 100) {
+                errorMsg.textContent = 'Fee percentages must be between 0 and 100.';
+                errorMsg.classList.add('visible');
+                resultsSection.classList.remove('visible');
+                return;
+            }
+
+            errorMsg.classList.remove('visible');
+
+            // Calculations
+            const entryCost = entryPrice * tokenAmount;
+            const buyFeeAmount = entryCost * (buyFee / 100);
+            const totalEntry = entryCost + buyFeeAmount;
+
+            const exitValue = exitPrice * tokenAmount;
+            const sellFeeAmount = exitValue * (sellFee / 100);
+            const netExitValue = exitValue - sellFeeAmount;
+
+            const grossPnL = exitValue - entryCost;
+            const totalFees = buyFeeAmount + sellFeeAmount;
+            const netPnL = netExitValue - totalEntry;
+            const roi = (netPnL / totalEntry) * 100;
+
+            // Display results
+            document.getElementById('grossPnL').textContent = formatCurrency(grossPnL);
+            document.getElementById('grossPnL').className = 'result-value ' + (grossPnL >= 0 ? 'positive' : 'negative');
+
+            document.getElementById('totalFees').textContent = formatCurrency(totalFees);
+            
+            document.getElementById('netPnL').textContent = formatCurrency(netPnL);
+            document.getElementById('netPnL').className = 'result-value ' + (netPnL >= 0 ? 'positive' : 'negative');
+
+            document.getElementById('roi').textContent = roi.toFixed(2) + '%';
+            document.getElementById('roi').className = 'result-value ' + (roi >= 0 ? 'positive' : 'negative');
+
+            // Breakdown
+            document.getElementById('entryCost').textContent = formatCurrency(entryCost);
+            document.getElementById('buyFeeAmount').textContent = formatCurrency(buyFeeAmount);
+            document.getElementById('totalEntry').textContent = formatCurrency(totalEntry);
+            document.getElementById('exitValue').textContent = formatCurrency(exitValue);
+            document.getElementById('sellFeeAmount').textContent = formatCurrency(sellFeeAmount);
+            document.getElementById('netExitValue').textContent = formatCurrency(netExitValue);
+
+            resultsSection.classList.add('visible');
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function formatCurrency(value) {
+            const absValue = Math.abs(value);
+            if (absValue >= 1000000) {
+                return (value >= 0 ? '$' : '-$') + (absValue / 1000000).toFixed(2) + 'M';
+            } else if (absValue >= 1000) {
+                return (value >= 0 ? '$' : '-$') + (absValue / 1000).toFixed(2) + 'K';
+            } else {
+                return (value >= 0 ? '$' : '-$') + absValue.toFixed(2);
+            }
+        }
+
+        // Allow Enter key to trigger calculation
+        document.querySelectorAll('.input-field').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculatePnL();
+                }
+            });
+        });
+    </script>
+
+    <script src="../app.js"></script>
+</body>
+</html>
