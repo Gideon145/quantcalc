@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn how token burns impact crypto prices through supply reduction. Understand why burns don't always increase value and how to calculate projected price impact from supply changes.">
+    <title>How Token Burns Impact Market Price (With Examples) | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="How Token Burns Impact Market Price (With Examples) | QuantCalc">
+    <meta property="og:description" content="Learn how token burns impact crypto prices through supply reduction. Understand why burns don't always increase value and how to calculate projected price impact from supply changes.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/how-token-burns-affect-price">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/how-token-burns-affect-price">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How Token Burns Impact Market Price",
+      "description": "Learn how token burns impact crypto prices through supply reduction. Understand why burns don't always increase value and how to calculate projected price impact from supply changes.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/how-token-burns-affect-price"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>How Token Burns Affect Price</span>
+                </div>
+                <h1 class="article-title">How Token Burns Impact Market Price</h1>
+                <div class="article-meta">Supply reduction mechanics and why burns don't guarantee pumps</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What is a Token Burn?</h2>
+                <p>
+                    A token burn is the permanent removal of tokens from circulation by sending them to an unspendable wallet address (often called a "burn address" or "dead wallet"). Once burned, tokens can never be recovered or used again, effectively reducing the total circulating supply forever.
+                </p>
+                <p>
+                    Token burns are used as a deflationary mechanism to increase scarcity. The theory is simple: if supply decreases while demand stays constant, price should increase. However, reality is more complex—burns only impact price if the market perceives them as valuable and if demand actually remains constant.
+                </p>
+
+                <h2>The Supply and Demand Relationship</h2>
+                <p>
+                    Token price is determined by market cap divided by circulating supply:
+                </p>
+                
+                <div class="calculation">
+                    Price = Market Cap / Circulating Supply<br>
+                    <br>
+                    Market Cap = Price × Circulating Supply
+                </div>
+
+                <p>
+                    If market cap stays the same but circulating supply decreases, price must increase proportionally. This is the core mechanism behind token burns.
+                </p>
+
+                <h2>Example 1: Basic Token Burn Math</h2>
+                <div class="example-box">
+                    <h3>Scenario: 50% Supply Burn</h3>
+                    <p>A project announces burning 50% of all tokens:</p>
+                    <ul>
+                        <li>Current Price: $1.00</li>
+                        <li>Current Circulating Supply: 1,000,000 tokens</li>
+                        <li>Current Market Cap: $1,000,000</li>
+                        <li>Tokens Burned: 500,000 (50%)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Before Burn:<br>
+                        Market Cap: $1,000,000<br>
+                        Supply: 1,000,000 tokens<br>
+                        Price: $1.00<br>
+                        <br>
+                        After Burn (if market cap stays constant):<br>
+                        Market Cap: $1,000,000 (unchanged)<br>
+                        New Supply: 500,000 tokens<br>
+                        <strong>New Price: $1,000,000 / 500,000 = $2.00 (100% increase)</strong>
+                    </div>
+                    
+                    <p>In theory, burning 50% of supply <span class="highlight">doubles the price</span>. But this assumes market cap remains constant, which rarely happens in practice.</p>
+                </div>
+
+                <h2>Why Burns Don't Always Increase Price</h2>
+                <p>
+                    The biggest mistake investors make is assuming supply reduction automatically equals price increase. Here's why that's wrong:
+                </p>
+                <ul>
+                    <li><strong>Market cap can decrease:</strong> If investors see the burn as desperate or meaningless, they might sell, reducing market cap faster than supply</li>
+                    <li><strong>"Priced in" before the burn:</strong> If the burn was announced weeks ago, the price already pumped in anticipation and dumps on execution</li>
+                    <li><strong>Burned tokens weren't circulating anyway:</strong> Burning team tokens or locked supply doesn't affect trading supply</li>
+                    <li><strong>Demand evaporates:</strong> If the token has no utility or dying community, reducing supply doesn't matter—no one wants to buy it</li>
+                    <li><strong>Psychological vs actual impact:</strong> Small burns (1-5%) are often ignored by the market as insignificant</li>
+                </ul>
+
+                <h2>Example 2: Real-World Burn That Failed</h2>
+                <div class="example-box">
+                    <h3>Scenario: Meme Coin "Deflationary Burn"</h3>
+                    <p>A dying meme coin announces a burn to "save the project":</p>
+                    <ul>
+                        <li>Pre-burn Price: $0.001</li>
+                        <li>Supply: 10,000,000,000 tokens</li>
+                        <li>Market Cap: $10,000,000</li>
+                        <li>Announced burn: 30% (3 billion tokens)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Expected New Supply: 7,000,000,000<br>
+                        Expected Price (if MC stays): $10M / 7B = $0.00143 (43% up)<br>
+                        <br>
+                        <strong>Actual result:</strong><br>
+                        Price pumped 20% on announcement day<br>
+                        Dumped 40% after burn execution<br>
+                        Net result: -28% from pre-burn price<br>
+                        <br>
+                        Why? Community lost faith, whales sold into the pump,<br>
+                        and no new buyers materialized.
+                    </div>
+                    
+                    <p>The burn reduced supply, but <span class="highlight">demand collapsed</span> even faster. Supply/demand is a two-sided equation—you need buyers, not just fewer tokens.</p>
+                </div>
+
+                <h2>Types of Token Burns</h2>
+                <p>
+                    Not all burns are created equal. Different burn mechanisms have different impacts:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Burn Types and Their Effectiveness</h3>
+                    
+                    <p><strong>1. One-Time Manual Burns:</strong></p>
+                    <ul>
+                        <li>Team decides to burn X% of supply</li>
+                        <li>Usually announced in advance</li>
+                        <li>Often "priced in" and pumps before, dumps after</li>
+                        <li>Example: Project burns 20% of treasury tokens</li>
+                    </ul>
+                    
+                    <p><strong>2. Transaction Tax Burns:</strong></p>
+                    <ul>
+                        <li>Every trade burns a small percentage (0.1-1%)</li>
+                        <li>Continuous deflationary pressure</li>
+                        <li>More sustainable than one-time burns</li>
+                        <li>Example: Safemoon-style tokenomics</li>
+                    </ul>
+                    
+                    <p><strong>3. Buyback and Burn:</strong></p>
+                    <ul>
+                        <li>Project uses revenue to buy tokens from market, then burns them</li>
+                        <li>Creates buy pressure + reduces supply</li>
+                        <li>Most effective if buybacks are consistent</li>
+                        <li>Example: Binance BNB quarterly burns</li>
+                    </ul>
+                    
+                    <p><strong>4. Liquidity Pool Burns:</strong></p>
+                    <ul>
+                        <li>Burning LP tokens to lock liquidity permanently</li>
+                        <li>Doesn't affect token supply directly</li>
+                        <li>Increases trust (can't rug), indirectly supports price</li>
+                        <li>Example: Most Solana meme coins burn LP on launch</li>
+                    </ul>
+                </div>
+
+                <h2>Example 3: Effective Burn Strategy</h2>
+                <div class="example-box">
+                    <h3>Scenario: Revenue-Based Buyback and Burn</h3>
+                    <p>A Solana DeFi protocol generates real revenue and burns tokens quarterly:</p>
+                    <ul>
+                        <li>Starting Supply: 100,000,000 tokens</li>
+                        <li>Starting Price: $0.50</li>
+                        <li>Starting Market Cap: $50,000,000</li>
+                        <li>Quarterly Revenue: $500,000</li>
+                        <li>Burn Rate: 100% of revenue used for buyback + burn</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Q1: Buy $500k worth at $0.50 = 1M tokens burned<br>
+                        New Supply: 99M tokens<br>
+                        <br>
+                        Q2: Price now $0.51, buy $500k = 980,392 tokens burned<br>
+                        New Supply: 98,019,608 tokens<br>
+                        <br>
+                        Q3: Price now $0.52, buy $500k = 961,538 tokens burned<br>
+                        New Supply: 97,058,070 tokens<br>
+                        <br>
+                        After 1 year (4 quarters):<br>
+                        Total burned: ~3.8M tokens (3.8% of supply)<br>
+                        <strong>If market cap stays constant: +4% price appreciation</strong><br>
+                        <br>
+                        <strong>But with growing confidence from consistent burns:<br>
+                        Market cap grew 40% → Price up 45% total</strong>
+                    </div>
+                    
+                    <p>This works because: (1) Real revenue funds burns, (2) Consistent schedule builds confidence, (3) Buybacks create buy pressure before burning, (4) Small, sustainable burns don't spook holders.</p>
+                </div>
+
+                <h2>Calculating Projected Price Impact</h2>
+                <p>
+                    To estimate price impact from a burn, use this formula:
+                </p>
+                
+                <div class="calculation">
+                    New Price = Old Price × (Old Supply / New Supply)<br>
+                    <br>
+                    Example:<br>
+                    Old Price: $1.00<br>
+                    Old Supply: 1,000,000<br>
+                    Burned: 200,000 (20%)<br>
+                    New Supply: 800,000<br>
+                    <br>
+                    New Price = $1.00 × (1,000,000 / 800,000)<br>
+                    New Price = $1.00 × 1.25<br>
+                    <strong>New Price = $1.25 (25% increase)</strong>
+                </div>
+
+                <p>
+                    However, this is the <strong>theoretical maximum</strong>. In reality:
+                </p>
+                <ul>
+                    <li>If burn is "priced in," actual pump is 0-50% of theoretical</li>
+                    <li>If market is bearish or skeptical, burn might cause dumps (negative impact)</li>
+                    <li>If burn surprises market positively, pump can exceed theoretical (hype multiplier)</li>
+                </ul>
+
+                <h2>Red Flags: When Burns Are a Bad Sign</h2>
+                <div class="warning-box">
+                    <h3>Burns That Signal Desperation or Scams</h3>
+                    <ul>
+                        <li><strong>Multiple burns announced:</strong> Burning 10% monthly for 10 months = team has no real plan</li>
+                        <li><strong>Burn right after launch:</strong> Why did you create those tokens to begin with?</li>
+                        <li><strong>Burning "team allocation":</strong> Team can just mint more tokens later in many contracts</li>
+                        <li><strong>Unverified burns:</strong> No transaction hash or wallet proof—possibly fake</li>
+                        <li><strong>Burn paired with mint:</strong> Burning 10% while minting 15% is a net inflation</li>
+                        <li><strong>Burning to distract from problems:</strong> Rug pull rumors → suddenly announce burn</li>
+                    </ul>
+                </div>
+
+                <h2>Burns vs Other Supply Mechanisms</h2>
+                <p>
+                    Comparing deflationary approaches:
+                </p>
+                <ul>
+                    <li><strong>Token burns:</strong> Permanent supply reduction, one-time impact</li>
+                    <li><strong>Staking lockups:</strong> Temporary supply reduction, unlocks eventually</li>
+                    <li><strong>Vesting schedules:</strong> Gradual supply increase (inflationary pressure)</li>
+                    <li><strong>Dynamic supply (rebase):</strong> Supply adjusts automatically to maintain target price</li>
+                </ul>
+                
+                <p>
+                    For long-term value, <span class="highlight">revenue-generating tokenomics beat burns</span>. A token with real demand and utility doesn't need burns. Burns are often used to compensate for lack of product-market fit.
+                </p>
+
+                <h2>When Burns Actually Work</h2>
+                <p>
+                    Burns are most effective when:
+                </p>
+                <ul>
+                    <li><strong>Token has real utility:</strong> Burn reduces supply of something people actually want</li>
+                    <li><strong>Burn is unexpected:</strong> Market hasn't priced it in yet</li>
+                    <li><strong>Burn is significant:</strong> At least 10-20% to move the needle meaningfully</li>
+                    <li><strong>Paired with positive news:</strong> Major partnership + burn = compounding hype</li>
+                    <li><strong>Protocol generates revenue:</strong> Buyback + burn shows the project makes money</li>
+                    <li><strong>Transparent and verifiable:</strong> On-chain proof, tracked by block explorers</li>
+                    <li><strong>Part of regular schedule:</strong> Quarterly burns create predictable deflationary pressure</li>
+                </ul>
+
+                <h2>The Psychology of Burns</h2>
+                <p>
+                    Token burns are often more psychological than mathematical:
+                </p>
+                <ul>
+                    <li>Holders feel like their percentage of supply increased (even if value didn't)</li>
+                    <li>Creates narrative for shilling: "Only 50% supply left!"</li>
+                    <li>Signals team commitment: "We're burning our own tokens!"</li>
+                    <li>FOMO trigger: "Supply decreasing, better buy before it's too late!"</li>
+                </ul>
+                
+                <p>
+                    Smart investors look past the hype and ask: <strong>Does this token have demand?</strong> If yes, burns amplify that demand. If no, burns are lipstick on a pig.
+                </p>
+
+                <h2>Calculating Your Holdings After a Burn</h2>
+                <div class="example-box">
+                    <h3>Your Percentage Ownership Changes</h3>
+                    <p>You hold 10,000 tokens before a 50% burn:</p>
+                    
+                    <div class="calculation">
+                        Before Burn:<br>
+                        Your tokens: 10,000<br>
+                        Total supply: 1,000,000<br>
+                        Your ownership: 10,000 / 1,000,000 = 1%<br>
+                        <br>
+                        After Burn:<br>
+                        Your tokens: 10,000 (unchanged)<br>
+                        Total supply: 500,000<br>
+                        Your ownership: 10,000 / 500,000 = 2%<br>
+                        <br>
+                        <strong>Your percentage doubled, but dollar value only<br>
+                        increases if market cap stays constant or grows.</strong>
+                    </div>
+                </div>
+
+                <div class="cta-box">
+                    <h3>Calculate Token Burn Impact</h3>
+                    <p>Estimate how supply reduction affects token price. Calculate projected price impact before FOMO'ing into burn announcements.</p>
+                    <a href="/tools/token-burn-impact" class="cta-button">Launch Burn Calculator →</a>
+                </div>
+
+                <p>
+                    Other tools for token analysis:
+                </p>
+                <ul>
+                    <li><a href="/tools/marketcap-fdv">Market Cap vs FDV Calculator</a> - Understand inflation from vesting schedules</li>
+                    <li><a href="/tools/marketcap-flip">Market Cap Flip Calculator</a> - Compare token valuations</li>
+                    <li><a href="/tools/volume-sustainability">Volume Sustainability Calculator</a> - Check if buy pressure supports current price</li>
+                    <li><a href="/tools/solana-trade-simulator">Solana Trade Simulator</a> - Model trades around burn events</li>
+                </ul>
+
+                <p>
+                    Remember: Supply reduction is only half the equation. Demand matters more. A token with zero demand and 99% burned supply is still worthless. Focus on projects with real utility, revenue, and user adoption—burns are a bonus, not a solution.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

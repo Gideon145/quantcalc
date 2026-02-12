@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn how to plan a smart exit strategy in crypto. Discover ladder selling, profit targets, and why pre-planning prevents emotional trading mistakes.">
+    <title>How to Plan a Smart Exit Strategy in Crypto | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="How to Plan a Smart Exit Strategy in Crypto | QuantCalc">
+    <meta property="og:description" content="Learn how to plan a smart exit strategy in crypto. Discover ladder selling, profit targets, and why pre-planning prevents emotional trading mistakes.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/exit-strategy-planning-guide">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/exit-strategy-planning-guide">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Exit Strategy Planning Guide",
+      "description": "Learn how to plan a smart exit strategy in crypto. Discover ladder selling, profit targets, and why pre-planning prevents emotional trading mistakes.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/exit-strategy-planning-guide"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .good-box {
+            background: #14532d;
+            border-left: 4px solid #22c55e;
+        }
+
+        .good-box h3 {
+            color: #86efac;
+        }
+
+        .bad-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+        }
+
+        .bad-box h3 {
+            color: #fca5a5;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>Exit Strategy Planning</span>
+                </div>
+                <h1 class="article-title">Exit Strategy Planning Guide</h1>
+                <div class="article-meta">How to plan smart exits and avoid emotional trading mistakes</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>Why Most Traders Fail at Exits</h2>
+                <p>
+                    The hardest part of trading isn't finding good entries—it's knowing when to exit. Most traders:
+                </p>
+                <ul>
+                    <li>Hold winners too long and watch profits evaporate</li>
+                    <li>Sell too early and miss massive gains</li>
+                    <li>Make emotional decisions during volatility</li>
+                    <li>Have no plan, so they panic when price moves</li>
+                    <li>Get greedy at tops and fearful at bottoms</li>
+                </ul>
+                
+                <p>
+                    The solution? <strong>Plan your exit before you enter.</strong> When you have clear profit targets set in advance, you remove emotion from the decision-making process.
+                </p>
+
+                <h2>The Ladder Selling Strategy</h2>
+                <p>
+                    Ladder selling (also called scaling out) means selling portions of your position at predetermined price levels. Instead of trying to time the perfect top, you lock in profits gradually:
+                </p>
+                
+                <div class="calculation">
+                    Basic Ladder Exit Structure:<br>
+                    <br>
+                    25% at 2x (recover initial investment + profit)<br>
+                    25% at 3x (lock in substantial gains)<br>
+                    25% at 5x (capture momentum move)<br>
+                    25% at 10x or trail with stop loss (lottery ticket)
+                </div>
+
+                <p>
+                    This approach guarantees profit while keeping upside exposure. You can't lose if you follow the plan.
+                </p>
+
+                <h2>Example 1: Successful Ladder Exit</h2>
+                <div class="example-box good-box">
+                    <h3>$1,000 Investment With Ladder Strategy</h3>
+                    <p>You buy a Solana meme coin at $0.10 with a pre-planned exit strategy:</p>
+                    <ul>
+                        <li>Entry: $1,000 at $0.10 = 10,000 tokens</li>
+                    </ul>
+                    
+                    <p><strong>Execution:</strong></p>
+                    <div class="calculation">
+                        Exit 1: Sell 25% (2,500 tokens) at $0.20 (2x) = $500<br>
+                        Exit 2: Sell 25% (2,500 tokens) at $0.30 (3x) = $750<br>
+                        Exit 3: Sell 25% (2,500 tokens) at $0.50 (5x) = $1,250<br>
+                        Exit 4: Sell 25% (2,500 tokens) at $1.00 (10x) = $2,500<br>
+                        <br>
+                        <strong>Total Realized: $5,000 (5x return)</strong><br>
+                        Initial Investment Recovered: $1,250 (125%)<br>
+                        Pure Profit: $3,750
+                    </div>
+                    
+                    <p>By the time the token hit 2x and 3x, you'd already <span class="highlight">recovered 125% of your initial capital</span>. Everything after that is pure profit with zero risk.</p>
+                </div>
+
+                <h2>Example 2: Failed Exit (No Strategy)</h2>
+                <div class="example-box bad-box">
+                    <h3>Same Trade, No Exit Plan</h3>
+                    <p>You buy the same token but have no exit strategy:</p>
+                    <ul>
+                        <li>Entry: $1,000 at $0.10</li>
+                        <li>Token hits $0.20 (2x): <em>"Let it run, could go higher!"</em></li>
+                        <li>Token hits $0.50 (5x): <em>"This is going to $5!"</em></li>
+                        <li>Token hits $1.20 (12x): <em>"We're going to $10!"</em></li>
+                        <li>Token dumps to $0.15: <em>"It'll come back..."</em></li>
+                        <li>Token dies at $0.02: Final value = $200 (80% loss)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Peak Unrealized Gain: $12,000 (12x)<br>
+                        Final Realized Gain: -$800 (80% loss)<br>
+                        <br>
+                        <strong>Result: Turned a 12x into a loss by holding with no plan</strong>
+                    </div>
+                    
+                    <p>This pattern repeats constantly in crypto. Without a plan, emotions take over and you ride winners back to zero.</p>
+                </div>
+
+                <h2>The Psychological Benefit of Pre-Planning</h2>
+                <p>
+                    When you set exits before entering:
+                </p>
+                <ul>
+                    <li><strong>Emotion is removed:</strong> You follow the plan regardless of market sentiment</li>
+                    <li><strong>FOMO doesn't control you:</strong> "I already sold some, I'm good" instead of "I need to hold!"</li>
+                    <li><strong>Profits are guaranteed:</strong> First exits ensure you can't lose (if planned correctly)</li>
+                    <li><strong>Regret is minimized:</strong> If it moons after you sell, you still made money—no complaints</li>
+                    <li><strong>You sleep better:</strong> Risk is managed, you're playing with house money after early exits</li>
+                </ul>
+
+                <h2>Setting Exit Targets Based on Risk/Reward</h2>
+                <p>
+                    Your exit ladder should reflect your risk tolerance and the trade's potential:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Conservative vs Aggressive Exits</h3>
+                    
+                    <p><strong>Conservative Ladder (Lower Risk):</strong></p>
+                    <div class="calculation">
+                        40% at 2x (recover initial + profit)<br>
+                        30% at 3x<br>
+                        20% at 5x<br>
+                        10% moon bag (hold indefinitely or until stop loss)
+                    </div>
+                    
+                    <p><strong>Aggressive Ladder (Higher Risk):</strong></p>
+                    <div class="calculation">
+                        10% at 2x (partial derisking)<br>
+                        15% at 5x<br>
+                        25% at 10x<br>
+                        25% at 20x<br>
+                        25% at 50x or bust
+                    </div>
+                    
+                    <p>Conservative takes more profit early. Aggressive leaves more upside but accepts higher risk of giving back gains.</p>
+                </div>
+
+                <h2>Recovering Your Initial Investment First</h2>
+                <p>
+                    A powerful risk management technique: <strong>exit enough at 2x to recover your entire initial investment.</strong>
+                </p>
+                
+                <div class="calculation">
+                    Example:<br>
+                    Investment: $1,000<br>
+                    Token doubles (2x)<br>
+                    Position now worth: $2,000<br>
+                    <br>
+                    Sell 50% ($1,000)<br>
+                    Remaining: $1,000 (100% profit, 0% risk)
+                </div>
+
+                <p>
+                    Once you've recovered your initial capital, you're playing with <span class="highlight">house money</span>. The psychological relief is immense—you literally cannot lose now. Let the rest ride guilt-free.
+                </p>
+
+                <h2>Example 3: Recover Capital Strategy</h2>
+                <div class="example-box good-box">
+                    <h3>Zero-Risk Position After First Exit</h3>
+                    <p>You invest $2,000 in a token at $0.50:</p>
+                    <ul>
+                        <li>Entry: $2,000 = 4,000 tokens</li>
+                        <li>Token hits $1.00 (2x)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Position value at 2x: $4,000<br>
+                        <br>
+                        Sell 50%: 2,000 tokens × $1.00 = $2,000<br>
+                        Remaining: 2,000 tokens worth $2,000<br>
+                        <br>
+                        <strong>You now have:</strong><br>
+                        - $2,000 cash (initial investment back)<br>
+                        - 2,000 tokens worth $2,000 (pure profit)<br>
+                        - Zero capital at risk
+                    </div>
+                    
+                    <p>From here, the 2,000 remaining tokens can go to $10 (20x from $0.50) or $0—you don't care because you already won. This removes all emotional pressure.</p>
+                </div>
+
+                <h2>Adjusting Exits Based on Market Conditions</h2>
+                <p>
+                    Your exit strategy should adapt to market context:
+                </p>
+                <ul>
+                    <li><strong>Bull market:</strong> Extend targets (2x/5x/10x/25x) to capture full momentum</li>
+                    <li><strong>Bear market:</strong> Tighten targets (1.5x/2x/3x/5x) and exit faster</li>
+                    <li><strong>High volatility:</strong> Use tighter ladders to lock in gains before reversals</li>
+                    <li><strong>Low liquidity:</strong> Exit earlier—harder to sell later without massive slippage</li>
+                    <li><strong>Token specific risk:</strong> Meme coins need faster exits than blue chips</li>
+                </ul>
+
+                <h2>The Trailing Stop Loss Strategy</h2>
+                <p>
+                    For your final portion (the "moon bag"), use a trailing stop loss instead of a fixed target:
+                </p>
+                
+                <div class="calculation">
+                    Example Trailing Stop:<br>
+                    <br>
+                    Token is at $1.00 (you've already sold 75%)<br>
+                    Set trailing stop: 30% below current price<br>
+                    <br>
+                    Price goes to $2.00 → Stop moves to $1.40<br>
+                    Price goes to $3.00 → Stop moves to $2.10<br>
+                    Price goes to $5.00 → Stop moves to $3.50<br>
+                    Price drops to $3.50 → Stop triggers, you sell at $3.50
+                </div>
+
+                <p>
+                    This lets you capture extended runs while automatically protecting gains. You ride the wave until momentum breaks.
+                </p>
+
+                <h2>Time-Based Exits vs Price-Based Exits</h2>
+                <p>
+                    Not all exits are price-based. Sometimes time is the trigger:
+                </p>
+                <ul>
+                    <li><strong>Time-based:</strong> Exit 50% after 30 days regardless of price (take profit, redeploy elsewhere)</li>
+                    <li><strong>Event-based:</strong> Exit before major token unlock, before conference hype fades, after news catalyst</li>
+                    <li><strong>Volatility-based:</strong> Exit when IV drops below threshold (momentum is gone)</li>
+                    <li><strong>Fundamental change:</strong> Exit if project roadmap changes, team drama, exploit, etc.</li>
+                </ul>
+
+                <h2>Common Exit Mistakes to Avoid</h2>
+                <div class="warning-box">
+                    <h3>Exit Strategy Pitfalls</h3>
+                    <ul>
+                        <li><strong>Moving targets:</strong> "I'll sell at 5x" becomes "actually 10x" becomes "just a bit higher..." then crash</li>
+                        <li><strong>Anchoring to peak:</strong> Token hit $10, now at $3, you refuse to sell because "it was $10"</li>
+                        <li><strong>Selling entire position too early:</strong> Exits at 2x, token does 50x, massive regret</li>
+                        <li><strong>Never taking profit:</strong> Only exits are stop losses, constantly giving back gains</li>
+                        <li><strong>Overcomplicating:</strong> 20 different exit criteria means you'll never execute</li>
+                        <li><strong>Ignoring opportunity cost:</strong> Holding a dead position when you could redeploy to new trade</li>
+                    </ul>
+                </div>
+
+                <h2>Exit Planning for Different Trade Types</h2>
+                <div class="example-box">
+                    <h3>Meme Coin Swing Trade (High Risk)</h3>
+                    <div class="calculation">
+                        Entry: $1,000<br>
+                        Exit 1: 40% at 2x = $800 (recover initial + profit)<br>
+                        Exit 2: 30% at 5x = $1,500<br>
+                        Exit 3: 20% at 10x = $2,000<br>
+                        Exit 4: 10% trailing stop at 30% from peak<br>
+                        <br>
+                        Logic: Lock profit fast, memes are volatile
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Blue Chip L1 Position (Lower Risk)</h3>
+                    <div class="calculation">
+                        Entry: $5,000<br>
+                        Exit 1: 20% at 2x = $2,000<br>
+                        Exit 2: 20% at 3x = $3,000<br>
+                        Exit 3: 30% at 5x = $7,500<br>
+                        Exit 4: 30% long-term hold with 40% trailing stop<br>
+                        <br>
+                        Logic: Less volatility, more confidence in long-term value
+                    </div>
+                </div>
+
+                <h2>Rebalancing and Re-Entry Strategy</h2>
+                <p>
+                    After exiting, consider re-entry rules:
+                </p>
+                <ul>
+                    <li><strong>On pullbacks:</strong> If you exit at $1.00 and it drops to $0.60, re-enter with profits</li>
+                    <li><strong>After consolidation:</strong> Wait for base-building, then re-enter for next leg</li>
+                    <li><strong>Different time frame:</strong> Exit swing trade, re-enter as long-term hold at better price</li>
+                    <li><strong>New catalyst:</strong> Exit old trade, re-enter if new fundamental driver emerges</li>
+                </ul>
+
+                <h2>Calculating Optimal Exit Allocation</h2>
+                <div class="example-box">
+                    <h3>Expected Value Based Exit Planning</h3>
+                    <p>You can calculate optimal exits using probability:</p>
+                    
+                    <div class="calculation">
+                        Scenario Analysis:<br>
+                        <br>
+                        Probability of 2x: 60%<br>
+                        Probability of 5x: 30%<br>
+                        Probability of 10x: 10%<br>
+                        <br>
+                        Strategy:<br>
+                        Exit 30% at 2x (high probability, lock gains)<br>
+                        Exit 40% at 5x (decent probability, substantial profit)<br>
+                        Exit 30% at 10x (low probability, asymmetric upside)
+                    </div>
+                    
+                    <p>Weight your exits toward higher probability outcomes while keeping exposure to tail risk.</p>
+                </div>
+
+                <h2>The "Good Enough" Principle</h2>
+                <p>
+                    Perfect exits don't exist. Aiming for perfection (selling the exact top) leads to:
+                </p>
+                <ul>
+                    <li>Paralysis by analysis</li>
+                    <li>Missed exits waiting for "just a bit more"</li>
+                    <li>Emotional regret regardless of outcome</li>
+                </ul>
+                
+                <p>
+                    Instead, embrace <strong>"good enough"</strong>:
+                </p>
+                <ul>
+                    <li>Made 5x instead of 7x? Great trade.</li>
+                    <li>Sold at $8, it went to $12? Still 8x profit, no complaints.</li>
+                    <li>Token mooned after you exited? You made money, who cares.</li>
+                </ul>
+                
+                <p>
+                    Nobody rings a bell at the top. If you're consistently profitable with your exit strategy, you're winning.
+                </p>
+
+                <h2>Journaling Your Exits</h2>
+                <p>
+                    Track every exit to improve over time:
+                </p>
+                <ul>
+                    <li><strong>Planned exits:</strong> Document your ladder before entering</li>
+                    <li><strong>Actual execution:</strong> Did you follow the plan? Why or why not?</li>
+                    <li><strong>Outcome:</strong> What happened after you exited? Regret or relief?</li>
+                    <li><strong>Lessons:</strong> What would you do differently next time?</li>
+                </ul>
+                
+                <p>
+                    Over time, patterns emerge. Maybe you consistently exit too early on blue chips but hold memes too long. Adjust accordingly.
+                </p>
+
+                <div class="cta-box">
+                    <h3>Build Your Exit Strategy</h3>
+                    <p>Use risk/reward tools to plan optimal exits. Calculate expected returns for different scenarios and set your profit targets before entering.</p>
+                    <a href="/tools/risk-reward" class="cta-button">Launch Risk/Reward Calculator →</a>
+                </div>
+
+                <p>
+                    Related resources for exit planning:
+                </p>
+                <ul>
+                    <li><a href="/guides/how-to-calculate-risk-reward">Risk/Reward Ratio Guide</a> - Calculate if your exits justify the risk</li>
+                    <li><a href="/guides/how-to-calculate-position-size">Position Sizing Guide</a> - Size positions based on exit strategy risk</li>
+                    <li><a href="/guides/how-to-calculate-market-cap-flips">Market Cap Flip Guide</a> - Use flip targets as exit milestones</li>
+                    <li><a href="/tools/position-size">Position Size Calculator</a> - Determine optimal allocation</li>
+                </ul>
+
+                <h2>Final Thoughts</h2>
+                <p>
+                    Your edge in crypto isn't finding 100x gems—it's consistently taking profits when you have them. The difference between successful and unsuccessful traders is exit discipline. Plan your exits in advance, execute mechanically, and never regret taking profit.
+                </p>
+                <p>
+                    Remember: <strong>Unrealized gains are just numbers on a screen. Realized gains are money in your account.</strong> Don't let greed turn winners into losers.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

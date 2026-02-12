@@ -755,3 +755,28 @@ body {
         font-size: 1.25rem;
     }
 }
+
+/* Guide CTA Button */
+.guide-cta {
+    margin: 24px 0;
+    text-align: center;
+}
+
+.guide-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #5b8cff, #7a5cff);
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(91, 140, 255, 0.3);
+}
+
+.guide-button:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(91, 140, 255, 0.4);
+}

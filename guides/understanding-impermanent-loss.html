@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn what impermanent loss is, why it happens in AMM liquidity pools, and how to calculate if providing liquidity on Solana DEXs is profitable despite IL.">
+    <title>Understanding Impermanent Loss in DeFi (With Examples) | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Understanding Impermanent Loss in DeFi (With Examples) | QuantCalc">
+    <meta property="og:description" content="Learn what impermanent loss is, why it happens in AMM liquidity pools, and how to calculate if providing liquidity on Solana DEXs is profitable despite IL.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/understanding-impermanent-loss">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/understanding-impermanent-loss">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Understanding Impermanent Loss",
+      "description": "Learn what impermanent loss is, why it happens in AMM liquidity pools, and how to calculate if providing liquidity on Solana DEXs is profitable despite IL.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/understanding-impermanent-loss"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .good-box {
+            background: #14532d;
+            border-left: 4px solid #22c55e;
+        }
+
+        .good-box h3 {
+            color: #86efac;
+        }
+
+        .bad-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+        }
+
+        .bad-box h3 {
+            color: #fca5a5;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>Understanding Impermanent Loss</span>
+                </div>
+                <h1 class="article-title">Understanding Impermanent Loss</h1>
+                <div class="article-meta">What it is, why it happens, and when LPing still makes sense</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What Is Impermanent Loss?</h2>
+                <p>
+                    Impermanent loss (IL) is the loss you experience when providing liquidity to an automated market maker (AMM) compared to simply holding the tokens in your wallet. It's called "impermanent" because the loss only becomes permanent when you withdraw your liquidity—if prices return to the original ratio, the loss disappears.
+                </p>
+                <p>
+                    On Solana DEXs like Raydium, Orca, and Meteora, impermanent loss is a constant risk for liquidity providers. Understanding IL is critical before providing liquidity, as it can silently erode your position even when you're earning trading fees and rewards.
+                </p>
+
+                <h2>How AMMs Work (And Why IL Exists)</h2>
+                <p>
+                    AMMs use liquidity pools containing two tokens in a specific ratio. When you provide liquidity, you deposit equal values of both tokens. As traders swap, the pool ratio changes to maintain a constant product:
+                </p>
+                
+                <div class="calculation">
+                    x × y = k (constant)<br>
+                    <br>
+                    Where:<br>
+                    x = amount of token A<br>
+                    y = amount of token B<br>
+                    k = constant product
+                </div>
+
+                <p>
+                    When one token's price changes relative to the other, arbitrage traders rebalance the pool. This rebalancing means you end up with more of the token that went down and less of the token that went up—creating impermanent loss.
+                </p>
+
+                <h2>Example 1: Basic Impermanent Loss</h2>
+                <div class="example-box">
+                    <h3>SOL/USDC Pool - Price Doubles</h3>
+                    <p>You provide $1,000 of liquidity to a SOL/USDC pool:</p>
+                    <ul>
+                        <li>Initial SOL price: $100</li>
+                        <li>You deposit: 5 SOL + $500 USDC = $1,000 total</li>
+                    </ul>
+                    
+                    <p>SOL price doubles to $200:</p>
+                    
+                    <div class="calculation">
+                        Original position: 5 SOL × $200 + $500 = $1,500<br>
+                        (if you just held the tokens)<br>
+                        <br>
+                        Pool rebalances due to arbitrage:<br>
+                        New position: 3.54 SOL + $707 USDC = $1,414<br>
+                        <br>
+                        <strong>Impermanent Loss: $1,500 - $1,414 = $86 (5.7%)</strong>
+                    </div>
+                    
+                    <p>You lost <span class="highlight">$86 compared to holding</span>, even though your position is worth more in dollar terms. This is IL.</p>
+                </div>
+
+                <h2>Why Does This Happen?</h2>
+                <p>
+                    When SOL pumps, the pool becomes unbalanced (too much SOL, not enough USDC relative to external market prices). Arbitrage traders:
+                </p>
+                <ol>
+                    <li>Buy cheap SOL from the pool (using USDC)</li>
+                    <li>Sell expensive SOL on external markets</li>
+                    <li>Repeat until the pool price matches external markets</li>
+                </ol>
+                
+                <p>
+                    This process removes SOL from the pool and adds USDC. Your position automatically rebalances to fewer SOL (the winner) and more USDC (the loser). <strong>You're force-sold the winning asset</strong>.
+                </p>
+
+                <h2>Impermanent Loss by Price Change</h2>
+                <p>
+                    IL scales with how much the price ratio changes:
+                </p>
+                
+                <div class="calculation">
+                    1.25x price change = 0.6% IL<br>
+                    1.50x price change = 2.0% IL<br>
+                    2x price change = 5.7% IL<br>
+                    3x price change = 13.4% IL<br>
+                    4x price change = 20.0% IL<br>
+                    5x price change = 25.5% IL<br>
+                    10x price change = 42.0% IL<br>
+                </div>
+
+                <p>
+                    Notice IL grows non-linearly. A 10x price move creates 42% IL, meaning you'd have 42% less value than if you just held the tokens. This makes LPing on volatile pairs extremely risky.
+                </p>
+
+                <h2>Example 2: Large Price Movement</h2>
+                <div class="example-box">
+                    <h3>Meme Coin Liquidity Providing - 10x Price Increase</h3>
+                    <p>You provide $2,000 liquidity to a BONK/SOL pool:</p>
+                    <ul>
+                        <li>Initial: $1,000 BONK + $1,000 SOL (assume SOL = $100)</li>
+                        <li>Your SOL amount: 10 SOL</li>
+                    </ul>
+                    
+                    <p>BONK pumps 10x relative to SOL:</p>
+                    
+                    <div class="calculation">
+                        If you held: $10,000 BONK + $1,000 SOL = $11,000<br>
+                        <br>
+                        After pool rebalancing:<br>
+                        Your position: $3,162 BONK + $3,162 SOL = $6,324<br>
+                        <br>
+                        <strong>Impermanent Loss: $11,000 - $6,324 = $4,676 (42.5%)</strong>
+                    </div>
+                    
+                    <p>You lost <span class="highlight">$4,676 to impermanent loss</span>. Even though your position grew from $2,000 to $6,324, you would have had $11,000 if you just held. This is the danger of LPing on explosive pairs.</p>
+                </div>
+
+                <h2>When Impermanent Loss Doesn't Matter</h2>
+                <p>
+                    IL becomes irrelevant if you earn enough from other sources to offset it:
+                </p>
+                <ul>
+                    <li><strong>Trading fees:</strong> 0.3% per swap (on Raydium) adds up on high-volume pairs</li>
+                    <li><strong>Liquidity mining rewards:</strong> Many protocols give bonus tokens to LPs</li>
+                    <li><strong>Price returns to initial ratio:</strong> If SOL goes $100 → $200 → $100, IL disappears</li>
+                    <li><strong>Stablecoin pairs:</strong> USDC/USDT has negligible IL since prices are pegged</li>
+                </ul>
+
+                <h2>Example 3: Profitable LP Despite Impermanent Loss</h2>
+                <div class="example-box good-box">
+                    <h3>High-Volume Pool With Fee Income</h3>
+                    <p>You provide $10,000 to SOL/USDC on Raydium:</p>
+                    <ul>
+                        <li>SOL price moves 1.5x (up then back down) over 30 days</li>
+                        <li>Peak IL: 2% ($200 loss)</li>
+                        <li>Trading fee earnings: $450 (high volume pool)</li>
+                        <li>RAY rewards: $150</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Impermanent loss: -$200<br>
+                        Trading fees: +$450<br>
+                        RAY rewards: +$150<br>
+                        <br>
+                        <strong>Net profit: $400 (4% return in 30 days)</strong>
+                    </div>
+                    
+                    <p>Even with IL, you profited because fee income exceeded the loss. This is when LPing works.</p>
+                </div>
+
+                <h2>Example 4: Unprofitable LP With High IL</h2>
+                <div class="example-box bad-box">
+                    <h3>Low-Volume Pool With Price Divergence</h3>
+                    <p>You provide $10,000 to a small-cap token paired with SOL:</p>
+                    <ul>
+                        <li>Token dumps 80% relative to SOL over 14 days</li>
+                        <li>Impermanent loss: 40% ($4,000 loss)</li>
+                        <li>Trading fees earned: $60 (low volume)</li>
+                        <li>No liquidity mining rewards</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Impermanent loss: -$4,000<br>
+                        Trading fees: +$60<br>
+                        <br>
+                        <strong>Net loss: -$3,940 (39.4% loss)</strong>
+                    </div>
+                    
+                    <p>IL destroyed your position. The $60 in fees couldn't offset a 40% impermanent loss. This is the risk of LPing on volatile, low-volume pairs.</p>
+                </div>
+
+                <h2>Best Pairs for Providing Liquidity</h2>
+                <div class="good-box">
+                    <h3>Low Impermanent Loss Risk</h3>
+                    <ul>
+                        <li><strong>Stablecoin pairs:</strong> USDC/USDT, USDC/DAI—almost zero IL</li>
+                        <li><strong>Correlated assets:</strong> SOL/mSOL, SOL/jitoSOL—prices move together</li>
+                        <li><strong>High-volume majors:</strong> SOL/USDC with enough volume to offset minor IL</li>
+                        <li><strong>Blue-chip pairs:</strong> BTC/ETH (both move similarly in bull/bear markets)</li>
+                    </ul>
+                </div>
+
+                <div class="bad-box">
+                    <h3>High Impermanent Loss Risk</h3>
+                    <ul>
+                        <li><strong>Meme coins vs stables:</strong> BONK/USDC—extreme volatility = high IL</li>
+                        <li><strong>New launches:</strong> 10-100x potential = 42%+ IL if it moons</li>
+                        <li><strong>Uncorrelated assets:</strong> SOL vs random altcoin—prices diverge</li>
+                        <li><strong>Low-volume pairs:</strong> Fees won't offset even moderate IL</li>
+                    </ul>
+                </div>
+
+                <h2>When to Provide Liquidity</h2>
+                <ul>
+                    <li><strong>Sideways markets:</strong> Low volatility = minimal IL, fees accumulate</li>
+                    <li><strong>Mean-reverting pairs:</strong> Price swings but returns to baseline</li>
+                    <li><strong>High APY rewards:</strong> Liquidity mining rewards exceed expected IL</li>
+                    <li><strong>Stablecoin farming:</strong> No IL risk, pure fee/reward income</li>
+                    <li><strong>You need passive income:</strong> Willing to accept IL for cashflow</li>
+                </ul>
+
+                <h2>When NOT to Provide Liquidity</h2>
+                <ul>
+                    <li><strong>Strong bull market:</strong> Better to hold tokens that will pump</li>
+                    <li><strong>Volatile pairs:</strong> Price swings create massive IL</li>
+                    <li><strong>Low trading volume:</strong> Fees won't offset any IL</li>
+                    <li><strong>No rewards program:</strong> Only trading fees available (usually not enough)</li>
+                    <li><strong>You expect major price change:</strong> If you think SOL will 5x, don't LP it</li>
+                </ul>
+
+                <h2>Calculating Break-Even APY</h2>
+                <p>
+                    To determine if LPing makes sense, calculate the minimum APY needed to offset expected IL:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Break-Even Calculation</h3>
+                    <p>You expect a volatile pair to diverge 2x over 90 days:</p>
+                    
+                    <div class="calculation">
+                        Expected IL from 2x move: 5.7%<br>
+                        Time period: 90 days (0.25 years)<br>
+                        <br>
+                        Annualized IL: 5.7% / 0.25 = 22.8% APY equivalent<br>
+                        <br>
+                        <strong>You need 22.8%+ APY from fees + rewards to break even</strong>
+                    </div>
+                    
+                    <p>If the pool only offers 15% APY, you'll lose money even with the rewards.</p>
+                </div>
+
+                <h2>Advanced: Concentrated Liquidity (Orca Whirlpools)</h2>
+                <p>
+                    Concentrated liquidity (like Orca's Whirlpools) allows you to provide liquidity within a specific price range:
+                </p>
+                <ul>
+                    <li><strong>Higher capital efficiency:</strong> Earn more fees with less capital</li>
+                    <li><strong>More IL risk:</strong> If price exits your range, you're 100% in one token</li>
+                    <li><strong>Active management required:</strong> Need to rebalance ranges as price moves</li>
+                    <li><strong>Best for stable pairs:</strong> USDC/USDT in tight range = high fees, low IL</li>
+                </ul>
+                
+                <p>
+                    Example: SOL/USDC pool at $100. You set range $95-$105. If SOL hits $110, your entire position converts to USDC and you stop earning fees.
+                </p>
+
+                <h2>Impermanent Loss vs Permanent Loss</h2>
+                <p>
+                    IL is only "impermanent" if prices return to the original ratio. But in practice:
+                </p>
+                <ul>
+                    <li><strong>Meme coins rarely recover:</strong> Token dumps 80%, stays down—your IL is permanent</li>
+                    <li><strong>Bull markets create permanent IL:</strong> If SOL goes $50 → $200 and stays there, the IL is real</li>
+                    <li><strong>You withdraw during divergence:</strong> Locking in the loss makes it permanent</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <h3>Rookie Mistake: Ignoring IL</h3>
+                    <p>Many new LPs see "45% APY" and provide liquidity to a volatile pair without checking IL. They watch their position grow in dollar terms but don't realize they would have 30% more if they just held. Always compare your LP position to a "held" baseline.</p>
+                </div>
+
+                <h2>Tools for Managing Impermanent Loss</h2>
+                <ul>
+                    <li><strong>IL calculators:</strong> Estimate potential loss based on price change scenarios</li>
+                    <li><strong>APY trackers:</strong> Compare fee earnings to current IL in real-time</li>
+                    <li><strong>Price alerts:</strong> Get notified when IL exceeds a threshold (e.g., 5%)</li>
+                    <li><strong>Auto-rebalancing:</strong> Some protocols (like Kamino) optimize ranges automatically</li>
+                </ul>
+
+                <div class="cta-box">
+                    <h3>Calculate Your Impermanent Loss</h3>
+                    <p>Estimate IL for any price change scenario. Compare LP returns to holding to see if providing liquidity makes sense for your strategy.</p>
+                    <a href="/tools/impermanent-loss" class="cta-button">Launch IL Calculator →</a>
+                </div>
+
+                <p>
+                    Related tools for liquidity providers:
+                </p>
+                <ul>
+                    <li><a href="/tools/position-size">Position Size Calculator</a> - Determine how much capital to allocate to LPing</li>
+                    <li><a href="/tools/risk-reward">Risk/Reward Calculator</a> - Calculate if expected APY justifies IL risk</li>
+                    <li><a href="/tools/slippage-reality">Slippage Calculator</a> - Understand trading costs in low-liquidity pools</li>
+                    <li><a href="/tools/dca-calculator">DCA Calculator</a> - Alternative to LPing: accumulate tokens via DCA</li>
+                </ul>
+
+                <h2>Final Thoughts</h2>
+                <p>
+                    Impermanent loss is not a bug—it's a fundamental feature of how AMMs work. You provide liquidity and accept rebalancing risk in exchange for trading fees and rewards. The key is understanding when the fees exceed the IL risk:
+                </p>
+                <ul>
+                    <li><strong>Stablecoin pairs:</strong> Almost always profitable (no IL)</li>
+                    <li><strong>High-volume majors:</strong> Often profitable (fees offset minor IL)</li>
+                    <li><strong>Volatile pairs:</strong> Rarely profitable (IL exceeds fees)</li>
+                    <li><strong>Low-volume anything:</strong> Never profitable (insufficient fees)</li>
+                </ul>
+                
+                <p>
+                    Before providing liquidity, ask: <em>"Would I be okay being force-sold 50% of the winning token?"</em> If the answer is no, you're better off holding.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

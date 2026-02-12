@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn the difference between Market Cap and Fully Diluted Valuation (FDV). Understand why high FDV signals future sell pressure and how token unlocks impact price.">
+    <title>Market Cap vs FDV Explained (Why It Matters) | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Market Cap vs FDV Explained (Why It Matters) | QuantCalc">
+    <meta property="og:description" content="Learn the difference between Market Cap and Fully Diluted Valuation (FDV). Understand why high FDV signals future sell pressure and how token unlocks impact price.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/market-cap-vs-fdv-explained">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/market-cap-vs-fdv-explained">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Market Cap vs FDV Explained",
+      "description": "Learn the difference between Market Cap and Fully Diluted Valuation (FDV). Understand why high FDV signals future sell pressure and how token unlocks impact price.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/market-cap-vs-fdv-explained"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>Market Cap vs FDV</span>
+                </div>
+                <h1 class="article-title">Market Cap vs FDV Explained</h1>
+                <div class="article-meta">Understanding the most misunderstood metric in crypto</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What Is Market Cap?</h2>
+                <p>
+                    Market capitalization (market cap) is the total value of all tokens currently in circulation. It's calculated by multiplying the <strong>current token price</strong> by the <strong>circulating supply</strong>:
+                </p>
+                
+                <div class="calculation">
+                    Market Cap = Token Price × Circulating Supply
+                </div>
+
+                <p>
+                    For example, if a token trades at $10 and has 5 million tokens circulating, the market cap is $50 million. This represents the current market value based on what's actually tradeable right now.
+                </p>
+
+                <h2>What Is Fully Diluted Valuation (FDV)?</h2>
+                <p>
+                    Fully Diluted Valuation (FDV) is the total value if <strong>all tokens that will ever exist</strong> were in circulation today at the current price:
+                </p>
+                
+                <div class="calculation">
+                    FDV = Token Price × Total Max Supply
+                </div>
+
+                <p>
+                    Using the same example: if the token is $10 but the <strong>max supply</strong> is 100 million (not just the 5 million circulating), the FDV is $1 billion—20x higher than the market cap.
+                </p>
+
+                <h2>Example 1: The FDV vs Market Cap Gap</h2>
+                <div class="example-box">
+                    <h3>Token Launch With Heavy Vesting</h3>
+                    <p>A new Solana token launches:</p>
+                    <ul>
+                        <li>Token Price: $1.00</li>
+                        <li>Circulating Supply: 50,000,000 (5% of total)</li>
+                        <li>Max Total Supply: 1,000,000,000</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Market Cap: $1.00 × 50M = $50,000,000<br>
+                        FDV: $1.00 × 1,000M = $1,000,000,000<br>
+                        <br>
+                        <strong>FDV / Market Cap Ratio: 20x</strong>
+                    </div>
+                    
+                    <p>This means <span class="highlight">95% of supply is locked</span> and will unlock over time. As tokens unlock, they create massive sell pressure unless demand grows 20x to absorb the supply.</p>
+                </div>
+
+                <h2>Why High FDV Is a Red Flag</h2>
+                <p>
+                    When FDV is much higher than market cap, it signals future dilution:
+                </p>
+                <ul>
+                    <li><strong>Locked tokens will unlock:</strong> Team, investor, and advisor allocations vest over 1-4 years</li>
+                    <li><strong>Sell pressure increases:</strong> Early investors dump on retail as their tokens unlock</li>
+                    <li><strong>Price gets crushed:</strong> Supply increases without proportional demand growth</li>
+                    <li><strong>Bag holders suffer:</strong> You bought at peak circulating supply scarcity, then got diluted</li>
+                </ul>
+
+                <h2>Example 2: Real Token With 10x FDV/MC Ratio</h2>
+                <div class="example-box">
+                    <h3>Typical VC-Backed Token Launch</h3>
+                    <p>Token launches on major exchanges:</p>
+                    <ul>
+                        <li>Launch Price: $2.00</li>
+                        <li>Circulating Supply: 100,000,000 (10%)</li>
+                        <li>Total Supply: 1,000,000,000</li>
+                        <li>Market Cap: $200M</li>
+                        <li>FDV: $2B</li>
+                    </ul>
+                    
+                    <p><strong>6 months later:</strong></p>
+                    <ul>
+                        <li>Circulating Supply: 300,000,000 (30% - unlocks happened)</li>
+                        <li>Token Price: $0.80 (60% dump from unlocks + lack of demand)</li>
+                        <li>Market Cap: $240M</li>
+                        <li>FDV: $800M</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Your investment at launch: $2.00<br>
+                        6 months later: $0.80<br>
+                        <br>
+                        <strong>Loss: 60% despite market cap increasing by 20%</strong>
+                    </div>
+                    
+                    <p>Market cap went up, but your bags got dumped on by unlocking VCs. This is the FDV trap.</p>
+                </div>
+
+                <h2>What's a Healthy FDV/MC Ratio?</h2>
+                <p>
+                    General guidelines for evaluating tokens:
+                </p>
+                
+                <div class="calculation">
+                    FDV / Market Cap Ratio Benchmarks:<br>
+                    <br>
+                    1x - 2x: Healthy (most supply circulating)<br>
+                    2x - 5x: Moderate (watch unlock schedules)<br>
+                    5x - 10x: Risky (significant dilution coming)<br>
+                    10x+: Extreme danger (90%+ supply locked)<br>
+                </div>
+
+                <p>
+                    Bitcoin has a ratio close to 1.0x because ~95% of supply is already mined. Most meme coins also launch with 100% supply circulating (1.0x ratio). VC-backed projects often launch at 10-50x ratios.
+                </p>
+
+                <h2>The Unlock Schedule Problem</h2>
+                <p>
+                    Even with high FDV, the <strong>timing</strong> of unlocks matters. A token might have:
+                </p>
+                <ul>
+                    <li><strong>Cliff unlocks:</strong> Nothing for 12 months, then 40% unlocks in month 13 (brutal sell pressure)</li>
+                    <li><strong>Linear unlocks:</strong> Small amount every month for 48 months (gradual pressure)</li>
+                    <li><strong>Front-loaded unlocks:</strong> 50% unlocks in first 6 months, then slow drip (early dump, then stability)</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <h3>The "Cliff Dump" Pattern</h3>
+                    <p>Many tokens pump in months 1-11, then crash 60-80% when the 12-month cliff hits and VCs unlock. Retail buys the dream at $10, VCs dump at $2 after their cliff ends. Always check Tokenomics unlock schedules before buying.</p>
+                </div>
+
+                <h2>Example 3: Cliff Unlock Destroys Price</h2>
+                <div class="example-box">
+                    <h3>Token With 12-Month Cliff</h3>
+                    <p>A DeFi token launches with aggressive marketing:</p>
+                    <ul>
+                        <li>Launch (Month 0): 10% circulating, $5.00 price, $50M market cap</li>
+                        <li>Month 6: Still 10% circulating, $12.00 price (hype cycle), $120M market cap</li>
+                        <li>Month 12: <strong>Cliff unlock</strong> - 40% of supply unlocks</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Before unlock: 100M circulating<br>
+                        After unlock: 500M circulating (5x increase)<br>
+                        <br>
+                        If demand stays constant:<br>
+                        New price: $12.00 / 5 = $2.40 (80% crash)<br>
+                        <br>
+                        <strong>Reality: Price goes even lower due to panic selling</strong><br>
+                        Actual price after cliff: $1.50 (87.5% crash from peak)
+                    </div>
+                    
+                    <p>Anyone who bought between months 3-11 gets destroyed. This pattern repeats constantly in crypto.</p>
+                </div>
+
+                <h2>Why Projects Launch With Low Circulating Supply</h2>
+                <p>
+                    Teams intentionally launch with low circulating supply to create artificial scarcity:
+                </p>
+                <ul>
+                    <li><strong>Lower market cap = "cheap" narrative:</strong> "$50M market cap, so early!" (ignoring $1B FDV)</li>
+                    <li><strong>Easier to pump:</strong> Less supply = less capital needed to move price</li>
+                    <li><strong>Creates FOMO:</strong> Price goes up fast, retail apes in without checking FDV</li>
+                    <li><strong>VCs exit on retail:</strong> Early investors dump on retail once hype peaks</li>
+                </ul>
+
+                <h2>How to Check FDV Before Buying</h2>
+                <p>
+                    Use these resources to verify supply metrics:
+                </p>
+                <ul>
+                    <li><strong>CoinGecko/CoinMarketCap:</strong> Shows circulating supply, total supply, and FDV</li>
+                    <li><strong>Token Explorer:</strong> Search contract on Solscan/Etherscan to verify supply</li>
+                    <li><strong>Project Documentation:</strong> Check tokenomics page for unlock schedule</li>
+                    <li><strong>Vesting Dashboards:</strong> Some projects have transparency pages showing unlock dates</li>
+                </ul>
+
+                <h2>The FDV Hype Trick</h2>
+                <p>
+                    Projects market using market cap but hide the FDV problem:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Marketing vs Reality</h3>
+                    <p><strong>What the project says:</strong></p>
+                    <p>"We launched at only $30M market cap! So much room to grow! If we hit Uniswap's market cap, that's a 100x!"</p>
+                    
+                    <p><strong>What they don't say:</strong></p>
+                    <ul>
+                        <li>FDV is $1.5 billion (50x market cap)</li>
+                        <li>95% of supply is locked with VCs</li>
+                        <li>First major unlock in 6 months</li>
+                        <li>If we hit Uniswap's market cap at full dilution, token price is actually lower than now</li>
+                    </ul>
+                    
+                    <p>Always calculate the real valuation at full dilution, not just circulating market cap.</p>
+                </div>
+
+                <h2>When High FDV Can Be Acceptable</h2>
+                <p>
+                    Not all high FDV tokens are bad investments. It's acceptable if:
+                </p>
+                <ul>
+                    <li><strong>Long vesting periods:</strong> Tokens unlock slowly over 5-10 years (like Bitcoin's emission schedule)</li>
+                    <li><strong>Strong fundamentals:</strong> Revenue, users, and growth justify the eventual valuation</li>
+                    <li><strong>Buy-and-burn mechanisms:</strong> Protocol burns tokens, offsetting inflation</li>
+                    <li><strong>You're early with conviction:</strong> You believe the project will grow into its FDV over time</li>
+                    <li><strong>Most supply locked forever:</strong> DAO treasury won't dump, actual float is limited</li>
+                </ul>
+
+                <h2>Calculating Price at Full Dilution</h2>
+                <p>
+                    To estimate future price pressure, calculate what your token would be worth if all supply circulated:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Full Dilution Price Calculation</h3>
+                    <p>You're considering buying a token:</p>
+                    <ul>
+                        <li>Current Price: $8.00</li>
+                        <li>Circulating Supply: 20M (20%)</li>
+                        <li>Total Supply: 100M</li>
+                        <li>Current Market Cap: $160M</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Price at full dilution (if market cap stays the same):<br>
+                        $160M / 100M tokens = $1.60<br>
+                        <br>
+                        <strong>Break-even FDV needed: $800M</strong><br>
+                        (5x current market cap just to maintain $8.00 price)
+                    </div>
+                    
+                    <p>Unless you believe market cap will grow 5x as supply unlocks, the token price is likely to decline significantly.</p>
+                </div>
+
+                <h2>FDV in Bull vs Bear Markets</h2>
+                <p>
+                    Market conditions affect how FDV impacts price:
+                </p>
+                <ul>
+                    <li><strong>Bull market:</strong> Demand can absorb unlocks. High FDV tokens can maintain or grow price despite inflation</li>
+                    <li><strong>Bear market:</strong> No demand to absorb supply. Unlocks = immediate price death spiral</li>
+                    <li><strong>Sideways market:</strong> Gradual bleed as unlocks happen without proportional buyer interest</li>
+                </ul>
+
+                <h2>Meme Coins vs VC Coins: FDV Difference</h2>
+                <p>
+                    Meme coins typically launch with 100% supply circulating (FDV = Market Cap), while VC-backed projects launch with 5-20% circulating:
+                </p>
+                
+                <div class="calculation">
+                    Typical Meme Coin:<br>
+                    Circulating: 1B (100%)<br>
+                    FDV/MC Ratio: 1.0x<br>
+                    → No future dilution, what you see is what you get<br>
+                    <br>
+                    Typical VC Coin:<br>
+                    Circulating: 100M (10%)<br>
+                    Total: 1B<br>
+                    FDV/MC Ratio: 10.0x<br>
+                    → 90% dilution coming as VCs unlock and dump
+                </div>
+
+                <p>
+                    This is why many meme coins outperform "fundamentally sound" VC projects—no VCs to dump on you. The trade-off is meme coins have no fundamentals and can go to zero just as easily.
+                </p>
+
+                <h2>The Allocation Breakdown</h2>
+                <p>
+                    Typical token allocation and when they unlock:
+                </p>
+                <ul>
+                    <li><strong>Public sale (10%):</strong> Immediately circulating</li>
+                    <li><strong>Team (15%):</strong> 12-month cliff, then 24-month linear vest</li>
+                    <li><strong>VCs/Seed investors (25%):</strong> 6-12 month cliff, then 12-24 month vest</li>
+                    <li><strong>Liquidity mining (20%):</strong> Released over 48 months</li>
+                    <li><strong>Treasury/DAO (20%):</strong> Controlled by governance (may never unlock)</li>
+                    <li><strong>Advisors (5%):</strong> 12-month cliff, 12-month vest</li>
+                    <li><strong>Marketing (5%):</strong> Released over 24 months</li>
+                </ul>
+                
+                <p>
+                    The real sell pressure comes from Team + VCs (40% of supply). When their cliffs end, watch out.
+                </p>
+
+                <div class="warning-box">
+                    <h3>Common Rookie Mistake</h3>
+                    <p>Buying a token because "it's only $100M market cap!" without checking FDV. The FDV is $5B, meaning the token is already priced like a top-30 project but with 5% of supply circulating. As supply inflates, your bags get diluted into oblivion.</p>
+                </div>
+
+                <h2>How to Use FDV in Trading Decisions</h2>
+                <ul>
+                    <li><strong>Check FDV/MC ratio before buying:</strong> Anything above 5x needs extra research</li>
+                    <li><strong>Research unlock schedule:</strong> Avoid tokens with major unlocks in next 3-6 months</li>
+                    <li><strong>Compare FDV to competitors:</strong> Does it make sense for this project to be worth $1B fully diluted?</li>
+                    <li><strong>Exit before major unlocks:</strong> Sell 30-60 days before team/VC cliffs to avoid the dump</li>
+                    <li><strong>Prefer low float if trading:</strong> Easier to pump, but also easier to dump—trade, don't hold</li>
+                </ul>
+
+                <div class="cta-box">
+                    <h3>Calculate Market Cap vs FDV</h3>
+                    <p>Check the real valuation of any token. Calculate FDV and see how much dilution is coming from locked supply.</p>
+                    <a href="/tools/marketcap-fdv" class="cta-button">Launch Market Cap Calculator →</a>
+                </div>
+
+                <p>
+                    Related resources for token analysis:
+                </p>
+                <ul>
+                    <li><a href="/guides/how-to-calculate-market-cap-flips">How to Calculate Market Cap Flips</a> - Estimate upside using market cap comparisons</li>
+                    <li><a href="/guides/how-token-burns-affect-price">How Token Burns Affect Price</a> - Understand supply reduction mechanics</li>
+                    <li><a href="/tools/token-burn-impact">Token Burn Calculator</a> - Calculate impact of supply burns</li>
+                    <li><a href="/guides/how-airdrop-values-are-calculated">How Airdrop Values Are Calculated</a> - Estimate your airdrop value</li>
+                </ul>
+
+                <h2>Final Thoughts</h2>
+                <p>
+                    FDV is one of the most important and most ignored metrics in crypto. A token can have a "low" $50M market cap but actually be overvalued with a $2B FDV. Always check both numbers, understand the unlock schedule, and calculate whether the project can realistically grow into its fully diluted valuation.
+                </p>
+                <p>
+                    Remember: <strong>Market cap is what it's worth now. FDV is what it's worth if VCs stop dumping on you.</strong> In most cases, the answer is: much less.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

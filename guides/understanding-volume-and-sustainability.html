@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn why trading volume matters, how to spot fake volume, and what volume-to-market-cap ratio reveals about token sustainability and price direction.">
+    <title>Understanding Volume and Sustainability | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Understanding Volume and Sustainability | QuantCalc">
+    <meta property="og:description" content="Learn why trading volume matters, how to spot fake volume, and what volume-to-market-cap ratio reveals about token sustainability and price direction.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/understanding-volume-and-sustainability">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/understanding-volume-and-sustainability">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Understanding Volume and Sustainability",
+      "description": "Learn why trading volume matters, how to spot fake volume, and what volume-to-market-cap ratio reveals about token sustainability and price direction.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/understanding-volume-and-sustainability"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .good-box {
+            background: #14532d;
+            border-left: 4px solid #22c55e;
+        }
+
+        .good-box h3 {
+            color: #86efac;
+        }
+
+        .bad-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+        }
+
+        .bad-box h3 {
+            color: #fca5a5;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>Volume and Sustainability</span>
+                </div>
+                <h1 class="article-title">Understanding Volume and Sustainability</h1>
+                <div class="article-meta">Why volume matters and how to spot dying tokens early</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What Is Trading Volume?</h2>
+                <p>
+                    Trading volume is the total dollar value of all trades executed for a token over a specific time period (usually 24 hours). It measures market activity and liquidity:
+                </p>
+                
+                <div class="calculation">
+                    24h Volume = Sum of all trades in dollars over 24 hours
+                </div>
+
+                <p>
+                    High volume means many people are actively buying and selling. Low volume means the token is illiquid and barely traded. Volume is as important as price—maybe more important.
+                </p>
+
+                <h2>Why Trading Volume Matters</h2>
+                <ul>
+                    <li><strong>Liquidity indicator:</strong> High volume = easy to buy/sell without slippage</li>
+                    <li><strong>Demand signal:</strong> Rising volume = increasing interest and potential momentum</li>
+                    <li><strong>Sustainability check:</strong> Low volume on high market cap = unsustainable, likely to dump</li>
+                    <li><strong>Price validity:</strong> Price moves on low volume are fragile and easily reversed</li>
+                    <li><strong>Exit ability:</strong> Can you actually sell your bag without crashing the price?</li>
+                </ul>
+
+                <h2>Volume-to-Market-Cap Ratio</h2>
+                <p>
+                    The most important metric for assessing token health is the volume-to-market-cap (Vol/MC) ratio:
+                </p>
+                
+                <div class="calculation">
+                    Vol/MC Ratio = 24h Volume / Market Cap<br>
+                    <br>
+                    Healthy Token: 10-50%+ (volume is 10-50% of market cap)<br>
+                    Moderate: 3-10%<br>
+                    Concerning: 1-3%<br>
+                    Dead/Dying: Under 1%
+                </div>
+
+                <p>
+                    A token with $100M market cap but only $500K daily volume (0.5% ratio) is a red flag. It means almost nobody is trading it—you're holding a bag you can't sell.
+                </p>
+
+                <h2>Example 1: Healthy Volume Profile</h2>
+                <div class="example-box good-box">
+                    <h3>Active Token With Strong Demand</h3>
+                    <p>Token statistics:</p>
+                    <ul>
+                        <li>Market Cap: $50,000,000</li>
+                        <li>24h Volume: $15,000,000</li>
+                        <li>Vol/MC Ratio: 30%</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Vol/MC = $15M / $50M = 0.30 (30%)<br>
+                        <br>
+                        <strong>Assessment: Healthy and liquid</strong><br>
+                        <br>
+                        - Easy to enter/exit positions<br>
+                        - Low slippage on trades<br>
+                        - Active community and market interest<br>
+                        - Price is supported by real demand
+                    </div>
+                    
+                    <p>This token has <span class="highlight">strong liquidity</span>. You can buy or sell large amounts without significantly impacting the price.</p>
+                </div>
+
+                <h2>Example 2: Low Volume Death Trap</h2>
+                <div class="example-box bad-box">
+                    <h3>High Market Cap, No Volume</h3>
+                    <p>Token statistics:</p>
+                    <ul>
+                        <li>Market Cap: $80,000,000</li>
+                        <li>24h Volume: $400,000</li>
+                        <li>Vol/MC Ratio: 0.5%</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Vol/MC = $400K / $80M = 0.005 (0.5%)<br>
+                        <br>
+                        <strong>Assessment: Dead token walking</strong><br>
+                        <br>
+                        - Almost no one trading<br>
+                        - High slippage on any sizable trade<br>
+                        - If you try to sell, you'll dump the price 20-50%<br>
+                        - Market cap is fake—no real demand
+                    </div>
+                    
+                    <p>This token is <span class="highlight">illiquid and dying</span>. The market cap looks big, but it's a trap. Try to sell $10K worth and watch the price crater 30%.</p>
+                </div>
+
+                <h2>Organic vs Fake Volume</h2>
+                <p>
+                    Not all volume is real. Some projects artificially inflate volume to appear active:
+                </p>
+                
+                <div class="warning-box">
+                    <h3>Signs of Fake Volume</h3>
+                    <ul>
+                        <li><strong>Wash trading:</strong> Same wallets buying and selling to each other</li>
+                        <li><strong>Bot activity:</strong> Tiny trades happening constantly (0.01 SOL buys every 30 seconds)</li>
+                        <li><strong>No price movement:</strong> High volume but price barely moves (fake trades)</li>
+                        <li><strong>Single exchange dominance:</strong> 90% of volume on one shady exchange</li>
+                        <li><strong>Unrealistic Vol/MC:</strong> 200%+ ratio sustained for days (probably fake)</li>
+                    </ul>
+                </div>
+
+                <h2>How to Spot Organic Volume</h2>
+                <ul>
+                    <li><strong>Multiple venues:</strong> Volume spread across Raydium, Orca, Jupiter</li>
+                    <li><strong>Price volatility:</strong> Real volume creates price movement (up and down)</li>
+                    <li><strong>Varying trade sizes:</strong> Mix of small, medium, large trades (not all 0.01 SOL)</li>
+                    <li><strong>Holder distribution:</strong> Growing number of unique holders, not concentrated in a few wallets</li>
+                    <li><strong>Social activity:</strong> Volume correlates with Twitter engagement, Discord activity</li>
+                </ul>
+
+                <h2>Volume Trends Signal Price Direction</h2>
+                <p>
+                    Changes in volume often precede price changes:
+                </p>
+                <ul>
+                    <li><strong>Rising volume + rising price:</strong> Strong uptrend, momentum building</li>
+                    <li><strong>Rising volume + falling price:</strong> Capitulation, sellers overwhelming buyers</li>
+                    <li><strong>Falling volume + rising price:</strong> Weak rally, likely to reverse</li>
+                    <li><strong>Falling volume + falling price:</strong> Dead coin, no interest, avoid</li>
+                </ul>
+
+                <h2>Example 3: Volume Decline Predicts Crash</h2>
+                <div class="example-box">
+                    <h3>Token Death Spiral</h3>
+                    <p>Tracking volume over 30 days:</p>
+                    
+                    <div class="calculation">
+                        Day 1-7: $10M avg daily volume (30% Vol/MC)<br>
+                        Day 8-14: $5M avg daily volume (15% Vol/MC)<br>
+                        Day 15-21: $2M avg daily volume (6% Vol/MC)<br>
+                        Day 22-30: $500K avg daily volume (1.5% Vol/MC)<br>
+                        <br>
+                        Price Change: -65% from Day 1 to Day 30<br>
+                        <br>
+                        <strong>Pattern: Volume dried up, then price collapsed</strong>
+                    </div>
+                    
+                    <p>Volume declining steadily is a <span class="highlight">major red flag</span>. It means interest is fading. Price eventually follows volume down. Exit before it's too late.</p>
+                </div>
+
+                <h2>Market Cap vs Volume for Entry Decisions</h2>
+                <p>
+                    When evaluating a token to buy:
+                </p>
+                
+                <div class="calculation">
+                    Green Light (Buy):<br>
+                    - Vol/MC &gt; 15%<br>
+                    - Volume trending up or stable<br>
+                    - Multiple trading venues<br>
+                    <br>
+                    Yellow Light (Caution):<br>
+                    - Vol/MC 5-15%<br>
+                    - Volume flat or slightly declining<br>
+                    <br>
+                    Red Light (Avoid):<br>
+                    - Vol/MC &lt; 5%<br>
+                    - Volume consistently declining<br>
+                    - Single venue, suspicious patterns
+                </div>
+
+                <h2>Volume Spikes and What They Mean</h2>
+                <p>
+                    Sudden volume increases signal important events:
+                </p>
+                <ul>
+                    <li><strong>Listing announcement:</strong> Volume spikes 5-10x (short-term FOMO, often fades)</li>
+                    <li><strong>Whale accumulation:</strong> Volume increases gradually over days (bullish if price stable)</li>
+                    <li><strong>Influencer pump:</strong> Volume spikes 20x in 1 hour (dump incoming, exit fast)</li>
+                    <li><strong>Breakout:</strong> Volume doubles as price breaks resistance (confirms move)</li>
+                    <li><strong>Capitulation:</strong> Highest volume of the year as token dumps 70% (potential bottom)</li>
+                </ul>
+
+                <h2>Example 4: Volume Spike Analysis</h2>
+                <div class="example-box">
+                    <h3>Influencer Pump Pattern</h3>
+                    <p>Token gets mentioned by a large CT account:</p>
+                    
+                    <div class="calculation">
+                        Pre-tweet:<br>
+                        - Volume: $500K/day<br>
+                        - Price: $0.10<br>
+                        - Vol/MC: 8%<br>
+                        <br>
+                        1 hour after tweet:<br>
+                        - Volume: $15M (30x increase)<br>
+                        - Price: $0.35 (3.5x pump)<br>
+                        - Vol/MC: 214%<br>
+                        <br>
+                        12 hours later:<br>
+                        - Volume: $2M<br>
+                        - Price: $0.12 (down 66% from peak)<br>
+                        - Vol/MC: 19%<br>
+                        <br>
+                        <strong>Result: Classic influencer pump and dump</strong>
+                    </div>
+                    
+                    <p>When volume spikes 20-50x in an hour, it's usually artificial hype. The smart play: sell into the spike, don't chase it.</p>
+                </div>
+
+                <h2>Comparing Volume Across Tokens</h2>
+                <p>
+                    Benchmarking helps identify opportunities:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Comparative Volume Analysis</h3>
+                    <p>Three similar meme coins:</p>
+                    
+                    <div class="calculation">
+                        Token A:<br>
+                        Market Cap: $20M | Volume: $8M | Vol/MC: 40%<br>
+                        → High activity, strong interest<br>
+                        <br>
+                        Token B:<br>
+                        Market Cap: $25M | Volume: $3M | Vol/MC: 12%<br>
+                        → Moderate activity, okay<br>
+                        <br>
+                        Token C:<br>
+                        Market Cap: $18M | Volume: $600K | Vol/MC: 3.3%<br>
+                        → Low activity, dying<br>
+                        <br>
+                        <strong>Best bet: Token A (highest Vol/MC ratio)</strong>
+                    </div>
+                    
+                    <p>If they're all in the same category, the one with the highest Vol/MC ratio has the most momentum and liquidity.</p>
+                </div>
+
+                <h2>Volume and Slippage Relationship</h2>
+                <p>
+                    Low volume directly causes high slippage:
+                </p>
+                
+                <div class="calculation">
+                    High Volume Token ($10M/day):<br>
+                    $10K buy → 0.5% slippage<br>
+                    <br>
+                    Low Volume Token ($500K/day):<br>
+                    $10K buy → 8-15% slippage<br>
+                    <br>
+                    Dead Token ($50K/day):<br>
+                    $10K buy → 30-50% slippage (basically impossible)
+                </div>
+
+                <p>
+                    If you can't enter a position without massive slippage, you definitely can't exit. Volume determines if a token is actually tradeable.
+                </p>
+
+                <h2>Setting Volume-Based Alerts</h2>
+                <p>
+                    Automate volume monitoring to catch opportunities and avoid disasters:
+                </p>
+                <ul>
+                    <li><strong>Volume drops below 5% Vol/MC:</strong> Exit warning (liquidity drying up)</li>
+                    <li><strong>Volume spikes 10x+ in 1 hour:</strong> Potential pump (trade opportunity or scam alert)</li>
+                    <li><strong>Volume declines 50% week-over-week:</strong> Momentum fading (consider reducing position)</li>
+                    <li><strong>Volume exceeds market cap (100%+ Vol/MC):</strong> Extreme activity (major event happening)</li>
+                </ul>
+
+                <h2>Volume in Bull vs Bear Markets</h2>
+                <p>
+                    Volume patterns differ by market conditions:
+                </p>
+                <ul>
+                    <li><strong>Bull market:</strong> High volume sustains for weeks, 20-50% Vol/MC common on hot tokens</li>
+                    <li><strong>Bear market:</strong> Volume collapses, 3-8% Vol/MC is normal, lower thresholds acceptable</li>
+                    <li><strong>Transition phases:</strong> Volume leads price—watch for volume increasing before price breakouts</li>
+                </ul>
+
+                <h2>The Death Zone: Below 1% Vol/MC</h2>
+                <p>
+                    When Vol/MC drops below 1%, the token is in the death zone:
+                </p>
+                <ul>
+                    <li>Nearly impossible to exit large positions</li>
+                    <li>Price can be manipulated by single whale trades</li>
+                    <li>No real market—just bag holders hoping for revival</li>
+                    <li>Project is likely abandoned or community dead</li>
+                    <li>Probability of recovery: Under 5%</li>
+                </ul>
+                
+                <p>
+                    If you're holding a token in the death zone, accept the loss and move on. Don't wait for a miracle—redeploy capital to active opportunities.
+                </p>
+
+                <h2>Using Volume for Profit-Taking Decisions</h2>
+                <div class="example-box">
+                    <h3>Volume-Based Exit Strategy</h3>
+                    <p>You're up 5x on a position:</p>
+                    
+                    <div class="calculation">
+                        Current Stats:<br>
+                        - Vol/MC: 35% (healthy)<br>
+                        - Volume trending: Stable for 2 weeks<br>
+                        <br>
+                        Decision: Hold, momentum is intact<br>
+                        <br>
+                        1 week later:<br>
+                        - Vol/MC: 12% (declining 65%)<br>
+                        - Volume trending: Down every day<br>
+                        <br>
+                        <strong>Decision: Exit 50-75%, momentum fading</strong>
+                    </div>
+                    
+                    <p>When volume starts declining rapidly, exit even if price is still up. Volume leads price—the crash is coming.</p>
+                </div>
+
+                <h2>Tools for Volume Analysis</h2>
+                <ul>
+                    <li><strong>DexScreener:</strong> Real-time volume tracking, Vol/MC calculations</li>
+                    <li><strong>Birdeye:</strong> Volume charts, holder distribution, trade history</li>
+                    <li><strong>CoinGecko/CMC:</strong> Historical volume data, exchange breakdowns</li>
+                    <li><strong>Solscan:</strong> On-chain analysis, wallet tracking, volume verification</li>
+                </ul>
+
+                <div class="cta-box">
+                    <h3>Calculate Volume Sustainability</h3>
+                    <p>Check if a token has enough volume to support its price. Avoid illiquid traps and find tokens with real demand.</p>
+                    <a href="/tools/slippage-reality" class="cta-button">Launch Slippage Calculator →</a>
+                </div>
+
+                <p>
+                    Related guides for token analysis:
+                </p>
+                <ul>
+                    <li><a href="/guides/market-cap-vs-fdv-explained">Market Cap vs FDV Guide</a> - Understand valuation metrics</li>
+                    <li><a href="/guides/how-to-calculate-true-trading-costs">True Trading Costs Guide</a> - Factor in slippage and fees</li>
+                    <li><a href="/guides/exit-strategy-planning-guide">Exit Strategy Guide</a> - Plan exits based on liquidity</li>
+                    <li><a href="/tools/marketcap-fdv">Market Cap Calculator</a> - Analyze token valuations</li>
+                </ul>
+
+                <h2>Final Thoughts</h2>
+                <p>
+                    Volume is the heartbeat of a token. Without consistent, organic volume, price is meaningless—you're holding numbers on a screen you can't convert to cash. Always check Vol/MC ratio before entering a position, and monitor volume trends to exit before liquidity disappears.
+                </p>
+                <p>
+                    Remember: <strong>Price without volume is just hopium. Volume without price movement is fake. Both together = real demand.</strong>
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn how airdrop values are calculated using points systems, total allocation, and token prices. Understand why airdrop estimates often fail and how to calculate realistic expectations.">
+    <title>How Airdrop Values Are Calculated (With Examples) | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="How Airdrop Values Are Calculated (With Examples) | QuantCalc">
+    <meta property="og:description" content="Learn how airdrop values are calculated using points systems, total allocation, and token prices. Understand why airdrop estimates often fail and how to calculate realistic expectations.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/how-airdrop-values-are-calculated">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/how-airdrop-values-are-calculated">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How Airdrop Values Are Calculated",
+      "description": "Learn how airdrop values are calculated using points systems, total allocation, and token prices. Understand why airdrop estimates often fail and how to calculate realistic expectations.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/how-airdrop-values-are-calculated"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>How Airdrop Values Are Calculated</span>
+                </div>
+                <h1 class="article-title">How Airdrop Values Are Calculated</h1>
+                <div class="article-meta">Points, allocations, and why estimates usually fail</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What Are Crypto Airdrops?</h2>
+                <p>
+                    Crypto airdrops are free token distributions given to users who participated in a protocol's activities before its token launch. Projects use airdrops to reward early adopters, distribute governance tokens, and bootstrap network effects. On Solana, airdrops have become a major incentive mechanism, with some farmers earning $10,000+ from a single airdrop.
+                </p>
+                <p>
+                    However, calculating airdrop value before the token launches is extremely difficult. You're making assumptions about token price, your allocation percentage, and total supply—all of which can vary wildly from expectations. Understanding the math helps set realistic expectations and avoid disappointment.
+                </p>
+
+                <h2>The Basic Airdrop Formula</h2>
+                <p>
+                    Airdrop value is calculated from four key variables:
+                </p>
+                
+                <div class="calculation">
+                    Your Tokens = (Your Points / Total Points) × Total Airdrop Allocation<br>
+                    <br>
+                    Your Airdrop Value = Your Tokens × Estimated Token Price
+                </div>
+
+                <p>
+                    The challenge is that you usually know your points, but <strong>total points, allocation percentage, and token price are all unknown</strong> until launch day. This forces you to make educated guesses.
+                </p>
+
+                <h2>Example 1: Basic Airdrop Calculation</h2>
+                <div class="example-box">
+                    <h3>Scenario: Solana DeFi Protocol Airdrop</h3>
+                    <p>You've been farming a Solana lending protocol:</p>
+                    <ul>
+                        <li>Your Points: 10,000</li>
+                        <li>Estimated Total Points (all users): 50,000,000</li>
+                        <li>Total Token Supply: 1,000,000,000</li>
+                        <li>Airdrop Allocation: 10% of supply (100,000,000 tokens)</li>
+                        <li>Estimated Token Price: $0.50</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Your Share: 10,000 / 50,000,000 = 0.02%<br>
+                        Your Tokens: 0.02% × 100,000,000 = 20,000 tokens<br>
+                        <br>
+                        <strong>Estimated Value: 20,000 × $0.50 = $10,000</strong>
+                    </div>
+                    
+                    <p>This looks great! But now let's see what actually happens...</p>
+                </div>
+
+                <h2>Example 2: Reality vs Expectations</h2>
+                <div class="example-box">
+                    <h3>Same Airdrop, Real Results</h3>
+                    <p>The token launches and reality hits:</p>
+                    <ul>
+                        <li>Your Points: 10,000 (correct)</li>
+                        <li>Actual Total Points: 200,000,000 (4x higher than expected—Sybil farmers)</li>
+                        <li>Actual Airdrop Allocation: 5% (team changed allocation)</li>
+                        <li>Actual Launch Price: $0.20 (dumped immediately on open)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Your Share: 10,000 / 200,000,000 = 0.005%<br>
+                        Your Tokens: 0.005% × 50,000,000 = 2,500 tokens<br>
+                        Launch Value: 2,500 × $0.20 = $500<br>
+                        <br>
+                        Price after 1 hour: $0.08 (60% dump)<br>
+                        <strong>Actual Value If You Sell: 2,500 × $0.08 = $200</strong>
+                    </div>
+                    
+                    <p>Your <span class="highlight">$10,000 expectation became $200 reality</span>—a 98% disappointment. This is extremely common in airdrops. Let's understand why.</p>
+                </div>
+
+                <h2>Why Airdrop Estimates Usually Fail</h2>
+                <ul>
+                    <li><strong>Sybil farmers multiply total points:</strong> You think there are 10,000 users, but actually 500 farmers with 100 wallets each = 50,000 wallets</li>
+                    <li><strong>Unknown allocation percentage:</strong> Team might allocate 5% instead of 15% to the airdrop</li>
+                    <li><strong>FDV assumptions are wrong:</strong> You assumed $500M FDV, actual is $100M</li>
+                    <li><strong>Immediate dumps:</strong> 80% of recipients sell within the first hour</li>
+                    <li><strong>Bot claims first:</strong> Fastest claimers sell into higher liquidity, late claimers get worse prices</li>
+                    <li><strong>Vesting changes value:</strong> If 75% is vested, immediate liquid value is much lower</li>
+                </ul>
+
+                <h2>Points Systems Explained</h2>
+                <p>
+                    Most modern airdrops use points systems where activities earn points over time:
+                </p>
+                <ul>
+                    <li><strong>TVL-based:</strong> $1 deposited = 1 point per day</li>
+                    <li><strong>Transaction-based:</strong> Each swap = 10 points</li>
+                    <li><strong>Time-based:</strong> Holding tokens = points per block</li>
+                    <li><strong>Multipliers:</strong> Early users get 2x points, certain actions get bonuses</li>
+                    <li><strong>Tier systems:</strong> Top 1% get 10x allocation, next 9% get 5x, etc.</li>
+                </ul>
+                
+                <p>
+                    The problem: <strong>you don't know how points convert to tokens until launch</strong>. One point might equal 100 tokens or 0.001 tokens—it depends on total points and allocation.
+                </p>
+
+                <h2>Example 3: Calculating From FDV</h2>
+                <div class="example-box">
+                    <h3>Working Backwards From Expected Valuation</h3>
+                    <p>You're farming a protocol and want to estimate your airdrop:</p>
+                    <ul>
+                        <li>Your Points: 50,000</li>
+                        <li>Estimated Total Points: 100,000,000 (your guess)</li>
+                        <li>Expected FDV: $500,000,000 (based on comparables)</li>
+                        <li>Total Token Supply: 10,000,000,000</li>
+                        <li>Airdrop Allocation: 8%</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Implied Token Price: $500M / 10B = $0.05<br>
+                        Airdrop Pool: 10B × 8% = 800M tokens<br>
+                        Your Share: 50,000 / 100M = 0.05%<br>
+                        Your Tokens: 0.05% × 800M = 400,000 tokens<br>
+                        <br>
+                        <strong>Estimated Value: 400,000 × $0.05 = $20,000</strong><br>
+                        <br>
+                        Conservative Estimate (50% dump on launch):<br>
+                        <strong>$20,000 × 0.50 = $10,000</strong>
+                    </div>
+                    
+                    <p>Always discount your estimate by 50-70% to account for launch dumps and wrong assumptions.</p>
+                </div>
+
+                <h2>Vesting and Unlock Schedules</h2>
+                <p>
+                    Many airdrops don't give you all tokens immediately:
+                </p>
+                <ul>
+                    <li><strong>25% immediate, 75% vested:</strong> You can only sell 25% on launch day</li>
+                    <li><strong>Linear vesting over 12 months:</strong> Tokens unlock gradually each month</li>
+                    <li><strong>Cliff vesting:</strong> 0% for 6 months, then 100% unlocks</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h3>Vesting Impact on Value</h3>
+                    <p>You receive a $10,000 airdrop (at launch price):</p>
+                    
+                    <div class="calculation">
+                        Total Allocation: $10,000 worth at launch<br>
+                        Immediate Unlock: 25% = $2,500<br>
+                        Vested Over 12 Months: 75% = $7,500<br>
+                        <br>
+                        If token dumps 80% over next year:<br>
+                        Immediate value: $2,500 ✓<br>
+                        Vested value when unlocked: $7,500 × 0.20 = $1,500<br>
+                        <br>
+                        <strong>True Total Value: $2,500 + $1,500 = $4,000<br>
+                        (60% less than headline $10,000)</strong>
+                    </div>
+                </div>
+
+                <h2>The Sybil Farming Problem</h2>
+                <p>
+                    Sophisticated farmers create hundreds of wallets to farm airdrops, dramatically diluting honest users:
+                </p>
+                
+                <div class="warning-box">
+                    <h3>Sybil Attack Impact</h3>
+                    <p>Imagine a protocol with expected 10,000 users:</p>
+                    <ul>
+                        <li>8,000 are honest users with 1 wallet each</li>
+                        <li>2,000 are Sybil farmers with average 50 wallets each</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Honest users: 8,000 wallets<br>
+                        Sybil farmers: 2,000 × 50 = 100,000 wallets<br>
+                        <br>
+                        Total wallets: 108,000<br>
+                        Honest user share: 8,000 / 108,000 = 7.4%<br>
+                        Sybil farmer share: 100,000 / 108,000 = 92.6%<br>
+                        <br>
+                        <strong>Honest users get 92.6% less than expected!</strong>
+                    </div>
+                    
+                    <p>This is why your airdrop is often 10-20x smaller than estimates. Pro farmers extract most of the value.</p>
+                </div>
+
+                <h2>Realistic Airdrop Estimation</h2>
+                <p>
+                    To set realistic expectations, use conservative assumptions:
+                </p>
+                
+                <div class="calculation">
+                    Conservative Method:<br>
+                    1. Multiply estimated total points by 5x (assume Sybil farming)<br>
+                    2. Use 50% of rumored allocation percentage<br>
+                    3. Assume token price is 50% of comparable FDVs<br>
+                    4. Discount by another 30% for immediate dumps<br>
+                    <br>
+                    Example:<br>
+                    Optimistic estimate: $10,000<br>
+                    After Sybil adjustment: $10,000 / 5 = $2,000<br>
+                    After allocation reduction: $2,000 × 0.5 = $1,000<br>
+                    After price reality: $1,000 × 0.5 = $500<br>
+                    After dump discount: $500 × 0.7 = $350<br>
+                    <br>
+                    <strong>Realistic expectation: $350 (96.5% lower than optimistic)</strong>
+                </div>
+
+                <h2>When Airdrops Exceed Expectations</h2>
+                <p>
+                    Occasionally airdrops are worth more than expected:
+                </p>
+                <ul>
+                    <li><strong>Effective Sybil detection:</strong> Project filtered out 80% of farmers</li>
+                    <li><strong>Strong product-market fit:</strong> Token utility drives demand above supply</li>
+                    <li><strong>Generous allocation:</strong> 20-30% of supply to community instead of 5-10%</li>
+                    <li><strong>Market timing:</strong> Bull market launches absorb sell pressure</li>
+                    <li><strong>Lockup mechanisms:</strong> Vesting prevents immediate dumps</li>
+                    <li><strong>Few farmers:</strong> Obscure protocol nobody else farmed</li>
+                </ul>
+                
+                <p>
+                    Examples: Uniswap ($1,200-$12,000 per user), Jito ($25,000+ for top tier), Jupiter JUP ($2,000-$10,000). These are exceptions, not the norm.
+                </p>
+
+                <h2>Common Airdrop Valuation Mistakes</h2>
+                <ul>
+                    <li><strong>Using comparable FDVs directly:</strong> New tokens always launch at discount to established projects</li>
+                    <li><strong>Ignoring gas/claim costs:</strong> On Ethereum, claiming might cost $50-200 in gas</li>
+                    <li><strong>Not accounting for taxes:</strong> Airdrops are taxable income in most jurisdictions</li>
+                    <li><strong>Assuming you can sell at launch price:</strong> Price dumps 40-60% in first hour usually</li>
+                    <li><strong>Believing project estimates:</strong> Teams have incentive to overhype potential value</li>
+                    <li><strong>Not checking total supply vs circulating:</strong> 10M circulating of 10B total = 99% inflation coming</li>
+                </ul>
+
+                <h2>How to Maximize Airdrop Value</h2>
+                <ul>
+                    <li><strong>Be early:</strong> First 1,000 users often get 10-50x more than late adopters</li>
+                    <li><strong>Use protocol deeply:</strong> Projects reward power users, not one-time visitors</li>
+                    <li><strong>Diversify across protocols:</strong> Farm 20 protocols, expect 2-3 to pay off</li>
+                    <li><strong>Claim and sell immediately:</strong> Unless you believe in long-term value, sell into launch hype</li>
+                    <li><strong>Watch for Sybil requirements:</strong> Gitcoin Passport, ENS domain, or minimum activity thresholds help you</li>
+                    <li><strong>Calculate break-even:</strong> If you spent $500 farming, you need $500+ airdrop to profit</li>
+                </ul>
+
+                <div class="cta-box">
+                    <h3>Calculate Your Airdrop Value</h3>
+                    <p>Estimate potential airdrop worth based on your points, expected allocation, and token price. Set realistic expectations before launch day.</p>
+                    <a href="/tools/airdrop-speculator" class="cta-button">Launch Airdrop Calculator →</a>
+                </div>
+
+                <p>
+                    Other tools for token analysis:
+                </p>
+                <ul>
+                    <li><a href="/tools/marketcap-fdv">Market Cap vs FDV Calculator</a> - Check inflation from vesting schedules</li>
+                    <li><a href="/tools/token-burn-impact">Token Burn Calculator</a> - Estimate if post-launch burns affect value</li>
+                    <li><a href="/tools/volume-sustainability">Volume Sustainability Calculator</a> - Check if token has enough demand to maintain price</li>
+                    <li><a href="/tools/solana-trade-simulator">Solana Trade Simulator</a> - Model selling airdrop at launch with slippage</li>
+                </ul>
+
+                <p>
+                    Remember: Airdrop farming is speculative and time-intensive. Calculate the opportunity cost of your time. If farming takes 50 hours and the airdrop pays $500, you earned $10/hour. Sometimes it's better to just buy the token after launch at lower prices than farming for months.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

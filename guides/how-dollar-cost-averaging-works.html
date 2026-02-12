@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn how Dollar Cost Averaging (DCA) works in crypto with real examples. Understand when to use DCA, when to avoid it, and how to calculate your new average entry price.">
+    <title>Dollar Cost Averaging Strategy Explained (With Examples) | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Dollar Cost Averaging Strategy Explained (With Examples) | QuantCalc">
+    <meta property="og:description" content="Learn how Dollar Cost Averaging (DCA) works in crypto with real examples. Understand when to use DCA, when to avoid it, and how to calculate your new average entry price.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/how-dollar-cost-averaging-works">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/how-dollar-cost-averaging-works">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Dollar Cost Averaging Strategy Explained",
+      "description": "Learn how Dollar Cost Averaging (DCA) works in crypto with real examples. Understand when to use DCA, when to avoid it, and how to calculate your new average entry price.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/how-dollar-cost-averaging-works"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .success-box {
+            background: #064e3b;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .success-box h3 {
+            color: #6ee7b7;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>Dollar Cost Averaging Explained</span>
+                </div>
+                <h1 class="article-title">Dollar Cost Averaging Strategy Explained</h1>
+                <div class="article-meta">How to lower your average entry and when NOT to DCA</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What is Dollar Cost Averaging (DCA)?</h2>
+                <p>
+                    Dollar Cost Averaging (DCA) is the strategy of buying additional units of an asset at lower prices to reduce your overall average entry price. Instead of buying all at once, you spread purchases over time or price levels, reducing the impact of volatility and timing risk.
+                </p>
+                <p>
+                    In crypto trading, DCA is commonly used in two ways: <strong>time-based DCA</strong> (buying $100 every week regardless of price) and <strong>strategic DCA</strong> (buying more when your position is down to lower your average). This guide focuses on strategic DCA for active traders.
+                </p>
+
+                <h2>The DCA Formula</h2>
+                <p>
+                    To calculate your new average entry price after DCA:
+                </p>
+                
+                <div class="calculation">
+                    Total Invested = (Original Investment) + (New Investment)<br>
+                    Total Tokens = (Original Tokens) + (New Tokens)<br>
+                    <br>
+                    New Average Price = Total Invested / Total Tokens
+                </div>
+
+                <h2>Example 1: Basic DCA on SOL</h2>
+                <div class="example-box">
+                    <h3>Scenario: Buying SOL on a Dip</h3>
+                    <p>You bought SOL but the price dropped. You decide to DCA:</p>
+                    <ul>
+                        <li>Original purchase: 10 SOL at $100 each = $1,000 invested</li>
+                        <li>Current price: $80 (down 20%)</li>
+                        <li>DCA investment: $500 at $80 = 6.25 SOL</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Total Invested: $1,000 + $500 = $1,500<br>
+                        Total SOL: 10 + 6.25 = 16.25 SOL<br>
+                        <br>
+                        New Average Price: $1,500 / 16.25 = $92.31<br>
+                        <strong>Your average dropped from $100 to $92.31</strong>
+                    </div>
+                    
+                    <p>Now instead of needing SOL to reach $100 to break even, you only need it to reach <span class="highlight">$92.31</span>—an 8.3% move instead of 25%.</p>
+                </div>
+
+                <h2>Example 2: Multiple DCA Entries</h2>
+                <div class="example-box">
+                    <h3>Scenario: DCA Strategy on Meme Coin</h3>
+                    <p>You bought a Solana meme coin and it keeps dropping:</p>
+                    <ul>
+                        <li>Entry 1: 100,000 tokens at $0.10 = $10,000</li>
+                        <li>Entry 2: 150,000 tokens at $0.08 = $12,000</li>
+                        <li>Entry 3: 200,000 tokens at $0.06 = $12,000</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Total Invested: $10,000 + $12,000 + $12,000 = $34,000<br>
+                        Total Tokens: 100,000 + 150,000 + 200,000 = 450,000<br>
+                        <br>
+                        New Average Price: $34,000 / 450,000 = $0.0756<br>
+                        <strong>Average entry: $0.0756 (was $0.10 originally)</strong>
+                    </div>
+                    
+                    <p>Despite the token dropping 40% from your initial entry, your break-even is now only at $0.0756 instead of $0.10. If the token recovers to $0.10, you'll be up <span class="highlight">32% instead of breaking even</span>.</p>
+                </div>
+
+                <h2>The Math Behind DCA Improvement</h2>
+                <p>
+                    The power of DCA comes from buying more units at lower prices. Here's why it works:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Comparison: DCA vs Single Buy</h3>
+                    <p>Both scenarios: $2,000 invested over two price points</p>
+                    
+                    <p><strong>Scenario A: Buy All at Once</strong></p>
+                    <div class="calculation">
+                        $2,000 at $100 = 20 tokens<br>
+                        Average: $100 per token
+                    </div>
+                    
+                    <p><strong>Scenario B: DCA Strategy</strong></p>
+                    <div class="calculation">
+                        $1,000 at $100 = 10 tokens<br>
+                        $1,000 at $80 = 12.5 tokens<br>
+                        Total: 22.5 tokens for $2,000<br>
+                        Average: $88.89 per token
+                    </div>
+                    
+                    <p>By DCA'ing, you got <span class="highlight">12.5% more tokens</span> for the same investment. When price recovers, your profit is 12.5% higher.</p>
+                </div>
+
+                <h2>Benefits of DCA</h2>
+                <ul>
+                    <li><strong>Lowers average entry price:</strong> Makes break-even closer and increases profit potential</li>
+                    <li><strong>Reduces timing risk:</strong> You don't need to perfectly time the bottom</li>
+                    <li><strong>Emotional relief:</strong> Turns a losing position into actionable strategy</li>
+                    <li><strong>Takes advantage of volatility:</strong> Crypto's swings work in your favor</li>
+                    <li><strong>Improves risk-reward:</strong> If you bought at $100 and DCA at $80, you're getting 25% discount on half your position</li>
+                </ul>
+
+                <h2>Risks and Downsides of DCA</h2>
+                <div class="warning-box">
+                    <h3>When DCA Makes Things Worse</h3>
+                    <ul>
+                        <li><strong>Catching a falling knife:</strong> DCA'ing into a token going to zero just loses more money faster</li>
+                        <li><strong>Good money after bad:</strong> If the thesis is broken (rug pull, hack, fundamentals changed), DCA is throwing money away</li>
+                        <li><strong>Opportunity cost:</strong> Capital used for DCA could be deployed in better setups</li>
+                        <li><strong>Averaging into over-leverage:</strong> DCA'ing on leveraged perpetuals can lead to liquidation</li>
+                        <li><strong>Emotional attachment:</strong> Refusing to admit you were wrong and hoping DCA will save you</li>
+                        <li><strong>Ignoring proper risk management:</strong> DCA should never exceed your initial planned risk</li>
+                    </ul>
+                </div>
+
+                <h2>When to Use DCA</h2>
+                <div class="success-box">
+                    <h3>Good DCA Scenarios</h3>
+                    <ul>
+                        <li><strong>Blue-chip tokens during market-wide dips:</strong> SOL, ETH, BTC down 20-30% due to macro</li>
+                        <li><strong>Strong fundamentals, weak price action:</strong> Project still shipping, community active, just price correction</li>
+                        <li><strong>Pre-planned DCA levels:</strong> You identified $80, $70, $60 as buy zones before entering at $100</li>
+                        <li><strong>Time-based accumulation:</strong> Building a long-term position over months/years</li>
+                        <li><strong>Support level holds:</strong> Price bounces off key support, validating the level</li>
+                    </ul>
+                </div>
+
+                <h2>When NOT to Use DCA</h2>
+                <div class="warning-box">
+                    <h3>Bad DCA Scenarios</h3>
+                    <ul>
+                        <li><strong>Token is getting rugged:</strong> Liquidity draining, devs silent, wallet activity suspicious</li>
+                        <li><strong>Fundamentals have changed:</strong> Partnership cancelled, exploit happened, competitor won</li>
+                        <li><strong>You're already over-exposed:</strong> This position is already 30%+ of your portfolio</li>
+                        <li><strong>No clear support levels:</strong> Price is free-falling with no technical structure</li>
+                        <li><strong>Market structure is broken:</strong> Bitcoin dumping, entire market in capitulation</li>
+                        <li><strong>You don't have a plan:</strong> Randomly DCA'ing without predetermined levels or limits</li>
+                        <li><strong>It's a leveraged position:</strong> Never DCA on leveraged positions—cut losses quickly</li>
+                    </ul>
+                </div>
+
+                <h2>Strategic DCA: The Professional Approach</h2>
+                <p>
+                    Instead of panic DCA'ing when positions move against you, professional traders plan DCA levels in advance:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Pre-Planned DCA Strategy</h3>
+                    <p>Entry plan for SOL trade with $5,000 total allocation:</p>
+                    <ul>
+                        <li>Level 1: $2,000 at $100 (current price)</li>
+                        <li>Level 2: $1,500 at $90 (if breaks support)</li>
+                        <li>Level 3: $1,000 at $80 (strong support zone)</li>
+                        <li>Level 4: $500 at $70 (final dip buy)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Best case: Only Level 1 fills, price goes up<br>
+                        Average case: Levels 1-2 fill, average at $94.29<br>
+                        Worst case: All levels fill, average at $89.47<br>
+                        <br>
+                        Maximum risk: $5,000 (predetermined)<br>
+                        Stop loss: If breaks below $65, cut entire position
+                    </div>
+                    
+                    <p>This approach is <span class="highlight">strategic, not emotional</span>. You know your maximum risk, average entry at each scenario, and hard stop if thesis is invalidated.</p>
+                </div>
+
+                <h2>DCA on Solana Meme Coins</h2>
+                <p>
+                    Meme coins are extremely volatile, making DCA both powerful and dangerous:
+                </p>
+                <ul>
+                    <li><strong>Tokens can drop 50-80% before recovering:</strong> Gives excellent DCA opportunities</li>
+                    <li><strong>Many never recover:</strong> 90% of meme coins go to near-zero</li>
+                    <li><strong>Liquidity matters:</strong> Low liquidity means DCA'ing might pump the price, defeating the purpose</li>
+                    <li><strong>Time-sensitive:</strong> Meme coins have short lifespans—DCA'ing over weeks might mean holding a dead token</li>
+                </ul>
+                
+                <p>
+                    For meme coins, use <strong>rapid DCA</strong> (multiple entries within hours/days) rather than slow accumulation. If you're not at break-even within 2-3 weeks, the token is likely dead—cut losses and move on.
+                </p>
+
+                <h2>DCA Math: Break-Even Scenarios</h2>
+                <div class="example-box">
+                    <h3>How Much Price Needs to Move After DCA</h3>
+                    <p>Original position: 100 SOL at $100 ($10,000)</p>
+                    
+                    <p><strong>Scenario 1: No DCA</strong></p>
+                    <div class="calculation">
+                        Price drops to $80 (-20%)<br>
+                        Need price to reach $100 for break-even<br>
+                        Required move: +25% from $80
+                    </div>
+                    
+                    <p><strong>Scenario 2: DCA $5,000 at $80</strong></p>
+                    <div class="calculation">
+                        New average: $88.24<br>
+                        Need price to reach $88.24 for break-even<br>
+                        Required move: +10.3% from $80
+                    </div>
+                    
+                    <p>DCA reduced the required move from 25% to 10.3%—making break-even <span class="highlight">2.4x easier</span> to reach.</p>
+                </div>
+
+                <h2>Common DCA Mistakes</h2>
+                <ul>
+                    <li><strong>DCA'ing too early:</strong> Buying at -10% when the real bottom is -40%</li>
+                    <li><strong>Running out of capital:</strong> Using all your DCA ammunition before the actual bottom</li>
+                    <li><strong>No stop loss:</strong> DCA'ing infinitely downward without cutting losses</li>
+                    <li><strong>Ignoring opportunity cost:</strong> Tying up capital in a dead trade while missing new opportunities</li>
+                    <li><strong>Not tracking average:</strong> Not calculating your actual break-even after multiple DCA entries</li>
+                    <li><strong>DCA'ing with no plan:</strong> Random buys without predetermined levels or total allocation</li>
+                </ul>
+
+                <div class="cta-box">
+                    <h3>Calculate Your DCA Strategy</h3>
+                    <p>Plan your DCA entries before making emotional decisions. Calculate your new average entry, total investment, and break-even price instantly.</p>
+                    <a href="/tools/dca-calculator" class="cta-button">Launch DCA Calculator →</a>
+                </div>
+
+                <p>
+                    Other useful tools for position management:
+                </p>
+                <ul>
+                    <li><a href="/tools/position-size">Position Size Calculator</a> - Determine optimal trade sizing before DCA</li>
+                    <li><a href="/tools/risk-reward">Risk/Reward Calculator</a> - Calculate if DCA levels offer good R:R</li>
+                    <li><a href="/tools/exit-ladder-planner">Exit Ladder Planner</a> - Plan scale-out strategy after DCA recovers</li>
+                    <li><a href="/tools/solana-trade-simulator">Solana Trade Simulator</a> - Model DCA scenarios with fees</li>
+                </ul>
+
+                <p>
+                    Remember: DCA is a tool, not a religion. Sometimes the best decision is to cut losses and redeploy capital elsewhere. Don't marry your positions—marry your process.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

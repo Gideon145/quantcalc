@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Master risk-reward ratio in crypto trading. Learn why a 70% win rate doesn't guarantee profits and how to calculate if a trade is mathematically worth taking.">
+    <title>Risk Reward Ratio Explained (With Real Examples) | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Risk Reward Ratio Explained (With Real Examples) | QuantCalc">
+    <meta property="og:description" content="Master risk-reward ratio in crypto trading. Learn why a 70% win rate doesn't guarantee profits and how to calculate if a trade is mathematically worth taking.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/how-to-calculate-risk-reward">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/how-to-calculate-risk-reward">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Risk Reward Ratio Explained",
+      "description": "Master risk-reward ratio in crypto trading. Learn why a 70% win rate doesn't guarantee profits and how to calculate if a trade is mathematically worth taking.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/how-to-calculate-risk-reward"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #7f1d1d;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #fca5a5;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>Risk Reward Ratio Explained</span>
+                </div>
+                <h1 class="article-title">Risk Reward Ratio Explained</h1>
+                <div class="article-meta">Why high win rates don't guarantee profitability</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What is Risk-Reward Ratio?</h2>
+                <p>
+                    Risk-reward ratio (R:R) measures how much you stand to gain relative to how much you're risking on a trade. It's expressed as a ratio like 1:2 or 1:3, where the first number represents your risk and the second represents your potential reward.
+                </p>
+                <p>
+                    A 1:3 risk-reward ratio means you're risking $1 to potentially make $3. If you risk $100, your target profit is $300. This is the single most important metric for determining if a trade is mathematically worth taking—more important than chart patterns, indicators, or market sentiment.
+                </p>
+
+                <h2>The Risk-Reward Formula</h2>
+                <p>
+                    Calculating risk-reward ratio requires three price points:
+                </p>
+                <ul>
+                    <li><strong>Entry Price:</strong> Where you enter the trade</li>
+                    <li><strong>Stop Loss:</strong> Where you exit if the trade goes against you</li>
+                    <li><strong>Take Profit:</strong> Where you exit if the trade goes in your favor</li>
+                </ul>
+                
+                <div class="calculation">
+                    Risk = Entry Price - Stop Loss Price<br>
+                    Reward = Take Profit Price - Entry Price<br>
+                    <br>
+                    Risk-Reward Ratio = Reward / Risk
+                </div>
+
+                <h2>Example 1: Basic 1:3 Risk-Reward Trade</h2>
+                <div class="example-box">
+                    <h3>Scenario: SOL Long Position</h3>
+                    <p>You're planning to buy SOL with these targets:</p>
+                    <ul>
+                        <li>Entry Price: $100</li>
+                        <li>Stop Loss: $95</li>
+                        <li>Take Profit: $115</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Risk: $100 - $95 = $5 per unit<br>
+                        Reward: $115 - $100 = $15 per unit<br>
+                        <br>
+                        Risk-Reward Ratio: $15 / $5 = 3<br>
+                        <strong>This is a 1:3 R:R trade</strong>
+                    </div>
+                    
+                    <p>If you're risking $500 on this trade (100 SOL), your potential profit is $1,500. You need to win only <span class="highlight">25% of the time</span> to break even mathematically.</p>
+                </div>
+
+                <h2>Example 2: Why Win Rate Doesn't Equal Profitability</h2>
+                <div class="example-box">
+                    <h3>Two Traders, Different Approaches</h3>
+                    <p><strong>Trader A:</strong> 70% win rate, 1:0.5 R:R (risks $100 to make $50)</p>
+                    <div class="calculation">
+                        10 trades: 7 wins, 3 losses<br>
+                        Wins: 7 × $50 = $350<br>
+                        Losses: 3 × $100 = $300<br>
+                        <strong>Net Profit: $50 (5% return)</strong>
+                    </div>
+                    
+                    <p><strong>Trader B:</strong> 40% win rate, 1:3 R:R (risks $100 to make $300)</p>
+                    <div class="calculation">
+                        10 trades: 4 wins, 6 losses<br>
+                        Wins: 4 × $300 = $1,200<br>
+                        Losses: 6 × $100 = $600<br>
+                        <strong>Net Profit: $600 (60% return)</strong>
+                    </div>
+                    
+                    <p>Trader B is <span class="highlight">12x more profitable</span> despite losing 60% of their trades. This is why professional traders obsess over risk-reward, not win rate.</p>
+                </div>
+
+                <h2>Minimum Win Rate Required for Profitability</h2>
+                <p>
+                    Every risk-reward ratio has a break-even win rate. If your actual win rate is above this number, you're profitable. Below it, you're losing money over time.
+                </p>
+                
+                <div class="calculation">
+                    Break-Even Win Rate = 1 / (1 + Risk-Reward Ratio)<br>
+                    <br>
+                    Examples:<br>
+                    1:1 R:R → 50% win rate needed<br>
+                    1:2 R:R → 33.3% win rate needed<br>
+                    1:3 R:R → 25% win rate needed<br>
+                    1:5 R:R → 16.7% win rate needed
+                </div>
+                
+                <p>
+                    This is why scalpers (who trade 1:1 R:R) need to win 50-60% of trades to be profitable after fees, while swing traders (who target 1:3 R:R) can be profitable winning only 30-35% of the time.
+                </p>
+
+                <h2>Example 3: Realistic Crypto Trade with Fees</h2>
+                <div class="example-box">
+                    <h3>Scenario: Meme Coin Trade on Solana</h3>
+                    <p>You're buying a token with 5% buy tax and 5% sell tax:</p>
+                    <ul>
+                        <li>Entry: $0.10 (after 5% buy tax, actual cost: $0.105)</li>
+                        <li>Stop Loss: $0.08 (after 5% sell tax, you receive: $0.076)</li>
+                        <li>Take Profit: $0.16 (after 5% sell tax, you receive: $0.152)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Actual Risk: $0.105 - $0.076 = $0.029 per token<br>
+                        Actual Reward: $0.152 - $0.105 = $0.047 per token<br>
+                        <br>
+                        Risk-Reward Ratio: $0.047 / $0.029 = 1.62<br>
+                        <strong>True R:R is only 1:1.62 (not 1:1.6 without fees!)</strong>
+                    </div>
+                    
+                    <p>Token taxes dramatically reduce your actual risk-reward ratio. What looks like a 1:2 setup on the chart is really 1:1.5 after fees. Always calculate R:R based on what you'll actually receive, not nominal prices.</p>
+                </div>
+
+                <h2>Common Risk-Reward Mistakes</h2>
+                <ul>
+                    <li><strong>Moving take profit closer to improve win rate:</strong> This destroys your R:R and makes you unprofitable long-term</li>
+                    <li><strong>Moving stop loss further to avoid getting stopped out:</strong> This increases your risk without improving reward</li>
+                    <li><strong>Taking profit early on winning trades:</strong> If you consistently cut winners at 1:1 but let losers hit full stop, you're systematically destroying your edge</li>
+                    <li><strong>Not accounting for slippage and fees:</strong> On Solana, always add 2-10% to your risk calculation for low-cap tokens</li>
+                    <li><strong>Taking revenge trades with poor R:R:</strong> After a loss, traders often take 1:1 trades just to "make it back quickly"</li>
+                    <li><strong>Ignoring psychological distance:</strong> A $100 to $200 trade feels different than $0.001 to $0.002, but they're both 1:1 R:R</li>
+                </ul>
+
+                <h2>When to Skip a Trade</h2>
+                <div class="warning-box">
+                    <h3>Never Take Trades Below 1:2 Risk-Reward</h3>
+                    <p>If your setup doesn't offer at least 1:2 R:R, don't take the trade—regardless of how confident you feel. Here's why:</p>
+                    <ul>
+                        <li>After fees, a 1:2 nominal R:R becomes ~1:1.7 actual R:R</li>
+                        <li>You need to win 37% of trades to break even at 1:1.7 R:R</li>
+                        <li>Most traders win 40-50% of trades, giving only 10-20% profit margin for error</li>
+                        <li>One emotional mistake (moving stop, closing early) can wipe out weeks of profits</li>
+                    </ul>
+                    <p>Professional traders target 1:3 or better. This allows them to be profitable even during losing streaks and gives them margin for execution errors.</p>
+                </div>
+
+                <h2>Risk-Reward in Different Market Conditions</h2>
+                <p><strong>Bull Markets (2021, 2024-2025):</strong></p>
+                <ul>
+                    <li>Easy to find 1:5+ R:R setups on dips</li>
+                    <li>Stops are rarely hit; traders get lazy with R:R</li>
+                    <li>Danger: When market turns, poor R:R habits cause rapid account destruction</li>
+                </ul>
+                
+                <p><strong>Bear Markets (2022, 2023):</strong></p>
+                <ul>
+                    <li>Difficult to find 1:2+ R:R without extremely wide stops</li>
+                    <li>Many "good" setups offer only 1:1 R:R</li>
+                    <li>Survival strategy: Trade less, demand better R:R, accept lower win rate</li>
+                </ul>
+                
+                <p><strong>Sideways Markets:</strong></p>
+                <ul>
+                    <li>R:R setups are abundant but win rate drops (more fakeouts)</li>
+                    <li>Best time to practice discipline—wait for 1:3+ setups only</li>
+                    <li>Danger: Overtrading due to boredom destroys accounts through fees</li>
+                </ul>
+
+                <h2>Advanced R:R Concepts</h2>
+                <p>
+                    <strong>Scaling Out:</strong> Taking partial profits changes your R:R dynamically. Example:
+                </p>
+                <div class="calculation">
+                    Entry: $100, Stop: $95, Target: $115<br>
+                    Initial R:R: 1:3<br>
+                    <br>
+                    Take 50% profit at $110 (1:2 on that half)<br>
+                    Move stop to breakeven on remaining 50%<br>
+                    Final target $115 on remaining position<br>
+                    <br>
+                    Effective R:R: 1:2.5 with zero risk on second half
+                </div>
+                
+                <p>
+                    Use an <a href="/tools/exit-ladder-planner">exit ladder planner</a> to map out scale-out strategies that optimize R:R while reducing risk.
+                </p>
+
+                <h2>The Truth About High Win Rate Strategies</h2>
+                <p>
+                    Many crypto "gurus" brag about 80-90% win rates. Here's what they don't tell you:
+                </p>
+                <ul>
+                    <li>They're trading 1:0.5 or worse R:R (risking $100 to make $50)</li>
+                    <li>Nine small wins of $50 each = $450 profit</li>
+                    <li>One loss of $500 = net loss of $50</li>
+                    <li>This is called "picking up pennies in front of a steamroller"</li>
+                    <li>Works for months, then one bad trade destroys the account</li>
+                </ul>
+                
+                <p>
+                    Sustainable trading requires <span class="highlight">positive expectancy</span>, not high win rate. Focus on R:R first, win rate second.
+                </p>
+
+                <div class="cta-box">
+                    <h3>Calculate Your Risk-Reward Instantly</h3>
+                    <p>Stop guessing if a trade is worth taking. Calculate exact R:R, break-even win rate, and potential profit before entering any position.</p>
+                    <a href="/tools/risk-reward" class="cta-button">Launch R:R Calculator →</a>
+                </div>
+
+                <p>
+                    Other essential risk management tools:
+                </p>
+                <ul>
+                    <li><a href="/tools/position-size">Position Size Calculator</a> - Determine how much to risk based on account size</li>
+                    <li><a href="/tools/perp-liquidation">Liquidation Calculator</a> - Calculate liquidation price for leveraged trades</li>
+                    <li><a href="/tools/solana-trade-simulator">Solana Trade Simulator</a> - Model complete trades with realistic fees</li>
+                    <li><a href="/tools/exit-ladder-planner">Exit Ladder Planner</a> - Plan scale-out strategies</li>
+                </ul>
+
+                <p>
+                    Remember: A trader with a 40% win rate and 1:3 R:R will always outperform a trader with 70% win rate and 1:1 R:R over enough trades. Math doesn't lie—focus on the ratio, not the win rate.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

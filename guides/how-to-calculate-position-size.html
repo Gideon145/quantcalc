@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="author" content="QuantCalc">
+    <meta name="description" content="Learn how to calculate position size in crypto trading with real examples. Master risk management formulas and avoid the costly mistakes that blow up trading accounts.">
+    <title>How to Calculate Position Size in Crypto (With Examples) | QuantCalc</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="How to Calculate Position Size in Crypto (With Examples) | QuantCalc">
+    <meta property="og:description" content="Learn how to calculate position size in crypto trading with real examples. Master risk management formulas and avoid the costly mistakes that blow up trading accounts.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quantcalc.tools/guides/how-to-calculate-position-size">
+    
+    <link rel="canonical" href="https://quantcalc.tools/guides/how-to-calculate-position-size">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G3LPLVZ82K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3LPLVZ82K');
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Calculate Position Size in Crypto",
+      "description": "Learn how to calculate position size in crypto trading with real examples. Master risk management formulas and avoid the costly mistakes that blow up trading accounts.",
+      "author": {
+        "@type": "Organization",
+        "name": "QuantCalc Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "QuantCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://quantcalc.tools/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://quantcalc.tools/guides/how-to-calculate-position-size"
+      },
+      "datePublished": "2026-02-12",
+      "dateModified": "2026-02-12"
+    }
+    </script>
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .article-content {
+            color: #e5e7eb;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .article-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 20px 0 20px 30px;
+            color: #d1d5db;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .article-content a:hover {
+            color: #60a5fa;
+        }
+
+        .example-box {
+            background: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-box p {
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .calculation {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            color: #a5f3fc;
+        }
+
+        .highlight {
+            background: #1e40af;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .cta-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .example-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <div class="container">
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="/">QuantCalc</a>
+                    <span>→</span>
+                    <span>Guides</span>
+                    <span>→</span>
+                    <span>How to Calculate Position Size</span>
+                </div>
+                <h1 class="article-title">How to Calculate Position Size in Crypto</h1>
+                <div class="article-meta">Master risk management with proper position sizing</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-container">
+            <article class="article-content">
+                <h2>What is Position Sizing?</h2>
+                <p>
+                    Position sizing is the process of determining how much capital to risk on a single trade. It's the most critical aspect of risk management—more important than your entry price, exit strategy, or win rate. Poor position sizing is the primary reason why profitable traders still blow up their accounts.
+                </p>
+                <p>
+                    The goal of position sizing is simple: <strong>never risk so much on one trade that a single loss significantly damages your account</strong>. Professional traders typically risk 1-2% of their total capital per trade. This ensures that even a string of losses won't destroy their ability to continue trading.
+                </p>
+
+                <h2>The Position Sizing Formula</h2>
+                <p>
+                    To calculate your position size, you need three pieces of information:
+                </p>
+                <ul>
+                    <li><strong>Account Balance:</strong> Total capital available for trading</li>
+                    <li><strong>Risk Percentage:</strong> How much you're willing to lose (typically 1-2%)</li>
+                    <li><strong>Stop Loss Distance:</strong> Difference between entry and stop-loss price</li>
+                </ul>
+                
+                <div class="calculation">
+                    Position Size = (Account Balance × Risk %) / Stop Loss Distance<br>
+                    <br>
+                    Or in practical terms:<br>
+                    Position Size = Risk Amount / (Entry Price - Stop Loss Price)
+                </div>
+
+                <h2>Example 1: Basic Position Size Calculation</h2>
+                <div class="example-box">
+                    <h3>Scenario: SOL Long Trade</h3>
+                    <p>You want to buy SOL with the following parameters:</p>
+                    <ul>
+                        <li>Account Balance: $10,000</li>
+                        <li>Risk per Trade: 2% ($200)</li>
+                        <li>Entry Price: $100</li>
+                        <li>Stop Loss Price: $95</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Risk Amount: $10,000 × 2% = $200<br>
+                        Stop Loss Distance: $100 - $95 = $5<br>
+                        <br>
+                        Position Size: $200 / $5 = 40 units<br>
+                        <strong>You should buy 40 SOL (worth $4,000)</strong>
+                    </div>
+                    
+                    <p>If SOL drops to $95 and hits your stop loss, you'll lose exactly $200 (2% of your account):</p>
+                    <div class="calculation">
+                        Loss per unit: $100 - $95 = $5<br>
+                        Total loss: 40 units × $5 = $200 ✓
+                    </div>
+                </div>
+
+                <h2>Example 2: Tight Stop Loss = Larger Position</h2>
+                <div class="example-box">
+                    <h3>Scenario: Low-Cap Token with Tight Stop</h3>
+                    <p>Same account, but now with a tighter stop loss:</p>
+                    <ul>
+                        <li>Account Balance: $10,000</li>
+                        <li>Risk per Trade: 2% ($200)</li>
+                        <li>Entry Price: $0.50</li>
+                        <li>Stop Loss Price: $0.48 (only 4% below entry)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Risk Amount: $10,000 × 2% = $200<br>
+                        Stop Loss Distance: $0.50 - $0.48 = $0.02<br>
+                        <br>
+                        Position Size: $200 / $0.02 = 10,000 tokens<br>
+                        <strong>You should buy 10,000 tokens (worth $5,000)</strong>
+                    </div>
+                    
+                    <p>Even though your position is now worth $5,000 (50% of your account), you're still only risking $200 because your stop loss is tight. This is why professional traders can take large positions—they control risk through stop placement, not position size alone.</p>
+                </div>
+
+                <h2>Example 3: Wide Stop Loss = Smaller Position</h2>
+                <div class="example-box">
+                    <h3>Scenario: Volatile Asset with Wide Stop</h3>
+                    <p>Trading a volatile meme coin that needs room to breathe:</p>
+                    <ul>
+                        <li>Account Balance: $10,000</li>
+                        <li>Risk per Trade: 2% ($200)</li>
+                        <li>Entry Price: $1.00</li>
+                        <li>Stop Loss Price: $0.70 (30% below entry)</li>
+                    </ul>
+                    
+                    <div class="calculation">
+                        Risk Amount: $10,000 × 2% = $200<br>
+                        Stop Loss Distance: $1.00 - $0.70 = $0.30<br>
+                        <br>
+                        Position Size: $200 / $0.30 = 666.67 tokens<br>
+                        <strong>You should buy 667 tokens (worth only $667)</strong>
+                    </div>
+                    
+                    <p>Your position is only <span class="highlight">6.7% of your account</span>, but you're still risking the same $200 (2%). This is how you survive trading volatile assets—by reducing position size when stops are wider.</p>
+                </div>
+
+                <h2>Why Most Traders Get This Wrong</h2>
+                <p>
+                    The #1 mistake: <strong>Using a fixed position size regardless of stop loss distance</strong>. Here's what happens when you ignore proper position sizing:
+                </p>
+                
+                <div class="example-box">
+                    <h3>Common Mistake: Fixed $1,000 Position Size</h3>
+                    <p>A trader always uses $1,000 per trade, regardless of setup:</p>
+                    
+                    <p><strong>Trade A:</strong> 5% stop loss</p>
+                    <div class="calculation">
+                        Position: $1,000<br>
+                        Maximum Loss: $1,000 × 5% = $50<br>
+                        Risk: 0.5% of account ✓ (too conservative)
+                    </div>
+                    
+                    <p><strong>Trade B:</strong> 30% stop loss</p>
+                    <div class="calculation">
+                        Position: $1,000<br>
+                        Maximum Loss: $1,000 × 30% = $300<br>
+                        Risk: 3% of account ✗ (excessive risk!)
+                    </div>
+                    
+                    <p>This trader thinks they're being consistent, but they're actually risking <span class="highlight">6x more</span> on volatile trades. After three bad volatile trades, they've lost 9% of their account instead of the intended 6%.</p>
+                </div>
+
+                <h2>Common Position Sizing Mistakes</h2>
+                <ul>
+                    <li><strong>Using percentage of account instead of risk-based sizing:</strong> "I'll use 10% of my account" ignores stop loss distance entirely</li>
+                    <li><strong>Not accounting for fees:</strong> On Solana, always include slippage and token taxes in your risk calculation</li>
+                    <li><strong>Moving stops to fit desired position size:</strong> If your position size is too small, your stop is probably too wide—respect the chart</li>
+                    <li><strong>Risking more on "high confidence" trades:</strong> Even your best setups fail 40-50% of the time</li>
+                    <li><strong>Ignoring correlation:</strong> Having 10 positions on 10 different Solana meme coins isn't diversification—it's 10x leverage on Solana</li>
+                    <li><strong>Not adjusting for account growth:</strong> If your $10,000 account grows to $15,000, your 2% risk is now $300, not $200</li>
+                </ul>
+
+                <h2>Position Sizing for Leverage Trading</h2>
+                <p>
+                    When using leverage on perpetual contracts, your position sizing calculation changes because your liquidation price acts as your automatic stop loss:
+                </p>
+                
+                <div class="calculation">
+                    Position Size = Risk Amount / (Entry Price - Liquidation Price)<br>
+                    <br>
+                    Always calculate liquidation price BEFORE entering leveraged positions
+                </div>
+                
+                <p>
+                    Use a <a href="/tools/perp-liquidation">liquidation calculator</a> to determine your liquidation price, then size your position so that getting liquidated still only costs you 1-2% of your account. Many traders get liquidated on winning trades because they sized positions based on margin, not actual risk.
+                </p>
+
+                <h2>Advanced Tips for Crypto Position Sizing</h2>
+                <ul>
+                    <li><strong>Scale positions in high-volatility markets:</strong> Start with 0.5-1% risk, add if the trade moves in your favor</li>
+                    <li><strong>Reduce size on correlated trades:</strong> If you have 3 SOL ecosystem positions, treat them as one position for risk purposes</li>
+                    <li><strong>Account for slippage on low-liquidity tokens:</strong> Add 2-5% to your stop loss distance for illiquid markets</li>
+                    <li><strong>Use the Kelly Criterion for optimal sizing:</strong> If your win rate is 55% with 1:2 R:R, optimal risk is 2.5% per trade</li>
+                    <li><strong>Reduce risk after losses:</strong> After 3 consecutive losses, drop to 1% risk to preserve capital during drawdowns</li>
+                </ul>
+
+                <p>
+                    For complex position sizing scenarios, especially when planning <a href="/tools/dca-calculator">DCA strategies</a> or <a href="/tools/exit-ladder-planner">scale-out exits</a>, use a calculator to avoid errors.
+                </p>
+
+                <h2>The Most Important Rule</h2>
+                <p>
+                    <strong>Never risk more than 2% of your account on a single trade.</strong> This rule has kept professional traders in the game for decades. Here's why it matters:
+                </p>
+                
+                <div class="calculation">
+                    10 consecutive losses at 2% risk each = 18.3% total drawdown<br>
+                    10 consecutive losses at 5% risk each = 40.1% total drawdown<br>
+                    10 consecutive losses at 10% risk each = 65.1% total drawdown
+                </div>
+                
+                <p>
+                    To recover from a 50% loss, you need a <span class="highlight">100% gain</span>. To recover from a 65% loss, you need a <span class="highlight">186% gain</span>. Position sizing isn't about maximizing gains—it's about surviving long enough to find profitable opportunities.
+                </p>
+
+                <div class="cta-box">
+                    <h3>Calculate Your Position Size Instantly</h3>
+                    <p>Stop guessing and start using proper risk management. Calculate exact position sizes based on your account balance, risk tolerance, and stop loss.</p>
+                    <a href="/tools/position-size" class="cta-button">Launch Position Size Calculator →</a>
+                </div>
+
+                <p>
+                    Other essential trading tools:
+                </p>
+                <ul>
+                    <li><a href="/tools/risk-reward">Risk/Reward Calculator</a> - Determine if your trade setup is mathematically profitable</li>
+                    <li><a href="/tools/perp-liquidation">Liquidation Calculator</a> - Calculate liquidation price before using leverage</li>
+                    <li><a href="/tools/solana-trade-simulator">Solana Trade Simulator</a> - Model complete trades with fees and slippage</li>
+                    <li><a href="/tools/token-burn-impact">Token Burn Calculator</a> - Estimate impact of supply changes on price</li>
+                </ul>
+
+                <p>
+                    Remember: Position sizing is the difference between professional trading and gambling. Size your positions based on risk, not on how confident you feel about a trade.
+                </p>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Contact Section -->
+            <div class="footer-contact">
+                <h3 class="footer-contact-title">Get in Touch</h3>
+                <div class="footer-contact-items">
+                    <a href="mailto:support@quantcalc.tools" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-10 6L2 7"/>
+                        </svg>
+                        <span>support@quantcalc.tools</span>
+                    </a>
+                    <a href="https://x.com/QuantCalcTools" target="_blank" rel="noopener noreferrer" class="contact-item">
+                        <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        <span>@QuantCalcTools</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-content">
+                <div class="footer-left">QuantCalc v1.0</div>
+                <div class="footer-center">Built for simulation and educational purposes only.</div>
+                <div class="footer-right">© 2026 QuantCalc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>
