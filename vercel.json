@@ -1,4 +1,13 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "rewrites": [
+    {
+      "source": "/guides/:slug",
+      "destination": "/guides/:slug.html"
+    },
+    {
+      "source": "/tools/:slug",
+      "destination": "/tools/:slug.html"
+    }
+  ]
 }
