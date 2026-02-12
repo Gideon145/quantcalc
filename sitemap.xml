@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://quantcalc.tools/</loc>
+    <loc>https://www.quantcalc.tools/</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -10,129 +10,191 @@
   
   <!-- SEO Pillar Pages -->
   <url>
-    <loc>https://quantcalc.tools/best-solana-calculators</loc>
+    <loc>https://www.quantcalc.tools/best-solana-calculators</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
-  <!-- Solana Tools -->
+  <!-- Tool Pages -->
   <url>
-    <loc>https://quantcalc.tools/tools/solana-trade-simulator</loc>
-    <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://quantcalc.tools/solana/trade-simulator-pro</loc>
-    <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://quantcalc.tools/solana/meme-profit</loc>
-    <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://quantcalc.tools/solana/pump-breakeven</loc>
+    <loc>https://www.quantcalc.tools/tools/airdrop-speculator</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/exit-ladder-planner</loc>
+    <loc>https://www.quantcalc.tools/tools/dca-calculator</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/volume-sustainability</loc>
+    <loc>https://www.quantcalc.tools/tools/exit-ladder-planner</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/impermanent-loss</loc>
+    <loc>https://www.quantcalc.tools/tools/impermanent-loss</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/marketcap-fdv</loc>
+    <loc>https://www.quantcalc.tools/tools/marketcap-fdv</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/marketcap-flip</loc>
+    <loc>https://www.quantcalc.tools/tools/marketcap-flip</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
-  <!-- Core Trading Tools -->
   <url>
-    <loc>https://quantcalc.tools/tools/position-size</loc>
+    <loc>https://www.quantcalc.tools/tools/perp-liquidation</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/tools/position-size</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/tools/risk-reward</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/tools/slippage-reality</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/tools/solana-trade-simulator</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/tools/token-burn-impact</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/tools/volume-sustainability</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Guide Pages -->
+  <url>
+    <loc>https://www.quantcalc.tools/guides/exit-strategy-planning-guide</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/risk-reward</loc>
+    <loc>https://www.quantcalc.tools/guides/how-airdrop-values-are-calculated</loc>
     <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/perp-liquidation</loc>
+    <loc>https://www.quantcalc.tools/guides/how-dollar-cost-averaging-works</loc>
     <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/slippage-reality</loc>
+    <loc>https://www.quantcalc.tools/guides/how-to-calculate-liquidation-price</loc>
     <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/dca-calculator</loc>
+    <loc>https://www.quantcalc.tools/guides/how-to-calculate-market-cap-flips</loc>
     <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/token-burn-impact</loc>
+    <loc>https://www.quantcalc.tools/guides/how-to-calculate-position-size</loc>
     <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://quantcalc.tools/tools/airdrop-speculator</loc>
+    <loc>https://www.quantcalc.tools/guides/how-to-calculate-profit-and-loss-on-solana</loc>
     <lastmod>2026-02-12</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
-  <!-- Guides -->
   <url>
-    <loc>https://quantcalc.tools/guides/how-to-calculate-profit-and-loss-on-solana</loc>
+    <loc>https://www.quantcalc.tools/guides/how-to-calculate-risk-reward</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/guides/how-to-calculate-true-trading-costs</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/guides/how-token-burns-affect-price</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/guides/market-cap-vs-fdv-explained</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/guides/understanding-impermanent-loss</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.quantcalc.tools/guides/understanding-volume-and-sustainability</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
